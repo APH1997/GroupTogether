@@ -2,12 +2,18 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Venues', {
+    await queryInterface.createTable('Events', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      venueId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Venues'
+        }
       },
       groupId: {
         type: Sequelize.INTEGER,
@@ -15,23 +21,31 @@ module.exports = {
           model: 'Groups'
         }
       },
-      address: {
-        type: Sequelize.STRING,
+      name: {
         allowNull: false,
+        type: Sequelize.STRING
       },
-      city: {
-        type: Sequelize.STRING,
-        allowNull: false
+      description: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
-      state: {
-        type: Sequelize.STRING,
-        allowNull: false
+      type: {
+        allowNull: false,
+        type: Sequelize.ENUM('Online', 'In person'),
       },
-      lat: {
-        type: Sequelize.DECIMAL(9,7),
+      capacity: {
+        type: Sequelize.INTEGER
       },
-      lng: {
-        type: Sequelize.DECIMAL(10,7),
+      price: {
+        type: Sequelize.DECIMAL(4,2)
+      },
+      startDate: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      endDate: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -46,6 +60,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Venues');
+    await queryInterface.dropTable('Events');
   }
 };

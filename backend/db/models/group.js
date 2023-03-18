@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       Group.hasMany(models.Venue, {
         foreignKey: 'groupId'
       })
+      Group.belongsToMany(models.Venue, {
+        through: 'Event',
+        foreignKey: 'groupId'
+      })
     }
   }
   Group.init({
@@ -33,39 +37,62 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users'
       },
-      onDelete: 'cascade'
+      onDelete: 'cascade',
+      validate: {
+        isNull: false
+      }
     },
     name: {
       type: DataTypes.STRING(60),
-      allowNull: false
+      validate: {
+        len: [0,60],
+        isNull: false
+      }
     },
     about: {
       type: DataTypes.STRING,
-      allowNull: false
+      validate: {
+        isNull: false,
+        atLeast50(value){
+          if (value.length < 50){
+            throw new Error('About must be 50 characters or more')
+          }
+        }
+      }
     },
     type: {
       type: DataTypes.ENUM('Online', 'In person')
     },
     private: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      validate: {
+        isNull: false,
+      }
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false,
+      validate: {
+        isNull: false,
+      }
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false
+      validate: {
+        isNull: false,
+      }
     },
     createdAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      validate: {
+        isNull: false,
+      },
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     updatedAt: {
       type: DataTypes.DATE,
-      allowNull: false,
+      validate: {
+        isNull: false,
+      },
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
   }, {

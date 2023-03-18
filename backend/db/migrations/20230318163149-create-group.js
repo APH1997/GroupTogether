@@ -15,61 +15,31 @@ module.exports = {
           model: 'Users'
         },
         onDelete: 'cascade',
-        validate: {
-          isNull: false
-        }
       },
       name: {
         type: Sequelize.STRING,
-        validate: {
-          len: [0,60],
-          isNull: false
-        }
       },
       about: {
         type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-          atLeast50(value){
-            if (value.length < 50){
-              throw new Error('About must be 50 characters or more')
-            }
-          }
-        }
       },
       type: {
         type: Sequelize.ENUM('Online', 'In person')
       },
       private: {
         type: Sequelize.BOOLEAN,
-        validate: {
-          isNull: false,
-        }
       },
       city: {
         type: Sequelize.STRING,
-        validate: {
-          isNull: false,
-        }
       },
       state: {
         type: Sequelize.STRING,
-        validate: {
-          isNull: false,
-        }
       },
       createdAt: {
         type: Sequelize.DATE,
-        validate: {
-          isNull: false,
-        },
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         type: Sequelize.DATE,
-        validate: {
-          isNull: false,
-        },
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
