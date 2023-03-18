@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Event.hasMany(models.EventImage, {
+        foreignKey: 'eventId'
+      })
     }
   }
   Event.init({
@@ -67,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isDate: true,
         inFuture(value){
-          if (new Date(value) <= new Date()){
+          if (value <= new Date()){
             throw new Error('Start date must be in the future')
           }
         }
@@ -77,8 +80,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       validate: {
         isDate: true,
-        beforeStartDate(value){
-          if (new Date(value) < new Date(this.startDate)){
+        afterStartDate(value){
+          if (value < this.startDate){
             throw new Error('End date is less than start date')
           }
         }
