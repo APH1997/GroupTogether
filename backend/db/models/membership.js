@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Membership.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'cascade',
+      })
     }
   }
   Membership.init({
