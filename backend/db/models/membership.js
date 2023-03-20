@@ -11,10 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Membership.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'cascade',
-      })
     }
   }
   Membership.init({
@@ -29,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users'
       },
-      onDelete: 'cascade'
+      onDelete: 'cascade',
     },
     groupId: {
       type: DataTypes.INTEGER,
