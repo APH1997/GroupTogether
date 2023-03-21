@@ -27,7 +27,7 @@ router.get('/current', async (req, res, next) => {
                 },
 
             ]
-
+            
         })
         return res.json(groups);
     }
