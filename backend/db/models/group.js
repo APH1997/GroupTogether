@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
     static associate(models) {
-      // define association here
+      
       Group.belongsTo(models.User, {
         foreignKey: 'organizerId',
         as: 'Organizer'
