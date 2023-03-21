@@ -44,11 +44,8 @@ router.get('/current', async (req, res, next) => {
 });
 
 router.get('/:groupId', async (req, res, next) => {
-
     const groupId = req.params.groupId;
-
     try {
-
         const group = await Group.findByPk(groupId, {
             include:
                 [
@@ -118,6 +115,40 @@ router.post('/', async (req, res, next) => {
         return res.json({ "message": "Authentication required" })
     }
 });
+
+router.post('/:groupId/images', async (req, res, next) => {
+    const {user} = req;
+    const groupId = req.params.groupId;
+    const group = await Group.findByPk(groupId);
+    if (!user){
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    }
+    if (!group){
+        res.status(404);
+        return res.json({"message": "Group couldn't be found"})
+    }
+    if (user.id !== group.organizerId){
+        res.status(403);
+        return res.json({"message": "Forbidden"})
+    }
+
+    const {url, preview} = req.body;
+    try {
+        const newGroupImage = await group.createGroupImage({
+            url,
+            preview
+        });
+        const newId = newGroupImage.id;
+        const resGroupImage = await GroupImage.findByPk(newId, {
+            attributes: ['id','url','preview']
+        })
+        return res.json(resGroupImage)
+    } catch (e){
+        next(e);
+    }
+
+})
 
 
 
