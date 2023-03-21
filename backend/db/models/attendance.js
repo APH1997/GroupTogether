@@ -11,6 +11,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Attendance.belongsTo(models.User, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        hooks: true
+      })
+      Attendance.belongsTo(models.Event, {
+        foreignKey: 'eventId',
+        onDelete: 'CASCADE',
+        hooks: true
+      })
     }
   }
   Attendance.init({
@@ -25,14 +35,16 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Events'
       },
-      onDelete: 'cascade'
+      onDelete: 'CASCADE',
+      hooks: true
     },
     userId: {
       type: DataTypes.INTEGER,
       references: {
         model: 'Users'
       },
-      onDelete: 'cascade'
+      onDelete: 'CASCADE',
+      hooks: true
     },
     status: {
       type: DataTypes.ENUM('attending','waitlist','pending'),
