@@ -80,10 +80,45 @@ router.get('/:groupId', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-const {user} = req;
-if (user){
-    
-}
+    const { user } = req;
+    if (user) {
+        try {
+
+            const { name, about, type, private, city, state } = req.body;
+            const newGroup = await Group.create({
+                organizerId: user.id,
+                name,
+                about,
+                type,
+                private,
+                city,
+                state
+            });
+            res.status(201);
+            return res.json(newGroup);
+        } catch (e) {
+            let errors = {
+                "message": "Bad Request",
+                "errors": {
+                    "name": "Name must be 60 characters or less",
+                    "about": "About must be 50 characters or more",
+                    "type": "Type must be 'Online' or 'In person'",
+                    "private": "Private must be a boolean",
+                    "city": "City is required",
+                    "state": "State is required",
+                }
+            }
+
+            errors.status = 400;
+            errors.title = 'Validation Error'
+            next(errors);
+        }
+    } else {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    }
 });
+
+
 
 module.exports = router;

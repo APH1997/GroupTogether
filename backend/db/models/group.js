@@ -4,11 +4,6 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Group extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
       Group.belongsTo(models.User, {
@@ -45,27 +40,25 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Users'
       },
       onDelete: 'cascade',
-      validate: {
-        isNull: false
-      }
+      allowNull: false,
     },
     name: {
       type: DataTypes.STRING(60),
       validate: {
         len: [0,60],
-        isNull: false
-      }
+      },
+      allowNull: false,
     },
     about: {
       type: DataTypes.STRING,
       validate: {
-        isNull: false,
         atLeast50(value){
           if (value.length < 50){
             throw new Error('About must be 50 characters or more')
           }
         }
-      }
+      },
+      allowNull: false
     },
     type: {
       type: DataTypes.ENUM('Online', 'In person'),
@@ -75,35 +68,25 @@ module.exports = (sequelize, DataTypes) => {
     },
     private: {
       type: DataTypes.BOOLEAN,
-      validate: {
-        isNull: false,
-      }
+      allowNull: false,
     },
     city: {
       type: DataTypes.STRING,
-      validate: {
-        isNull: false,
-      }
+      allowNull: false,
     },
     state: {
       type: DataTypes.STRING,
-      validate: {
-        isNull: false,
-      }
+      allowNull: false,
     },
     createdAt: {
       type: DataTypes.DATE,
-      validate: {
-        isNull: false,
-      },
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      allowNull: false,
+      defaultValue: new Date()
     },
     updatedAt: {
       type: DataTypes.DATE,
-      validate: {
-        isNull: false,
-      },
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      allowNull: false,
+      defaultValue: new Date()
     },
   }, {
     sequelize,
