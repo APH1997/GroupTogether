@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'eventId',
         otherKey: 'userId'
       })
+      Event.hasMany(models.Attendance, {
+        foreignKey: 'eventId'
+      })
     }
   }
   Event.init({
