@@ -3,40 +3,67 @@ const router = express.Router();
 const { Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 
 router.get('/', async (req, res) => {
-    const groups = await Group.findAll();
-    for (let group of groups) {
-        group.dataValues.numMembers = (await Membership.findAll({
-            where: { groupId: group.dataValues.id }
-        })).length;
-        group.dataValues.previewImage = (await GroupImage.findAll({
-            where: { groupId: group.dataValues.id },
-            attributes: ['url']
-        }));
-    }
-    return res.json({ Groups: groups });
+    const groups = await Group.findAll({
+
+        include:
+        [
+            {model: Membership},
+            {model: GroupImage}
+        ]
+    })
+    let groupsList = [];
+    groups.forEach(group => {
+        groupsList.push(group.toJSON())
+    })
+
+    groupsList.forEach(group => {
+        group.GroupImages.forEach(groupImage => {
+            if (groupImage && groupImage.preview === true){
+                group.previewImage = groupImage.url
+            } else {
+                group.previewImage = 'No image preview available'
+            }
+        });
+        group.numMembers = group.Memberships.length;
+
+        delete group.Memberships;
+        delete group.GroupImages;
+    })
+    return res.json({Groups: groupsList});
 });
 
 router.get('/current', async (req, res, next) => {
     const { user } = req;
     if (user) {
-        const memberships = await user.getMemberships();
-        let groupIds = [];
-        for (let membership of memberships) {
-            groupIds.push(Number(membership.dataValues.groupId))
-        }
-        const groups = await Group.findAll({
-            where: { id: groupIds }
-        })
-        for (let group of groups) {
-            group.dataValues.numMembers = (await Membership.findAll({
-                where: { groupId: group.dataValues.id }
-            })).length;
-            group.dataValues.previewImage = (await GroupImage.findAll({
-                where: { groupId: group.dataValues.id },
-                attributes: ['url']
-            }))[0].url;
-        }
-        return res.json({ Groups: groups });
+        const memberships = await user.getMemberships({
+            include:
+            [
+                {
+                    model: Group,
+                    include: [{model: Membership}, {model:GroupImage}]
+                }
+            ]
+        });
+
+        let userGroups = [];
+        memberships.forEach(membership => {
+            userGroups.push(membership.Group.toJSON());
+        });
+
+        userGroups.forEach(group => {
+            group.GroupImages.forEach(image => {
+                if (image.preview === true){
+                    group.previewImage = image.url
+                } else {
+                    group.previewImage = 'No available image'
+                }
+                delete group.GroupImages
+            })
+            group.numMembers = group.Memberships.length;
+            delete group.Memberships;
+        });
+        return res.json({Groups: userGroups})
+
     } else {
         res.status(401);
         return res.json({ "message": "Authentication required" })
