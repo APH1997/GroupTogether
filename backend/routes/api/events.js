@@ -146,7 +146,11 @@ router.put('/:eventId', async (req, res, next) => {
     }
 
     const {venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
-
+    const venue = await Venue.findByPk(venueId)
+    if (!venue){
+        res.status(404);
+        return res.json({"message": "Venue couldn't be found"})
+    }
     try {
         event.venueId = venueId;
         event.name = name;
