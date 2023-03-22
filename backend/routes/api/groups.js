@@ -386,7 +386,55 @@ router.get('/:groupId/events', async (req, res, next) => {
         delete event.EventImages;
     }
 
-    res.json({Events: eventsList})
+    return res.json({Events: eventsList})
+})
+
+router.post('/:groupId/events', async (req, res, next) => {
+    const {user} = req;
+    const group = await Group.findByPk(req.params.groupId);
+    if (!user) {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    }
+    if (!group) {
+        res.status(404);
+        return res.json({ "message": "Group couldn't be found" })
+    }
+    const membership = await Membership.findOne({
+        where: [{userId: user.id}, {groupId: group.id}]
+    })
+    const status = membership.status
+    if (status !== 'organizer' && status !== 'co-host'){
+        res.status(403);
+        return res.json({ "message": "Forbidden" })
+    }
+    const {venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
+    try {
+
+        const newEvent = await group.createEvent({
+            venueId,
+            name,
+            type,
+            capacity,
+            price,
+            description,
+            startDate,
+            endDate
+        })
+
+        const resNewEvent = newEvent.toJSON();
+        delete resNewEvent.updatedAt;
+        delete resNewEvent.createdAt;
+        delete resNewEvent.groupId;
+        delete resNewEvent.id;
+
+        return res.json(resNewEvent)
+
+    } catch (e) {
+        res.json(e);
+    }
+    
+
 })
 
 module.exports = router;

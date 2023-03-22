@@ -51,8 +51,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        isNull: false,
         atLeast5(value){
           if (value.length < 5) {
             throw new Error('Name must be at least 5 characters')
@@ -62,14 +62,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING,
-      validate: {
-        isNull: false,
-      }
+      allowNull: false,
     },
     type: {
       type: DataTypes.ENUM('Online', 'In person'),
+      allowNull: false,
       validate: {
-        isNull: false,
         isIn: [['Online', 'In person']]
       }
     },
