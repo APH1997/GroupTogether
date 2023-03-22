@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
     })
 
     groupsList.forEach(group => {
-        group.numMembers = 0;
         group.GroupImages.forEach(groupImage => {
             if (groupImage && groupImage.preview === true){
                 group.previewImage = groupImage.url
@@ -25,36 +24,46 @@ router.get('/', async (req, res) => {
                 group.previewImage = 'No image preview available'
             }
         });
-        group.Memberships.forEach(membership => {
-            group.numMembers++
-        })
+        group.numMembers = group.Memberships.length;
+
         delete group.Memberships;
         delete group.GroupImages;
     })
-    return res.json(groupsList);
+    return res.json({Groups: groupsList});
 });
 
 router.get('/current', async (req, res, next) => {
     const { user } = req;
     if (user) {
-        const memberships = await user.getMemberships();
-        let groupIds = [];
-        for (let membership of memberships) {
-            groupIds.push(Number(membership.dataValues.groupId))
-        }
-        const groups = await Group.findAll({
-            where: { id: groupIds }
-        })
-        for (let group of groups) {
-            group.dataValues.numMembers = (await Membership.findAll({
-                where: { groupId: group.dataValues.id }
-            })).length;
-            group.dataValues.previewImage = (await GroupImage.findAll({
-                where: { groupId: group.dataValues.id },
-                attributes: ['url']
-            }))[0].url;
-        }
-        return res.json({ Groups: groups });
+        const memberships = await user.getMemberships({
+            include:
+            [
+                {
+                    model: Group,
+                    include: [{model: Membership}, {model:GroupImage}]
+                }
+            ]
+        });
+
+        let userGroups = [];
+        memberships.forEach(membership => {
+            userGroups.push(membership.Group.toJSON());
+        });
+
+        userGroups.forEach(group => {
+            group.GroupImages.forEach(image => {
+                if (image.preview === true){
+                    group.previewImage = image.url
+                } else {
+                    group.previewImage = 'No available image'
+                }
+                delete group.GroupImages
+            })
+            group.numMembers = group.Memberships.length;
+            delete group.Memberships;
+        });
+        return res.json({Groups: userGroups})
+
     } else {
         res.status(401);
         return res.json({ "message": "Authentication required" })
