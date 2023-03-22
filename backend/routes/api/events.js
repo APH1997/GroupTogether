@@ -101,7 +101,7 @@ router.post('/:eventId/images', async (req, res, next) => {
             }
         }
     }
-    const {url, preview} = req.body;
+    const { url, preview } = req.body;
 
     const image = await event.createEventImage({
         url,
@@ -115,6 +115,92 @@ router.post('/:eventId/images', async (req, res, next) => {
     delete resImage.createdAt
 
     res.json(resImage)
+})
+
+router.put('/:eventId', async (req, res, next) => {
+    const { user } = req;
+    const event = await Event.findByPk(req.params.eventId, {
+        include:
+            [
+                { model: Group, include: { model: Membership } }
+            ]
+    })
+
+    if (!user) {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    };
+    if (!event) {
+        res.status(404);
+        res.json({ "message": "Event couldn't be found" })
+    };
+
+    for (let membership of event.Group.Memberships) {
+        if (user.id === membership.userId) {
+            const status = membership.status;
+            if (status !== 'organizer' && status !== 'co-host') {
+                res.status(403);
+                return res.json({ "message": "Forbidden" })
+            }
+        }
+    }
+
+    const {venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
+
+    try {
+        event.venueId = venueId;
+        event.name = name;
+        event.type = type;
+        event.capacity = capacity;
+        event.price = price;
+        event.description = description;
+        event.startDate = startDate;
+        event.endDate = endDate;
+        event.updatedAt = new Date();
+
+        await event.save();
+
+        const resEvent = event.toJSON();
+        delete resEvent.Group
+        delete resEvent.updatedAt
+        delete resEvent.createdAt
+
+        return res.json(resEvent);
+
+    } catch (e){
+        next(e);
+    }
+
+})
+
+router.delete('/:eventId', async (req, res, next) => {
+    const {user} = req;
+    const event = await Event.findByPk(req.params.eventId,{
+        include:
+        {model: Group, include: {model: Membership}}
+    });
+
+    if (!user) {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    };
+    if (!event) {
+        res.status(404);
+        res.json({ "message": "Event couldn't be found" })
+    };
+
+    for (let membership of event.Group.Memberships) {
+        if (user.id === membership.userId) {
+            const status = membership.status;
+            if (status !== 'organizer' && status !== 'co-host') {
+                res.status(403);
+                return res.json({ "message": "Forbidden" })
+            }
+        }
+    }
+
+    await event.destroy();
+    return res.json({"message": "Successfully deleted"})
 })
 
 module.exports = router;
