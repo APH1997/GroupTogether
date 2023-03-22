@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Event.belongsTo(models.Group, {
         foreignKey: 'groupId',
-        onDelete: 'CASCADE',
-        hooks: true
+        // onDelete: 'CASCADE',
+        // hooks: true
       })
       Event.belongsTo(models.Venue, {
         foreignKey: 'venueId'
@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         through: 'Attendance',
         foreignKey: 'eventId',
         otherKey: 'userId'
+      })
+      Event.hasMany(models.Attendance, {
+        foreignKey: 'eventId'
       })
     }
   }
@@ -48,8 +51,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        isNull: false,
         atLeast5(value){
           if (value.length < 5) {
             throw new Error('Name must be at least 5 characters')
@@ -59,14 +62,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING,
-      validate: {
-        isNull: false,
-      }
+      allowNull: false,
     },
     type: {
       type: DataTypes.ENUM('Online', 'In person'),
+      allowNull: false,
       validate: {
-        isNull: false,
         isIn: [['Online', 'In person']]
       }
     },
