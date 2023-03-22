@@ -43,7 +43,29 @@ router.get('/', async (req, res, next) => {
 
     }
 
-    res.json({Events: eventsList});
+    return res.json({Events: eventsList});
+})
+
+router.get('/:eventId', async (req, res, next) => {
+    const event = await Event.findByPk(req.params.eventId, {
+        include:
+        [
+            {model: Group, attributes: ['id','name','private','city','state']},
+            {model: Venue, attributes: ['id','address','city','state','lat','lng']},
+            {model: EventImage, attributes: ['id','url','preview']}
+        ],
+    })
+
+    if (!event){
+        res.status(404);
+        res.json({"message": "Event couldn't be found"})
+    }
+
+    const resEvent = event.toJSON();
+    delete resEvent.createdAt;
+    delete resEvent.updatedAt;
+
+    return res.json(resEvent)
 })
 
 module.exports = router;
