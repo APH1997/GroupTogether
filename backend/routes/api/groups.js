@@ -109,6 +109,10 @@ router.post('/', async (req, res, next) => {
         try {
 
             const { name, about, type, private, city, state } = req.body;
+            if (!name || !about || !type || !city || !state){
+                throw new Error();
+            }
+
             const newGroup = await Group.create({
                 organizerId: user.id,
                 name,
