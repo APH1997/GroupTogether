@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
+const { Attendance, Event, EventImage, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 
 router.get('/', async (req, res) => {
     const groups = await Group.findAll({
@@ -342,5 +342,51 @@ router.post('/:groupId/venues', async (req, res, next) => {
     }
 })
 
+router.get('/:groupId/events', async (req, res, next) => {
+    const group = await Group.findByPk(req.params.groupId)
+    if (!group){
+        res.status(404);
+        res.json({"message": "Group couldn't be found"})
+    }
+    const groupEvents = await Event.findAll({
+        where: {groupId: group.id},
+        include:
+        [
+            {model: Group, attributes: ['id','name','city','state']},
+            {model: Attendance},
+            {model: Venue, attributes: ['id','city','state']},
+            {model: EventImage}
+        ]
+    })
+
+
+    const eventsList = [];
+    groupEvents.forEach(event => {
+        eventsList.push(event.toJSON());
+    });
+
+    for (let event of eventsList){
+        event.numAttending = 0
+        for (let attendance of event.Attendances){
+            if (attendance.status === 'attending'){
+                event.numAttending++
+            }
+        }
+        delete event.Attendances;
+        delete event.createdAt;
+        delete event.updatedAt;
+        delete event.price;
+        delete event.description;
+        delete event.capacity;
+        for (let image of event.EventImages){
+            if (image.preview === true){
+                event.previewImage = image.url;
+            }
+        }
+        delete event.EventImages;
+    }
+
+    res.json({Events: eventsList})
+})
 
 module.exports = router;
