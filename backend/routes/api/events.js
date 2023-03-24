@@ -4,15 +4,58 @@ const { Attendance, EventImage, Event, Venue, GroupImage, User, Group, Membershi
 
 router.get('/', async (req, res, next) => {
     let {page, size, name, type, startDate} = req.query;
+    const errors = {};
+    if (page){
+        if (page < 1)
+            {errors.page = "Page must be greater than or equal to 1"}
+        if (page > 10) page = 10;
+    } else {page = 1}
+
+    if (size){
+        if (size < 1)
+            {errors.size = "Size must be greater than or equal to 1"}
+        if (size > 20) page = 20;
+    } else {size = 20}
+
+    if (name){
+        if (typeof name !== 'string')
+            {errors.name = "Name must be a string"}
+    }
+    if (type){
+        if (type !== 'Online' && type !== 'In person')
+            {errors.type = "Type must be 'Online' or 'In Person'"}
+    }
+    if (startDate){
+        if ((new Date(startDate)).toString() === "Invalid Date")
+            {errors.startDate = "Start date must be a valid datetime"}
+    }
+    if (Object.keys(errors).length){
+        res.status(400);
+        return res.json({
+            "message": "Bad Request",
+            errors
+        })
+    }
+    //Build query object
+    const offset = size * (page - 1);
+    const limit = size;
+    const where = {}
+    if (name) where.name = name;
+    if (type) where.type = type;
+    if (startDate) where.startDate = startDate;
+
 
     const events = await Event.findAll({
+        where,
         include:
             [
                 { model: Venue, attributes: ['id', 'city', 'state'] },
                 { model: Attendance },
                 { model: EventImage },
                 { model: Group, attributes: ['id', 'name', 'city', 'state'] }
-            ]
+            ],
+        limit,
+        offset
     });
 
     const eventsList = [];
@@ -42,10 +85,9 @@ router.get('/', async (req, res, next) => {
             }
         }
         delete event.EventImages;
-
     }
 
-    return res.json({ Events: eventsList });
+    return res.json({ Events: eventsList, page, size });
 })
 
 router.get('/:eventId', async (req, res, next) => {
