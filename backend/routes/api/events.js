@@ -316,6 +316,70 @@ router.post('/:eventId/attendance', async (req, res, next) => {
         userId: newAttendance.userId,
         status: newAttendance.status
     })
+});
+
+router.put('/:eventId/attendance', async (req, res, next) => {
+    const {userId, status} = req.body;
+    //Throw error if status is pending
+    if (status === 'pending'){
+        res.status(400);
+        res.json({
+            "message": "Cannot change an attendance status to pending",
+          })
+    }
+    const {user} = req;
+    const event = await Event.findByPk(req.params.eventId, {
+        include:
+        [
+            {model: Attendance},
+            {model: Group, include: {model: Membership}}
+        ]
+    })
+
+    //Validate user, event
+    if (!user) {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    };
+    if (!event) {
+        res.status(404);
+        return res.json({ "message": "Event couldn't be found" })
+    };
+
+
+    //Check if user is host or co-host
+    let userStatus;
+    for (let member of event.Group.Memberships){
+        if (member.userId === user.id){
+            userStatus = member.status;
+        }
+    }
+    if (userStatus !== 'organizer' && userStatus !== 'co-host'){
+        res.status(403);
+        return res.json({
+            "message": "Forbidden",
+          })
+    }
+
+    //Check if target user has a pending request
+    for (let attendee of event.Attendances){
+        if (userId === attendee.userId){
+            attendee.status = status;
+            await attendee.save();
+            return res.json({
+                id: attendee.id,
+                eventId: attendee.eventId,
+                userId: attendee.userId,
+                status: attendee.status
+            })
+        }
+    }
+
+    //attendance record not found
+    res.status(404);
+    return res.json({
+        "message": "Attendance between the user and the event does not exist",
+      })
 })
 
 module.exports = router;
