@@ -275,7 +275,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 
 router.post('/:eventId/attendance', async (req, res, next) => {
     const {user} = req;
-    const event = Event.findByPk(req.params.eventId);
+    const event = await Event.findByPk(req.params.eventId);
 
     //Authenticate user and check if valid event
     if (!user) {
