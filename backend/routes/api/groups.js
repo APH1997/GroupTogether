@@ -557,6 +557,12 @@ router.put('/:groupId/membership', async (req, res, next) => {
     }
     const {memberId, status} = req.body;
 
+
+    //right now, the cohost can self-promote to organizer
+    // if (status !== 'member' && status !== 'co-host'){
+
+    // }
+
     //only organizer can make someone co-host
     if (status === 'co-host' && (user.id !== group.organizerId)){
         res.status(403);
@@ -604,7 +610,10 @@ router.put('/:groupId/membership', async (req, res, next) => {
             targetMembershipId = member.id
         }
     }
-
+    //If no hit in member loop, check if it's the organizer
+    if (group.organizerId === user.id){
+        userStatus = 'organizer'
+    }
     const targetMembership = await Membership.findByPk(targetMembershipId);
 
     if (userStatus === 'organizer' || userStatus === 'co-host'){
