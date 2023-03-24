@@ -20,16 +20,16 @@ module.exports = {
         references: {
           model: 'Venues'
         },
-        onDelete: 'CASCADE',
-        hooks: true
+        // onDelete: 'CASCADE',
+        // hooks: true
       },
       groupId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Groups'
         },
-        onDelete: 'CASCADE',
-        hooks: true
+        // onDelete: 'CASCADE',
+        // hooks: true
       },
       name: {
         allowNull: false,
