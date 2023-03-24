@@ -380,6 +380,60 @@ router.put('/:eventId/attendance', async (req, res, next) => {
     return res.json({
         "message": "Attendance between the user and the event does not exist",
       })
+});
+
+router.delete('/:eventId/attendance', async (req, res, next) => {
+    const {user} = req;
+    const {userId} = req.body;
+    const targetId = userId;
+
+    const event = await Event.findByPk(req.params.eventId, {
+        include:
+        [
+            {model: Group},
+            {model: Attendance}
+        ]
+    });
+
+
+    //Validate user, event
+    if (!user) {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    };
+    if (!event) {
+        res.status(404);
+        return res.json({ "message": "Event couldn't be found" })
+    };
+
+
+    //Throw error if user is NOT the group organizer or target
+    if (user.id !== event.Group.organizerId && user.id !== targetId){
+        res.status(403);
+        return res.json({
+            "message": "Only the User or organizer may delete an Attendance",
+          })
+    }
+
+    //Iterate through event.Attendances to find target
+    for (let attendee of event.Attendances){
+        if (attendee.userId === targetId){
+            const targetAttendance = await Attendance.findByPk(attendee.id)
+            await targetAttendance.destroy();
+            return res.json({
+                "message": "Successfully deleted attendance from event"
+              })
+        }
+    }
+
+
+    //if it gets here, SHOULD mean attendance Does not exist
+    res.status(404);
+    return res.json({
+        "message": "Attendance does not exist for this User",
+      })
 })
+
+
 
 module.exports = router;
