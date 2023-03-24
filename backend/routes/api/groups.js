@@ -623,4 +623,56 @@ router.put('/:groupId/membership', async (req, res, next) => {
     }
 })
 
+router.delete('/:groupId/membership', async (req, res, next) => {
+    const {user} = req;
+
+    //memberId is the user's id
+    const {memberId} = req.body
+    const group = await Group.findByPk(req.params.groupId);
+
+    if (!user) {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    }
+    if (!group) {
+        res.status(404);
+        return res.json({ "message": "Group couldn't be found" })
+    }
+
+    //user must be organizer or the member themself
+
+    if (user.id !== memberId && user.id !== group.organizerId){
+        res.status(403);
+        return res.json({ "message": "Forbidden" })
+    }
+
+    const targetUser = await User.findByPk(memberId);
+    if (!targetUser){
+        res.status(400);
+        return res.json({
+            "message": "Validation Error",
+            "errors": {
+              "memberId": "User couldn't be found"
+            }
+          })
+    }
+
+    const membership = await Membership.findOne({
+        where: [{userId: memberId, groupId: group.id}]
+    })
+
+    if (!membership){
+        res.status(404);
+        return res.json({
+            "message": "Membership does not exist for this User",
+          })
+    };
+
+    await membership.destroy();
+
+    return res.json({
+        "message": "Successfully deleted membership from group"
+      })
+})
+
 module.exports = router;
