@@ -208,7 +208,14 @@ router.delete('/:eventId', async (req, res, next) => {
 })
 
 router.get('/:eventId/attendees', async (req, res, next) => {
-    
+    const {user} = req;
+
+    //if organizer or cohost, include pending statuses
+    const attendances = await Attendance.findAll({
+        where: {eventId: req.params.eventId}
+    })
+
+    res.json(attendances)
 })
 
 module.exports = router;
