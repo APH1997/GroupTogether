@@ -190,7 +190,7 @@ router.delete('/:eventId', async (req, res, next) => {
     };
     if (!event) {
         res.status(404);
-        res.json({ "message": "Event couldn't be found" })
+        return res.json({ "message": "Event couldn't be found" })
     };
 
     for (let membership of event.Group.Memberships) {
@@ -271,6 +271,51 @@ router.get('/:eventId/attendees', async (req, res, next) => {
         }
     }
     return res.json({ Attendees: attendees })
+});
+
+router.post('/:eventId/attendance', async (req, res, next) => {
+    const {user} = req;
+    const event = Event.findByPk(req.params.eventId);
+
+    //Authenticate user and check if valid event
+    if (!user) {
+        res.status(401);
+        return res.json({ "message": "Authentication required" })
+    };
+    if (!event) {
+        res.status(404);
+        return res.json({ "message": "Event couldn't be found" })
+    };
+
+    //Check if user is already attendee or requested
+    const attendance = await Attendance.findOne({
+        where: {userId: user.id}
+    })
+    if (attendance){
+        res.status(400);
+        if (attendance.status === 'attending'){
+            return res.json({
+                "message": "User is already an attendee of the event",
+              })
+        } else {
+            //user is waitlisted or pending
+            return res.json({
+                "message": "Attendance has already been requested",
+              })
+        }
+    }
+
+    //Create attendance for user with status "pending":
+    const newAttendance = await Attendance.create({
+        eventId: event.id,
+        userId: user.id,
+        status: 'pending'
+    });
+
+    return res.json({
+        userId: newAttendance.userId,
+        status: newAttendance.status
+    })
 })
 
 module.exports = router;

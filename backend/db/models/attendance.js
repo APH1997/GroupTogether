@@ -48,8 +48,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.ENUM('attending','waitlist','pending'),
+      allowNull: false,
       validate: {
-        isNull: false,
         isIn: [['attending','waitlist','pending']]
       }
     },
