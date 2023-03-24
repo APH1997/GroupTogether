@@ -36,6 +36,6 @@ router.delete('/:imageId', async (req, res, next) => {
     //only gets here if user is not the organizer or co-host
     res.status(403);
     return res.json({ "message": "Forbidden" })
-
 })
+
 module.exports = router;
