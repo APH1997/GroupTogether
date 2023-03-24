@@ -207,4 +207,8 @@ router.delete('/:eventId', async (req, res, next) => {
     return res.json({"message": "Successfully deleted"})
 })
 
+router.get('/:eventId/attendees', async (req, res, next) => {
+    
+})
+
 module.exports = router;
