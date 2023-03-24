@@ -145,11 +145,11 @@ router.put('/:eventId', async (req, res, next) => {
         }
     }
 
-    const {venueId, name, type, capacity, price, description, startDate, endDate} = req.body;
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
     const venue = await Venue.findByPk(venueId)
-    if (!venue){
+    if (!venue) {
         res.status(404);
-        return res.json({"message": "Venue couldn't be found"})
+        return res.json({ "message": "Venue couldn't be found" })
     }
     try {
         event.venueId = venueId;
@@ -171,17 +171,17 @@ router.put('/:eventId', async (req, res, next) => {
 
         return res.json(resEvent);
 
-    } catch (e){
+    } catch (e) {
         next(e);
     }
 
 })
 
 router.delete('/:eventId', async (req, res, next) => {
-    const {user} = req;
-    const event = await Event.findByPk(req.params.eventId,{
+    const { user } = req;
+    const event = await Event.findByPk(req.params.eventId, {
         include:
-        {model: Group, include: {model: Membership}}
+            { model: Group, include: { model: Membership } }
     });
 
     if (!user) {
@@ -204,18 +204,73 @@ router.delete('/:eventId', async (req, res, next) => {
     }
 
     await event.destroy();
-    return res.json({"message": "Successfully deleted"})
+    return res.json({ "message": "Successfully deleted" })
 })
 
 router.get('/:eventId/attendees', async (req, res, next) => {
-    const {user} = req;
-
+    const { user } = req;
+    //check if event exists
+    const event = await Event.findByPk(req.params.eventId);
+    if (!event) {
+        res.status(404);
+        return res.json({
+            "message": "Event couldn't be found",
+        })
+    }
     //if organizer or cohost, include pending statuses
     const attendances = await Attendance.findAll({
-        where: {eventId: req.params.eventId}
+        where: { eventId: req.params.eventId },
+        include:
+            [
+                { model: Event, include: { model: Group, include: { model: Membership } } },
+                { model: User }
+            ],
     })
 
-    res.json(attendances)
+    //json the attendances for manipulation
+    let attendanceList = []
+    attendances.forEach(attendance => {
+        attendanceList.push(attendance.toJSON())
+    })
+
+    //determine whether or not user is co-host/organizer
+    let userStatus;
+    if (user) {
+        //only need [0] because each group return is the same one
+        for (let member of attendanceList[0].Event.Group.Memberships) {
+            if (member.userId === user.id) {
+                userStatus = member.status;
+            }
+        }
+    }
+
+
+
+    let attendees = [];
+    for (let attendance of attendanceList) {
+        attendance.id = attendance.User.id
+        attendance.firstName = attendance.User.firstName;
+        attendance.lastName = attendance.User.lastName;
+        attendance.Attendance = { status: attendance.status };
+        delete attendance.User;
+        delete attendance.Event;
+        delete attendance.updatedAt;
+        delete attendance.createdAt;
+        delete attendance.userId;
+        delete attendance.status;
+        delete attendance.eventId;
+
+        //Res all attendees for host/co-host
+        if (userStatus === 'organizer' || userStatus === 'co-host') {
+            attendees.push(attendance);
+        } else {
+            //Don't add pending attendees if not host or co-host
+            if (attendance.Attendance.status !== 'pending') {
+                attendees.push(attendance)
+            }
+        }
+    }
+    return res.json({ Attendees: attendees })
 })
 
 module.exports = router;
