@@ -3,6 +3,8 @@ const router = express.Router();
 const { Attendance, EventImage, Event, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 
 router.get('/', async (req, res, next) => {
+    let {page, size, name, type, startDate} = req.query;
+
     const events = await Event.findAll({
         include:
             [
