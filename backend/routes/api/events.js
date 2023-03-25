@@ -194,17 +194,36 @@ router.put('/:eventId', async (req, res, next) => {
     }
 
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+
+    const errors = {};
     const venue = await Venue.findByPk(venueId)
     if (!venue) {
         res.status(404);
         return res.json({ "message": "Venue couldn't be found" })
     }
+    if (name.length < 5) errors.name = "Name must be at least 5 characters";
+    if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
+    if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
+    if (typeof price !== 'number' || price < 0) errors.price = 'Price is invalid';
+    if (!description) errors.description = "Description is required";
+    if (new Date(startDate) < new Date()) errors.startDate = 'Start date must be in the future';
+    if (new Date (endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
+
+    if (Object.keys(errors).length) {
+        let err = {};
+        err.message = "Bad Request"
+        err.errors = { ...errors }
+        err.status = 400;
+        err.title = 'Validation Error'
+        next(err);
+    }
+    
     try {
         event.venueId = venueId;
         event.name = name;
         event.type = type;
         event.capacity = capacity;
-        event.price = price;
+        event.price = price.toFixed(2);
         event.description = description;
         event.startDate = startDate;
         event.endDate = endDate;
