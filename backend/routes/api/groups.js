@@ -347,6 +347,20 @@ router.post('/:groupId/venues', async (req, res, next) => {
     }
 
     const { address, city, state, lat, lng } = req.body;
+    const errors = {};
+    if (!address) errors.address = "Street address is required";
+    if (!city) errors.city = "City is required";
+    if (!state) errors.state = "State is required";
+    if (lat < -90 || lat > 90) errors.lat = "Latitude is not valid";
+    if (lng < -180 || lng > 180) errors.lng = "Longitude is not valid";
+    if (Object.keys(errors).length) {
+        let err = {};
+        err.message = "Bad Request"
+        err.errors = { ...errors }
+        err.status = 400;
+        err.title = 'Validation Error'
+        next(err);
+    }
     try {
 
         const newVenue = await group.createVenue({
@@ -364,18 +378,7 @@ router.post('/:groupId/venues', async (req, res, next) => {
         return res.json(jsonVenue)
 
     } catch (e) {
-        let err = {};
-        err.title = "Validation Error"
-        err.status = 400;
-        err.message = "Bad Request";
-        err.errors = {
-            "address": "Street address is required",
-            "city": "City is required",
-            "state": "State is required",
-            "lat": "Latitude is not valid",
-            "lng": "Longitude is not valid",
-        };
-        next(err);
+        next(e);
     }
 })
 
