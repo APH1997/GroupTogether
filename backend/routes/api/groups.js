@@ -449,6 +449,26 @@ router.post('/:groupId/events', async (req, res, next) => {
         return res.json({ "message": "Forbidden" })
     }
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const errors = {};
+    const venue = await Venue.findByPk(venueId);
+    if (!venue) errors.venueId = "Venue does not exist";
+    if (name.length < 5) errors.name = "Name must be at least 5 characters";
+    if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
+    if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
+    if (typeof price !== 'number' || price < 0) errors.price = 'Price is invalid';
+    if (!description) errors.description = "Description is required";
+    if (new Date(startDate) < new Date()) errors.startDate = 'Start date must be in the future';
+    if (new Date (endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
+
+    if (Object.keys(errors).length) {
+        let err = {};
+        err.message = "Bad Request"
+        err.errors = { ...errors }
+        err.status = 400;
+        err.title = 'Validation Error'
+        next(err);
+    }
+
     try {
 
         const newEvent = await group.createEvent({
@@ -465,9 +485,7 @@ router.post('/:groupId/events', async (req, res, next) => {
         const resNewEvent = newEvent.toJSON();
         delete resNewEvent.updatedAt;
         delete resNewEvent.createdAt;
-        delete resNewEvent.groupId;
-        delete resNewEvent.id;
-
+    
         return res.json(resNewEvent)
 
     } catch (e) {
