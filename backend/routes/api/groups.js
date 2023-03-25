@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Attendance, Event, EventImage, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
+const { Op } = require("sequelize");
 
 router.get('/', async (req, res) => {
     const groups = await Group.findAll({
@@ -71,7 +72,7 @@ router.get('/current', async (req, res, next) => {
                     group.numMembers++
                 }
             }
-            
+
             delete group.Memberships;
         });
         return res.json({ Groups: userGroups })
@@ -105,9 +106,14 @@ router.get('/:groupId', async (req, res, next) => {
                 ]
         });
         group.dataValues.numMembers = (await Membership.findAll({
-            where: { groupId: group.dataValues.id }
+            where: [{ groupId: group.dataValues.id }, {status: {[Op.not]: 'pending'}}]
         })).length;
-        return res.json(group)
+
+        jsonGroup = group.toJSON();
+        jsonGroup.Venues = jsonGroup.Venue;
+        delete jsonGroup.Venue;
+
+        return res.json(jsonGroup)
 
     } catch (e) {
         res.status(404);
