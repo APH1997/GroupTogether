@@ -16,24 +16,24 @@ module.exports = {
         address: '1 One Street',
         city: 'One City',
         state: 'CT',
-        lat: 0,
-        lng: 0
+        lat: 0.1234567,
+        lng: 0.1234567
       },
       {
         groupId: 2,
         address: '2 Two Street',
         city: 'Two City',
         state: 'CT',
-        lat: 10,
-        lng: 10
+        lat: 10.1234567,
+        lng: 10.1234567
       },
       {
         groupId: 3,
         address: '3 Three Street',
         city: 'Three City',
         state: 'CT',
-        lat: 20,
-        lng: 20
+        lat: 20.1234567,
+        lng: 20.1234567
       }
     ], {})
 
