@@ -485,7 +485,7 @@ router.post('/:groupId/events', async (req, res, next) => {
         const resNewEvent = newEvent.toJSON();
         delete resNewEvent.updatedAt;
         delete resNewEvent.createdAt;
-    
+
         return res.json(resNewEvent)
 
     } catch (e) {
@@ -566,7 +566,7 @@ router.post('/:groupId/membership', async (req, res, next) => {
 
     if (group.organizerId === user.id) {
         res.status(400);
-        return res.json({ "message": "User is the organizer of this group" })
+        return res.json({ "message": "User is already a member of the group" })
     }
 
     const membership = await group.getMemberships({
@@ -615,11 +615,6 @@ router.put('/:groupId/membership', async (req, res, next) => {
     }
     const { memberId, status } = req.body;
 
-
-    //right now, the cohost can self-promote to organizer
-    // if (status !== 'member' && status !== 'co-host'){
-
-    // }
 
     //only organizer can make someone co-host
     if (status === 'co-host' && (user.id !== group.organizerId)) {
