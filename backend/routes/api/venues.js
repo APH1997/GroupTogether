@@ -22,10 +22,23 @@ router.put('/:venueId', async (req, res, next) => {
         return res.json({ "message": "Forbidden" })
     }
 
+    const { address, city, state, lat, lng } = req.body;
+    const errors = {};
+    if (!address) errors.address = "Street address is required";
+    if (!city) errors.city = "City is required";
+    if (!state) errors.state = "State is required";
+    if (lat < -90 || lat > 90) errors.lat = "Latitude is not valid";
+    if (lng < -180 || lng > 180) errors.lng = "Longitude is not valid";
+    if (Object.keys(errors).length) {
+        let err = {};
+        err.message = "Bad Request"
+        err.errors = { ...errors }
+        err.status = 400;
+        err.title = 'Validation Error'
+        next(err);
+    }
+
     try {
-
-        const { address, city, state, lat, lng } = req.body;
-
         venue.address = address;
         venue.city = city;
         venue.state = state;
