@@ -26,12 +26,11 @@ router.get('/', async (req, res) => {
         });
 
         group.numMembers = 0;
-        for (let member of group.Memberships){
-            if (member.status !== 'pending'){
+        for (let member of group.Memberships) {
+            if (member.status !== 'pending') {
                 group.numMembers++
             }
         }
-        // group.numMembers = group.Memberships.length;
 
         delete group.Memberships;
         delete group.GroupImages;
@@ -66,7 +65,13 @@ router.get('/current', async (req, res, next) => {
                 }
                 delete group.GroupImages
             })
-            group.numMembers = group.Memberships.length;
+            group.numMembers = 0;
+            for (let member of group.Memberships) {
+                if (member.status !== 'pending') {
+                    group.numMembers++
+                }
+            }
+            
             delete group.Memberships;
         });
         return res.json({ Groups: userGroups })
@@ -453,13 +458,13 @@ router.get('/:groupId/members', async (req, res, next) => {
         return res.json({ "message": "Group couldn't be found" })
     }
     const members = await Membership.findAll({
-        where: {groupId: group.id},
-        include: {model: User, attributes: ['id', 'firstName', 'lastName']},
+        where: { groupId: group.id },
+        include: { model: User, attributes: ['id', 'firstName', 'lastName'] },
     });
 
     const membersList = [];
     for (let member of members) {
-        if (member.status !== 'organizer'){
+        if (member.status !== 'organizer') {
             const currMember = member.toJSON()
 
             currMember.firstName = currMember.User.firstName;
@@ -479,23 +484,23 @@ router.get('/:groupId/members', async (req, res, next) => {
 
     let userStatus;
 
-    for (let member of members){
-        if (member.userId === user.id){
+    for (let member of members) {
+        if (member.userId === user.id) {
             userStatus = member.status
         }
     }
     if (group.organizerId === user.id) userStatus = 'organizer'
 
-    if (userStatus === 'organizer' || userStatus === 'co-host'){
-        return res.json({Members: membersList})
+    if (userStatus === 'organizer' || userStatus === 'co-host') {
+        return res.json({ Members: membersList })
     } else {
         const filteredMembers = [];
-        for (let member of membersList){
-            if (member.Membership.status !== 'organizer' && member.Membership.status !== 'pending'){
+        for (let member of membersList) {
+            if (member.Membership.status !== 'organizer' && member.Membership.status !== 'pending') {
                 filteredMembers.push(member);
             }
         }
-        return res.json({Members: filteredMembers})
+        return res.json({ Members: filteredMembers })
     }
 
 })
@@ -513,9 +518,9 @@ router.post('/:groupId/membership', async (req, res, next) => {
         return res.json({ "message": "Group couldn't be found" })
     }
 
-    if (group.organizerId === user.id){
+    if (group.organizerId === user.id) {
         res.status(400);
-        return res.json({"message": "User is the organizer of this group"})
+        return res.json({ "message": "User is the organizer of this group" })
     }
 
     const membership = await group.getMemberships({
@@ -552,17 +557,17 @@ router.post('/:groupId/membership', async (req, res, next) => {
 })
 
 router.put('/:groupId/membership', async (req, res, next) => {
-    const {user} = req;
+    const { user } = req;
     if (!user) {
         res.status(401);
         return res.json({ "message": "Authentication required" })
     }
     const group = await Group.findByPk(req.params.groupId);
-    if (!group){
+    if (!group) {
         res.status(404);
-        return res.json({"message": "Group couldn't be found"})
+        return res.json({ "message": "Group couldn't be found" })
     }
-    const {memberId, status} = req.body;
+    const { memberId, status } = req.body;
 
 
     //right now, the cohost can self-promote to organizer
@@ -571,59 +576,59 @@ router.put('/:groupId/membership', async (req, res, next) => {
     // }
 
     //only organizer can make someone co-host
-    if (status === 'co-host' && (user.id !== group.organizerId)){
+    if (status === 'co-host' && (user.id !== group.organizerId)) {
         res.status(403);
         return res.json({ "message": "Forbidden" })
     }
     //cannot change to pending
-    if (status === 'pending'){
+    if (status === 'pending') {
         res.status(400);
         return res.json({
             "message": "Validations Error",
             "errors": {
-              "status" : "Cannot change a membership status to pending"
+                "status": "Cannot change a membership status to pending"
             }
-          })
+        })
     }
 
     const targetUser = await User.findByPk(memberId);
 
-    if (!targetUser){
+    if (!targetUser) {
         res.status(400);
         return res.json({
             "message": "Validation Error",
             "errors": {
-              "memberId": "User couldn't be found"
+                "memberId": "User couldn't be found"
             }
-          })
+        })
     }
 
     const members = await Membership.findAll({
-        where: {groupId: group.id}
+        where: { groupId: group.id }
     });
     let membersList = [];
-    for (let member of members){
+    for (let member of members) {
         membersList.push(member.toJSON())
     }
     //set the requesting user's status
     let userStatus;
     let targetMembershipId;
 
-    for (let member of membersList){
-        if (member.userId === user.id){
+    for (let member of membersList) {
+        if (member.userId === user.id) {
             userStatus = member.status;
         }
-        if (member.userId === targetUser.id){
+        if (member.userId === targetUser.id) {
             targetMembershipId = member.id
         }
     }
     //If no hit in member loop, check if it's the organizer
-    if (group.organizerId === user.id){
+    if (group.organizerId === user.id) {
         userStatus = 'organizer'
     }
     const targetMembership = await Membership.findByPk(targetMembershipId);
 
-    if (userStatus === 'organizer' || userStatus === 'co-host'){
+    if (userStatus === 'organizer' || userStatus === 'co-host') {
 
         targetMembership.status = status;
         await targetMembership.save();
@@ -640,10 +645,10 @@ router.put('/:groupId/membership', async (req, res, next) => {
 })
 
 router.delete('/:groupId/membership', async (req, res, next) => {
-    const {user} = req;
+    const { user } = req;
 
     //memberId is the user's id
-    const {memberId} = req.body
+    const { memberId } = req.body
     const group = await Group.findByPk(req.params.groupId);
 
     if (!user) {
@@ -657,38 +662,38 @@ router.delete('/:groupId/membership', async (req, res, next) => {
 
     //user must be organizer or the member themself
 
-    if (user.id !== memberId && user.id !== group.organizerId){
+    if (user.id !== memberId && user.id !== group.organizerId) {
         res.status(403);
         return res.json({ "message": "Forbidden" })
     }
 
     const targetUser = await User.findByPk(memberId);
-    if (!targetUser){
+    if (!targetUser) {
         res.status(400);
         return res.json({
             "message": "Validation Error",
             "errors": {
-              "memberId": "User couldn't be found"
+                "memberId": "User couldn't be found"
             }
-          })
+        })
     }
 
     const membership = await Membership.findOne({
-        where: [{userId: memberId, groupId: group.id}]
+        where: [{ userId: memberId, groupId: group.id }]
     })
 
-    if (!membership){
+    if (!membership) {
         res.status(404);
         return res.json({
             "message": "Membership does not exist for this User",
-          })
+        })
     };
 
     await membership.destroy();
 
     return res.json({
         "message": "Successfully deleted membership from group"
-      })
+    })
 })
 
 module.exports = router;
