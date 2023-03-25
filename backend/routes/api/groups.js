@@ -24,7 +24,14 @@ router.get('/', async (req, res) => {
                 group.previewImage = 'No image preview available'
             }
         });
-        group.numMembers = group.Memberships.length;
+
+        group.numMembers = 0;
+        for (let member of group.Memberships){
+            if (member.status !== 'pending'){
+                group.numMembers++
+            }
+        }
+        // group.numMembers = group.Memberships.length;
 
         delete group.Memberships;
         delete group.GroupImages;
