@@ -106,7 +106,7 @@ router.get('/:groupId', async (req, res, next) => {
                 ]
         });
         group.dataValues.numMembers = (await Membership.findAll({
-            where: [{ groupId: group.dataValues.id }, {status: {[Op.not]: 'pending'}}]
+            where: [{ groupId: group.dataValues.id }, { status: { [Op.not]: 'pending' } }]
         })).length;
 
         jsonGroup = group.toJSON();
@@ -128,25 +128,25 @@ router.post('/', async (req, res, next) => {
             const errors = {};
 
             const { name, about, type, private, city, state } = req.body;
-            if (name.length > 60){
+            if (name.length > 60) {
                 errors.name = "Name must be 60 characters or less"
             }
-            if (about.length < 50){
+            if (about.length < 50) {
                 errors.about = "About must be 50 characters or more"
             }
-            if (type !== "Online" && type !== "In person"){
+            if (type !== "Online" && type !== "In person") {
                 errors.type = "Type must be 'Online' or 'In person'"
             }
-            if (typeof private !== 'boolean'){
+            if (typeof private !== 'boolean') {
                 errors.private = "Private must be a boolean"
             }
             if (!city) errors.city = "City is required"
             if (!state) errors.state = "State is required"
             //throw error if any of these are caught
-            if (Object.keys(errors).length){
+            if (Object.keys(errors).length) {
                 let err = {};
                 err.message = "Bad Request"
-                err.errors = {...errors}
+                err.errors = { ...errors }
                 err.status = 400;
                 err.title = 'Validation Error'
                 next(err);
@@ -223,33 +223,45 @@ router.put('/:groupId', async (req, res, next) => {
     }
 
     const { name, about, type, private, city, state } = req.body;
+    const errors = {};
+    if (name.length > 60) {
+        errors.name = "Name must be 60 characters or less"
+    }
+    if (about.length < 50) {
+        errors.about = "About must be 50 characters or more"
+    }
+    if (type !== "Online" && type !== "In person") {
+        errors.type = "Type must be 'Online' or 'In person'"
+    }
+    if (typeof private !== 'boolean') {
+        errors.private = "Private must be a boolean"
+    }
+    if (!city) errors.city = "City is required"
+    if (!state) errors.state = "State is required"
+    //throw error if any of these are caught
+    if (Object.keys(errors).length) {
+        let err = {};
+        err.message = "Bad Request"
+        err.errors = { ...errors }
+        err.status = 400;
+        err.title = 'Validation Error'
+        next(err);
+    }
+
     try {
 
-        if (name) group.name = name;
-        if (about) group.about = about;
-        if (type === true || type === false) group.type = type;
-        if (private) group.private = private;
-        if (city) group.city = city;
-        if (state) group.state = state;
+        group.name = name;
+        group.about = about;
+        group.type = type;
+        group.private = private;
+        group.city = city;
+        group.state = state;
         group.updatedAt = new Date();
         await group.save();
 
         res.json(group);
     } catch (e) {
-        let errors = {
-            "message": "Bad Request",
-            "errors": {
-                "name": "Name must be 60 characters or less",
-                "about": "About must be 50 characters or more",
-                "type": "Type must be 'Online' or 'In person'",
-                "private": "Private must be a boolean",
-                "city": "City is required",
-                "state": "State is required",
-            }
-        }
-        errors.status = 400;
-        errors.title = 'Validation Error'
-        next(errors);
+        next(e);
     }
 })
 
