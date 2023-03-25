@@ -125,10 +125,31 @@ router.post('/', async (req, res, next) => {
     const { user } = req;
     if (user) {
         try {
+            const errors = {};
 
             const { name, about, type, private, city, state } = req.body;
-            if (!name || !about || !type || !city || !state) {
-                throw new Error();
+            if (name.length > 60){
+                errors.name = "Name must be 60 characters or less"
+            }
+            if (about.length < 50){
+                errors.about = "About must be 50 characters or more"
+            }
+            if (type !== "Online" && type !== "In person"){
+                errors.type = "Type must be 'Online' or 'In person'"
+            }
+            if (typeof private !== 'boolean'){
+                errors.private = "Private must be a boolean"
+            }
+            if (!city) errors.city = "City is required"
+            if (!state) errors.state = "State is required"
+            //throw error if any of these are caught
+            if (Object.keys(errors).length){
+                let err = {};
+                err.message = "Bad Request"
+                err.errors = {...errors}
+                err.status = 400;
+                err.title = 'Validation Error'
+                next(err);
             }
 
             const newGroup = await Group.create({
@@ -143,21 +164,7 @@ router.post('/', async (req, res, next) => {
             res.status(201);
             return res.json(newGroup);
         } catch (e) {
-            let errors = {
-                "message": "Bad Request",
-                "errors": {
-                    "name": "Name must be 60 characters or less",
-                    "about": "About must be 50 characters or more",
-                    "type": "Type must be 'Online' or 'In person'",
-                    "private": "Private must be a boolean",
-                    "city": "City is required",
-                    "state": "State is required",
-                }
-            }
-
-            errors.status = 400;
-            errors.title = 'Validation Error'
-            next(errors);
+            next(e);
         }
     } else {
         res.status(401);
