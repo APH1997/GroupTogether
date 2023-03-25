@@ -96,18 +96,22 @@ router.get('/:eventId', async (req, res, next) => {
             [
                 { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'] },
                 { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
-                { model: EventImage, attributes: ['id', 'url', 'preview'] }
+                { model: EventImage, attributes: ['id', 'url', 'preview'] },
+                {model: Attendance, where: {status: 'attending'}}
             ],
     })
 
     if (!event) {
         res.status(404);
-        res.json({ "message": "Event couldn't be found" })
+        return res.json({ "message": "Event couldn't be found" })
     }
 
     const resEvent = event.toJSON();
+    resEvent.numAttending = resEvent.Attendances.length;
+    delete resEvent.Attendances;
     delete resEvent.createdAt;
     delete resEvent.updatedAt;
+
 
     return res.json(resEvent)
 });
@@ -127,7 +131,7 @@ router.post('/:eventId/images', async (req, res, next) => {
     }
     if (!event) {
         res.status(404);
-        res.json({ "message": "Event couldn't be found" })
+        return res.json({ "message": "Event couldn't be found" })
     }
 
     //Authorization
