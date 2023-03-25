@@ -217,7 +217,7 @@ router.put('/:eventId', async (req, res, next) => {
         err.title = 'Validation Error'
         next(err);
     }
-    
+
     try {
         event.venueId = venueId;
         event.name = name;
