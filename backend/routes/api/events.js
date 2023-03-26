@@ -331,6 +331,10 @@ router.get('/:eventId/attendees', async (req, res, next) => {
             ],
     })
 
+    if (attendances && !attendances.length){
+        return res.json({Attendees: attendances})
+    }
+
     //json the attendances for manipulation
     let attendanceList = []
     attendances.forEach(attendance => {
@@ -347,9 +351,8 @@ router.get('/:eventId/attendees', async (req, res, next) => {
             }
         }
     }
-    if (attendances[0].Event.Group.organizerId === 'organizer') userStatus = 'organizer'
-
-
+    if (attendances[0].Event.Group.organizerId === user.id) userStatus = 'organizer'
+    
 
     let attendees = [];
     for (let attendance of attendanceList) {
@@ -380,13 +383,24 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 
 router.post('/:eventId/attendance', async (req, res, next) => {
     const { user } = req;
-    const event = await Event.findByPk(req.params.eventId);
+    const event = await Event.findByPk(req.params.eventId,{
+        include: {model: Group, include: {model: Membership}}
+    });
 
     //Authenticate user and check if valid event
     if (!user) {
         res.status(401);
         return res.json({ "message": "Authentication required" })
     };
+    //Check if user is in group
+    let isMember;
+    for (let member of event.Group.Memberships){
+        if (member.userId === user.id) isMember = true;
+    }
+    if (!isMember){
+        res.status(403);
+        return res.json({ "message": "Forbidden" })
+    }
     if (!event) {
         res.status(404);
         return res.json({ "message": "Event couldn't be found" })
@@ -394,7 +408,7 @@ router.post('/:eventId/attendance', async (req, res, next) => {
 
     //Check if user is already attendee or requested
     const attendance = await Attendance.findOne({
-        where: { userId: user.id }
+        where: { userId: user.id, eventId: event.id }
     })
     if (attendance) {
         res.status(400);
