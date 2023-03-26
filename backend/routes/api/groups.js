@@ -112,6 +112,9 @@ router.get('/:groupId', async (req, res, next) => {
         jsonGroup = group.toJSON();
         jsonGroup.Venues = jsonGroup.Venue;
         delete jsonGroup.Venue;
+        if (jsonGroup.numMembers === 0){
+            jsonGroup.numMembers = 1;
+        }
 
         return res.json(jsonGroup)
 
