@@ -470,7 +470,7 @@ router.post('/:groupId/events', async (req, res, next) => {
     const errors = {};
     const venue = await Venue.findByPk(venueId);
     if (!venue) errors.venueId = "Venue does not exist";
-    if (name.length < 5) errors.name = "Name must be at least 5 characters";
+    if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
     if (typeof price !== 'number' || price < 0) errors.price = 'Price is invalid';
