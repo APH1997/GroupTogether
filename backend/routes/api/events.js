@@ -95,7 +95,7 @@ router.get('/:eventId', async (req, res, next) => {
                 { model: Attendance}
             ],
     })
-    
+
 
     if (!event) {
         res.status(404);
@@ -213,9 +213,11 @@ router.put('/:eventId', async (req, res, next) => {
     if (event.Group.organizerId === user.id) {
         status = 'organizer'
     }
-    for (let membership of event.Group.Memberships) {
-        if (user.id === membership.userId) {
-            status = membership.status;
+    if (status !== 'organizer'){
+        for (let membership of event.Group.Memberships) {
+            if (user.id === membership.userId) {
+                status = membership.status;
+            }
         }
     }
     if (status !== 'organizer' && status !== 'co-host') {
@@ -292,10 +294,11 @@ router.delete('/:eventId', async (req, res, next) => {
 
     let status;
     if (event.Group.organizerId === user.id) status = 'organizer';
-
-    for (let membership of event.Group.Memberships) {
-        if (user.id === membership.userId) {
-            status = membership.status;
+    if (status !== 'organizer'){
+        for (let membership of event.Group.Memberships) {
+            if (user.id === membership.userId) {
+                status = membership.status;
+            }
         }
     }
 

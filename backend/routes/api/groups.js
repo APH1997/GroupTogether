@@ -192,7 +192,7 @@ router.post('/:groupId/images', async (req, res, next) => {
         return res.json({ "message": "Forbidden" })
     }
 
-    
+
     const { url, preview } = req.body;
     //validation erros
     const errors = {};
@@ -643,7 +643,7 @@ router.post('/:groupId/membership', async (req, res, next) => {
     delete jsonNewMembership.createdAt;
     delete jsonNewMembership.userId;
     delete jsonNewMembership.groupId;
-    jsonNewMembership.memberId = jsonNewMembership.id;
+    jsonNewMembership.memberId = user.id;
     delete jsonNewMembership.id;
 
     return res.json(jsonNewMembership);
