@@ -131,10 +131,10 @@ router.post('/', async (req, res, next) => {
             const errors = {};
 
             const { name, about, type, private, city, state } = req.body;
-            if (name.length > 60) {
+            if (!name || name.length > 60) {
                 errors.name = "Name must be 60 characters or less"
             }
-            if (about.length < 50) {
+            if (!about || about.length < 50) {
                 errors.about = "About must be 50 characters or more"
             }
             if (type !== "Online" && type !== "In person") {
@@ -227,10 +227,10 @@ router.put('/:groupId', async (req, res, next) => {
 
     const { name, about, type, private, city, state } = req.body;
     const errors = {};
-    if (name.length > 60) {
+    if (!name || name.length > 60) {
         errors.name = "Name must be 60 characters or less"
     }
-    if (about.length < 50) {
+    if (!about || about.length < 50) {
         errors.about = "About must be 50 characters or more"
     }
     if (type !== "Online" && type !== "In person") {
@@ -349,9 +349,14 @@ router.post('/:groupId/venues', async (req, res, next) => {
     })
 
     let userStatus;
-    if (membership.length){
-        userStatus = membership[0].status;
+    for (let member of membership){
+        if (member.userId === user.id){
+            userStatus = member.status
+        }
     }
+    // if (membership.length){
+    //     userStatus = membership[0].status;
+    // }
     if (user.id === group.organizerId) userStatus = 'organizer'
 
     if (userStatus !== 'organizer' && userStatus !== 'co-host') {
