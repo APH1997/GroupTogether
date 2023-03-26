@@ -522,10 +522,11 @@ router.get('/:groupId/members', async (req, res, next) => {
         where: { groupId: group.id },
         include: { model: User, attributes: ['id', 'firstName', 'lastName'] },
     });
-
+    let userStatus;
+    if (group.organizerId === user.id) userStatus = 'organizer'
     const membersList = [];
     for (let member of members) {
-        if (member.status !== 'organizer') {
+        if (userStatus !== 'organizer') {
             const currMember = member.toJSON()
 
             currMember.firstName = currMember.User.firstName;
@@ -543,7 +544,7 @@ router.get('/:groupId/members', async (req, res, next) => {
         }
     }
 
-    let userStatus;
+    // let userStatus;
 
     for (let member of members) {
         if (member.userId === user.id) {

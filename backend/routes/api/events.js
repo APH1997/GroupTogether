@@ -3,33 +3,28 @@ const router = express.Router();
 const { Attendance, EventImage, Event, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 
 router.get('/', async (req, res, next) => {
-    let {page, size, name, type, startDate} = req.query;
+    let { page, size, name, type, startDate } = req.query;
     const errors = {};
-    if (page){
-        if (page < 1)
-            {errors.page = "Page must be greater than or equal to 1"}
+    if (page) {
+        if (page < 1) { errors.page = "Page must be greater than or equal to 1" }
         if (page > 10) page = 10;
-    } else {page = 1}
+    } else { page = 1 }
 
-    if (size){
-        if (size < 1)
-            {errors.size = "Size must be greater than or equal to 1"}
+    if (size) {
+        if (size < 1) { errors.size = "Size must be greater than or equal to 1" }
         if (size > 20) page = 20;
-    } else {size = 20}
+    } else { size = 20 }
 
-    if (name){
-        if (typeof name !== 'string')
-            {errors.name = "Name must be a string"}
+    if (name) {
+        if (typeof name !== 'string') { errors.name = "Name must be a string" }
     }
-    if (type){
-        if (type !== 'Online' && type !== 'In person')
-            {errors.type = "Type must be 'Online' or 'In Person'"}
+    if (type) {
+        if (type !== 'Online' && type !== 'In person') { errors.type = "Type must be 'Online' or 'In Person'" }
     }
-    if (startDate){
-        if ((new Date(startDate)).toString() === "Invalid Date")
-            {errors.startDate = "Start date must be a valid datetime"}
+    if (startDate) {
+        if ((new Date(startDate)).toString() === "Invalid Date") { errors.startDate = "Start date must be a valid datetime" }
     }
-    if (Object.keys(errors).length){
+    if (Object.keys(errors).length) {
         res.status(400);
         return res.json({
             "message": "Bad Request",
@@ -97,7 +92,7 @@ router.get('/:eventId', async (req, res, next) => {
                 { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'] },
                 { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
-                {model: Attendance, where: {status: 'attending'}}
+                { model: Attendance, where: { status: 'attending' } }
             ],
     })
 
@@ -135,20 +130,41 @@ router.post('/:eventId/images', async (req, res, next) => {
     }
 
     //Authorization
-    for (let membership of event.Group.Memberships) {
-        if (membership.userId === user.id) {
-            if (membership.status !== 'organizer' && membership.status !== 'co-host') {
-                for (let attendance of event.Attendances) {
-                    if (attendance.userId === user.id) {
-                        if (attendance.status !== 'attending') {
-                            res.status(403);
-                            return res.json({ "message": "Forbidden" })
-                        }
-                    }
+    let userStatus;
+    if (event.Group.organizerId === user.id) userStatus = 'organizer';
+    for (let member of event.Group.Memberships) {
+        if (member.userId === user.id) {
+            userStatus = member.status;
+        }
+    };
+    if (userStatus !== 'organizer' && userStatus !== 'co-host') {
+        for (let attendance of event.Attendances) {
+            if (attendance.userId === user.id) {
+                userStatus = attendance.status;
+                if (userStatus !== 'attending') {
+                    res.status(403);
+                    res.json({
+                        "message": "Forbidden",
+                    })
                 }
             }
         }
     }
+
+    // for (let membership of event.Group.Memberships) {
+    //     if (membership.userId === user.id) {
+    //         if (membership.status !== 'organizer' && membership.status !== 'co-host') {
+    //             for (let attendance of event.Attendances) {
+    //                 if (attendance.userId === user.id) {
+    //                     if (attendance.status !== 'attending') {
+    //                         res.status(403);
+    //                         return res.json({ "message": "Forbidden" })
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
     const { url, preview } = req.body;
 
     const image = await event.createEventImage({
@@ -182,15 +198,18 @@ router.put('/:eventId', async (req, res, next) => {
         res.status(404);
         res.json({ "message": "Event couldn't be found" })
     };
-
+    let status;
+    if (event.Group.organizerId === user.id) {
+        status = 'organizer'
+    }
     for (let membership of event.Group.Memberships) {
         if (user.id === membership.userId) {
-            const status = membership.status;
-            if (status !== 'organizer' && status !== 'co-host') {
-                res.status(403);
-                return res.json({ "message": "Forbidden" })
-            }
+            status = membership.status;
         }
+    }
+    if (status !== 'organizer' && status !== 'co-host') {
+        res.status(403);
+        return res.json({ "message": "Forbidden" })
     }
 
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
@@ -207,7 +226,7 @@ router.put('/:eventId', async (req, res, next) => {
     if (typeof price !== 'number' || price < 0) errors.price = 'Price is invalid';
     if (!description) errors.description = "Description is required";
     if (new Date(startDate) < new Date()) errors.startDate = 'Start date must be in the future';
-    if (new Date (endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
+    if (new Date(endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
 
     if (Object.keys(errors).length) {
         let err = {};
@@ -260,14 +279,18 @@ router.delete('/:eventId', async (req, res, next) => {
         return res.json({ "message": "Event couldn't be found" })
     };
 
+    let status;
+    if (event.Group.organizerId === user.id) status = 'organizer';
+
     for (let membership of event.Group.Memberships) {
         if (user.id === membership.userId) {
-            const status = membership.status;
-            if (status !== 'organizer' && status !== 'co-host') {
-                res.status(403);
-                return res.json({ "message": "Forbidden" })
-            }
+            status = membership.status;
         }
+    }
+    
+    if (status !== 'organizer' && status !== 'co-host') {
+        res.status(403);
+        return res.json({ "message": "Forbidden" })
     }
 
     await event.destroy();
@@ -341,7 +364,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 });
 
 router.post('/:eventId/attendance', async (req, res, next) => {
-    const {user} = req;
+    const { user } = req;
     const event = await Event.findByPk(req.params.eventId);
 
     //Authenticate user and check if valid event
@@ -356,19 +379,19 @@ router.post('/:eventId/attendance', async (req, res, next) => {
 
     //Check if user is already attendee or requested
     const attendance = await Attendance.findOne({
-        where: {userId: user.id}
+        where: { userId: user.id }
     })
-    if (attendance){
+    if (attendance) {
         res.status(400);
-        if (attendance.status === 'attending'){
+        if (attendance.status === 'attending') {
             return res.json({
                 "message": "User is already an attendee of the event",
-              })
+            })
         } else {
             //user is waitlisted or pending
             return res.json({
                 "message": "Attendance has already been requested",
-              })
+            })
         }
     }
 
@@ -386,21 +409,21 @@ router.post('/:eventId/attendance', async (req, res, next) => {
 });
 
 router.put('/:eventId/attendance', async (req, res, next) => {
-    const {userId, status} = req.body;
+    const { userId, status } = req.body;
     //Throw error if status is pending
-    if (status === 'pending'){
+    if (status === 'pending') {
         res.status(400);
         res.json({
             "message": "Cannot change an attendance status to pending",
-          })
+        })
     }
-    const {user} = req;
+    const { user } = req;
     const event = await Event.findByPk(req.params.eventId, {
         include:
-        [
-            {model: Attendance},
-            {model: Group, include: {model: Membership}}
-        ]
+            [
+                { model: Attendance },
+                { model: Group, include: { model: Membership } }
+            ]
     })
 
     //Validate user, event
@@ -416,21 +439,21 @@ router.put('/:eventId/attendance', async (req, res, next) => {
 
     //Check if user is host or co-host
     let userStatus;
-    for (let member of event.Group.Memberships){
-        if (member.userId === user.id){
+    for (let member of event.Group.Memberships) {
+        if (member.userId === user.id) {
             userStatus = member.status;
         }
     }
-    if (userStatus !== 'organizer' && userStatus !== 'co-host'){
+    if (userStatus !== 'organizer' && userStatus !== 'co-host') {
         res.status(403);
         return res.json({
             "message": "Forbidden",
-          })
+        })
     }
 
     //Check if target user has a pending request
-    for (let attendee of event.Attendances){
-        if (userId === attendee.userId){
+    for (let attendee of event.Attendances) {
+        if (userId === attendee.userId) {
             attendee.status = status;
             await attendee.save();
             return res.json({
@@ -446,20 +469,20 @@ router.put('/:eventId/attendance', async (req, res, next) => {
     res.status(404);
     return res.json({
         "message": "Attendance between the user and the event does not exist",
-      })
+    })
 });
 
 router.delete('/:eventId/attendance', async (req, res, next) => {
-    const {user} = req;
-    const {userId} = req.body;
+    const { user } = req;
+    const { userId } = req.body;
     const targetId = userId;
 
     const event = await Event.findByPk(req.params.eventId, {
         include:
-        [
-            {model: Group},
-            {model: Attendance}
-        ]
+            [
+                { model: Group },
+                { model: Attendance }
+            ]
     });
 
 
@@ -475,21 +498,21 @@ router.delete('/:eventId/attendance', async (req, res, next) => {
 
 
     //Throw error if user is NOT the group organizer or target
-    if (user.id !== event.Group.organizerId && user.id !== targetId){
+    if (user.id !== event.Group.organizerId && user.id !== targetId) {
         res.status(403);
         return res.json({
             "message": "Only the User or organizer may delete an Attendance",
-          })
+        })
     }
 
     //Iterate through event.Attendances to find target
-    for (let attendee of event.Attendances){
-        if (attendee.userId === targetId){
+    for (let attendee of event.Attendances) {
+        if (attendee.userId === targetId) {
             const targetAttendance = await Attendance.findByPk(attendee.id)
             await targetAttendance.destroy();
             return res.json({
                 "message": "Successfully deleted attendance from event"
-              })
+            })
         }
     }
 
@@ -498,7 +521,7 @@ router.delete('/:eventId/attendance', async (req, res, next) => {
     res.status(404);
     return res.json({
         "message": "Attendance does not exist for this User",
-      })
+    })
 })
 
 
