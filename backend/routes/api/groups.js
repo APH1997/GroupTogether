@@ -306,7 +306,12 @@ router.get('/:groupId/venues', async (req, res, next) => {
     const membership = await user.getMemberships({
         where: { groupId: group.id }
     })
-    const userStatus = membership[0].status;
+    let userStatus;
+    if (membership.length){
+        userStatus = membership[0].status;
+    }
+    
+    if (user.id === group.organizerId) userStatus = 'organizer'
 
     if (userStatus !== 'organizer' && userStatus !== 'co-host') {
         res.status(403);
@@ -339,7 +344,7 @@ router.post('/:groupId/venues', async (req, res, next) => {
     const membership = await user.getMemberships({
         where: { groupId: group.id }
     })
-    
+
     let userStatus;
     if (membership.length){
         userStatus = membership[0].status;
