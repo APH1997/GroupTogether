@@ -192,7 +192,20 @@ router.post('/:groupId/images', async (req, res, next) => {
         return res.json({ "message": "Forbidden" })
     }
 
+    
     const { url, preview } = req.body;
+    //validation erros
+    const errors = {};
+    if (!url) errors.url = "Image URL is required";
+    if (typeof preview !== 'boolean') errors.preview = "Image preview is required and must be true or false"
+    if (Object.keys(errors).length) {
+        let err = {};
+        err.message = "Bad Request"
+        err.errors = { ...errors }
+        err.status = 400;
+        err.title = 'Validation Error'
+        next(err);
+    }
     try {
         const newGroupImage = await group.createGroupImage({
             url,
