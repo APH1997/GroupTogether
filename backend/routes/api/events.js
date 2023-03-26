@@ -92,9 +92,10 @@ router.get('/:eventId', async (req, res, next) => {
                 { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'] },
                 { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
-                { model: Attendance, where: { status: 'attending' } }
+                { model: Attendance}
             ],
     })
+    
 
     if (!event) {
         res.status(404);
