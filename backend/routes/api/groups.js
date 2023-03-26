@@ -310,7 +310,7 @@ router.get('/:groupId/venues', async (req, res, next) => {
     if (membership.length){
         userStatus = membership[0].status;
     }
-    
+
     if (user.id === group.organizerId) userStatus = 'organizer'
 
     if (userStatus !== 'organizer' && userStatus !== 'co-host') {
@@ -453,7 +453,12 @@ router.post('/:groupId/events', async (req, res, next) => {
     const membership = await Membership.findOne({
         where: [{ userId: user.id }, { groupId: group.id }]
     })
-    const status = membership.status
+    let status;
+    if (membership){
+        status = membership.status
+    }
+    if (group.organizerId === user.id) status = 'organizer'
+
     if (status !== 'organizer' && status !== 'co-host') {
         res.status(403);
         return res.json({ "message": "Forbidden" })

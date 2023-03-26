@@ -5,6 +5,7 @@ const { Venue, GroupImage, User, Group, Membership, sequelize } = require('../..
 router.put('/:venueId', async (req, res, next) => {
     const { user } = req;
     const venue = await Venue.findByPk(req.params.venueId)
+    // return res.json(venue);
     if (!user) {
         res.status(401);
         return res.json({ "message": "Authentication required" })
@@ -16,7 +17,13 @@ router.put('/:venueId', async (req, res, next) => {
     const membership = await user.getMemberships({
         where: { groupId: venue.groupId }
     })
-    const status = membership[0].status
+    const group = await Group.findByPk(venue.groupId)
+    let status;
+    if (membership.length){
+        status = membership[0].status
+    }
+    if (user.id === group.organizerId) status = 'organizer'
+
     if (status !== 'organizer' && status !== 'co-host') {
         res.status(403);
         return res.json({ "message": "Forbidden" })
