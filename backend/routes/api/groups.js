@@ -597,16 +597,26 @@ router.post('/:groupId/membership', async (req, res, next) => {
         where: { userId: user.id }
     })
 
-
-    if (membership.length) {
-        if (membership[0].dataValues.status === "pending") {
-            res.status(400);
-            return res.json({ "message": "Membership has already been requested" })
-        } else {
-            res.status(400);
-            return res.json({ "message": "User is already a member of the group" })
+    if (membership){
+        for (let member of membership){
+            if (member.status && member.status === "pending"){
+                res.status(400);
+                return res.json({ "message": "Membership has already been requested" })
+            } else if (member.status && member.status === "member"){
+                res.status(400);
+                return res.json({ "message": "User is already a member of the group" })
+            }
         }
     }
+    // if (membership.length) {
+    //     if (membership[0].dataValues.status === "pending") {
+    //         res.status(400);
+    //         return res.json({ "message": "Membership has already been requested" })
+    //     } else {
+    //         res.status(400);
+    //         return res.json({ "message": "User is already a member of the group" })
+    //     }
+    // }
 
 
     const newMembership = await Membership.create({

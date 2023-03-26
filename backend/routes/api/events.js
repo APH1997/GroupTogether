@@ -131,42 +131,52 @@ router.post('/:eventId/images', async (req, res, next) => {
 
     //Authorization
     let userStatus;
-    if (event.Group.organizerId === user.id) userStatus = 'organizer';
-    for (let member of event.Group.Memberships) {
-        if (member.userId === user.id) {
-            userStatus = member.status;
-        }
+
+    if (event.Group.organizerId === user.id){
+        userStatus = 'organizer';
+    } else {
+        for (let member of event.Group.Memberships) {
+            if (member.dataValues.userId === user.id) {
+                userStatus = member.dataValues.status;
+            };
+        };
     };
+
+
     if (userStatus !== 'organizer' && userStatus !== 'co-host') {
+        userStatus = 'check'
         for (let attendance of event.Attendances) {
             if (attendance.userId === user.id) {
                 userStatus = attendance.status;
                 if (userStatus !== 'attending') {
                     res.status(403);
-                    res.json({
+                    return res.json({
                         "message": "Forbidden",
                     })
                 }
             }
         }
+        if (userStatus === 'check') {
+            res.status(403);
+            return res.json({
+                "message": "Forbidden",
+            })
+        }
     }
 
-    // for (let membership of event.Group.Memberships) {
-    //     if (membership.userId === user.id) {
-    //         if (membership.status !== 'organizer' && membership.status !== 'co-host') {
-    //             for (let attendance of event.Attendances) {
-    //                 if (attendance.userId === user.id) {
-    //                     if (attendance.status !== 'attending') {
-    //                         res.status(403);
-    //                         return res.json({ "message": "Forbidden" })
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
     const { url, preview } = req.body;
-
+    //validation erros
+    const errors = {};
+    if (!url) errors.url = "Image URL is required";
+    if (typeof preview !== 'boolean') errors.preview = "Image preview is required and must be true or false"
+    if (Object.keys(errors).length) {
+        let err = {};
+        err.message = "Bad Request"
+        err.errors = { ...errors }
+        err.status = 400;
+        err.title = 'Validation Error'
+        next(err);
+    }
     const image = await event.createEventImage({
         url,
         preview
@@ -178,7 +188,7 @@ router.post('/:eventId/images', async (req, res, next) => {
     delete resImage.updatedAt
     delete resImage.createdAt
 
-    res.json(resImage)
+    return res.json(resImage)
 })
 
 router.put('/:eventId', async (req, res, next) => {
@@ -220,7 +230,7 @@ router.put('/:eventId', async (req, res, next) => {
         res.status(404);
         return res.json({ "message": "Venue couldn't be found" })
     }
-    if (name.length < 5) errors.name = "Name must be at least 5 characters";
+    if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
     if (typeof price !== 'number' || price < 0) errors.price = 'Price is invalid';

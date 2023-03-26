@@ -19,9 +19,13 @@ router.put('/:venueId', async (req, res, next) => {
     })
     const group = await Group.findByPk(venue.groupId)
     let status;
-    if (membership.length){
-        status = membership[0].status
+
+    if (membership){
+        for (let member of membership){
+            status = member.status;
+        }
     }
+    
     if (user.id === group.organizerId) status = 'organizer'
 
     if (status !== 'organizer' && status !== 'co-host') {
