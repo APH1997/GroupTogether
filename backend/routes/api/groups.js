@@ -152,7 +152,7 @@ router.post('/', async (req, res, next) => {
                 next(err);
             }
 
-            const newGroup = await Group.create({
+            const newGroup = await user.createGroup({
                 organizerId: user.id,
                 name,
                 about,
