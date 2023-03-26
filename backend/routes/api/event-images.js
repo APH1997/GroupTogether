@@ -25,6 +25,7 @@ router.delete('/:imageId', async (req, res, next) => {
             userStatus = member.status
         }
     };
+    if (image.Event.Group.organizerId === user.id) userStatus = 'organizer'
 
     if (userStatus === 'organizer' || userStatus === 'co-host') {
         await image.destroy();

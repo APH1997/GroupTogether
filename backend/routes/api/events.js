@@ -287,7 +287,7 @@ router.delete('/:eventId', async (req, res, next) => {
             status = membership.status;
         }
     }
-    
+
     if (status !== 'organizer' && status !== 'co-host') {
         res.status(403);
         return res.json({ "message": "Forbidden" })
@@ -333,6 +333,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
             }
         }
     }
+    if (attendances[0].Event.Group.organizerId === 'organizer') userStatus = 'organizer'
 
 
 
@@ -444,6 +445,7 @@ router.put('/:eventId/attendance', async (req, res, next) => {
             userStatus = member.status;
         }
     }
+    if (event.Group.organizerId === user.id) userStatus = 'organizer'
     if (userStatus !== 'organizer' && userStatus !== 'co-host') {
         res.status(403);
         return res.json({
