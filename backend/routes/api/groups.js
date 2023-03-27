@@ -18,6 +18,8 @@ router.get('/', async (req, res) => {
     })
 
     groupsList.forEach(group => {
+        //default; if not images this message will display
+        group.previewImage = 'No image preview available'
         group.GroupImages.forEach(groupImage => {
             if (groupImage && groupImage.preview === true) {
                 group.previewImage = groupImage.url
@@ -449,6 +451,8 @@ router.get('/:groupId/events', async (req, res, next) => {
         delete event.price;
         delete event.description;
         delete event.capacity;
+
+        event.previewImage = 'Preview image does not exist'
         for (let image of event.EventImages) {
             if (image.preview === true) {
                 event.previewImage = image.url;
@@ -516,6 +520,12 @@ router.post('/:groupId/events', async (req, res, next) => {
             description,
             startDate,
             endDate
+        })
+        //When someone makes an event, they should be attending by default
+        const hostAttends = await user.createAttendance({
+            eventId: newEvent.id,
+            userId: user.id,
+            status: "attending"
         })
 
         const resNewEvent = newEvent.toJSON();

@@ -352,7 +352,7 @@ router.get('/:eventId/attendees', async (req, res, next) => {
         }
     }
     if (attendances[0].Event.Group.organizerId === user.id) userStatus = 'organizer'
-    
+
 
     let attendees = [];
     for (let attendance of attendanceList) {
@@ -386,8 +386,11 @@ router.post('/:eventId/attendance', async (req, res, next) => {
     const event = await Event.findByPk(req.params.eventId,{
         include: {model: Group, include: {model: Membership}}
     });
-
     //Authenticate user and check if valid event
+    if (!event) {
+        res.status(404);
+        return res.json({ "message": "Event couldn't be found" })
+    };
     if (!user) {
         res.status(401);
         return res.json({ "message": "Authentication required" })
@@ -401,10 +404,6 @@ router.post('/:eventId/attendance', async (req, res, next) => {
         res.status(403);
         return res.json({ "message": "Forbidden" })
     }
-    if (!event) {
-        res.status(404);
-        return res.json({ "message": "Event couldn't be found" })
-    };
 
     //Check if user is already attendee or requested
     const attendance = await Attendance.findOne({
@@ -536,9 +535,14 @@ router.delete('/:eventId/attendance', async (req, res, next) => {
     }
 
     //Iterate through event.Attendances to find target
+    // console.log("uhhh??")
+
     for (let attendee of event.Attendances) {
+        // console.log(attendee.userId, targetId);
         if (attendee.userId === targetId) {
-            const targetAttendance = await Attendance.findByPk(attendee.id)
+            const targetAttendance = await Attendance.findOne({
+                where: {userId: targetId, eventId: event.id}
+            })
             await targetAttendance.destroy();
             return res.json({
                 "message": "Successfully deleted attendance from event"
