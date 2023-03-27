@@ -5,12 +5,12 @@ const { Attendance, EventImage, Event, Venue, GroupImage, User, Group, Membershi
 router.get('/', async (req, res, next) => {
     let { page, size, name, type, startDate } = req.query;
     const errors = {};
-    if (page) {
+    if (page || page === 0) {
         if (page < 1) { errors.page = "Page must be greater than or equal to 1" }
         if (page > 10) page = 10;
     } else { page = 1 }
 
-    if (size) {
+    if (size || size === 0) {
         if (size < 1) { errors.size = "Size must be greater than or equal to 1" }
         if (size > 20) page = 20;
     } else { size = 20 }
