@@ -13,13 +13,11 @@ function App() {
   }, [dispatch]);
   return (
     isLoaded && (
-      <>
         <Switch>
           <Route to="/login">
             <LoginFormPage />
           </Route>
         </Switch>
-      </>
     )
   );
 }
