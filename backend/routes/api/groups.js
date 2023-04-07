@@ -553,14 +553,14 @@ router.get('/:groupId/members', async (req, res, next) => {
         where: { groupId: group.id },
         include: { model: User, attributes: ['id', 'firstName', 'lastName'] },
     });
-    // console.log(members);
+
     let userStatus;
     if (group.organizerId === user.id) userStatus = 'organizer'
     const membersList = [];
     for (let member of members) {
         if (member.userId !== group.organizerId) {
             const currMember = member.toJSON()
-            console.log(currMember)
+            
             currMember.firstName = currMember.User.firstName;
             currMember.lastName = currMember.User.lastName;
             currMember.Membership = {}

@@ -534,11 +534,9 @@ router.delete('/:eventId/attendance', async (req, res, next) => {
         })
     }
 
-    //Iterate through event.Attendances to find target
-    // console.log("uhhh??")
+
 
     for (let attendee of event.Attendances) {
-        // console.log(attendee.userId, targetId);
         if (attendee.userId === targetId) {
             const targetAttendance = await Attendance.findOne({
                 where: {userId: targetId, eventId: event.id}
