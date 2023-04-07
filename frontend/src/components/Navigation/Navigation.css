@@ -4,13 +4,20 @@
     background: lightgrey;
     width: fit-content;
 }
+
 ul.profile-dropdown{
     list-style-type: none;
 }
+
 ul.profile-dropdown > li{
     border: grey solid 1px;
 }
 
 .hidden {
     display: none
+}
+
+.modalListItem:hover{
+    cursor: pointer;
+    color: rgb(10, 95, 144)
 }
