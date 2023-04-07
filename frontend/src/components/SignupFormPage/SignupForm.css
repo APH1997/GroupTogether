@@ -1,0 +1,6 @@
+/* TO DO: SIGNUP CSS */
+
+form {
+    display: flex;
+    flex-flow: column;
+}
