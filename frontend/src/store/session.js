@@ -30,9 +30,13 @@ export const login = (user) => async (dispatch) => {
     return response;
 };
 
-export const logout = (user) => async (dispatch) => {
-    //TODO: LOGOUT THUNK
-}
+export const logout = () => async (dispatch) => {
+    const response = await csrfFetch('/api/session', {
+      method: 'DELETE',
+    });
+    dispatch(removeUser());
+    return response;
+  };
 
 export const restoreUser = () => async (dispatch) => {
     const response = await csrfFetch("/api/session");
@@ -70,6 +74,9 @@ const sessionReducer = (state = initialState, action) => {
         }
         case REMOVE_USER: {
             //TODO: UPDATE STATE TO LOGOUT USER
+            const newState = {...state};
+            newState.user = null;
+            return newState;
         }
         default: {
             return state;

@@ -1,21 +1,27 @@
 import { Route, Switch } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import LoginFormPage from './components/LoginFormPage/index';
 import SignupFormPage from './components/SignupFormPage';
 import * as sessionActions from './store/session';
 
+
 function App() {
   const dispatch = useDispatch();
+  const user = useSelector(state => state.session.user)
+  console.log('user:', user);
+
   const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
-    console.log('restoring user on refresh')
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
     isLoaded && (
         <Switch>
+          <Route exact path="/">
+            {user && <h1>Hello {user.username}</h1>}
+          </Route>
           <Route path="/login">
             <LoginFormPage />
           </Route>
