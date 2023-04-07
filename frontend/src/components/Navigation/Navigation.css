@@ -1,0 +1,16 @@
+/* TODO: NAV CSS */
+.profile-dropdown{
+    border: black solid 1px;
+    background: lightgrey;
+    width: fit-content;
+}
+ul.profile-dropdown{
+    list-style-type: none;
+}
+ul.profile-dropdown > li{
+    border: grey solid 1px;
+}
+
+.hidden {
+    display: none
+}
