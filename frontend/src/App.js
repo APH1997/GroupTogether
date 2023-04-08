@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Switch } from "react-router-dom";
+import { Switch, Route, NavLink} from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
+
+
+import GroupsPage from "./components/Groups";
 
 function App() {
   const dispatch = useDispatch();
@@ -14,7 +17,16 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Switch></Switch>}
+      {isLoaded &&
+        <Switch>
+          <Route exact path="/">
+            <h1>Home</h1>
+            <NavLink to="/groups/all">Groups</NavLink>
+          </Route>
+          <Route exact path="/groups/all">
+            <GroupsPage />
+          </Route>
+        </Switch>}
     </>
   );
 }
