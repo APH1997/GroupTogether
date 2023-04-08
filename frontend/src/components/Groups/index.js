@@ -10,7 +10,7 @@ import "./GroupCard.css"
 function GroupsPage(){
     const dispatch = useDispatch();
 
-    const groupsObj = useSelector(state => state.groups);
+    const groupsObj = useSelector(state => state.groups.allGroups);
     const groupsList = Object.values(groupsObj)
 
 
@@ -28,6 +28,7 @@ function GroupsPage(){
             <div className="groups-card-display">
                 {groupsList.length > 0 &&
                     groupsList.map(group => {
+                        console.log("groupsList", group);
                         return (
                             <GroupsCard group={group}/>
                             )

@@ -44,19 +44,20 @@ export const getGroupDetailsThunk = (groupId) => async (dispatch)=> {
     }
 }
 
-const initialState = {};
+const initialState = {allGroups: {}, singleGroup: {},};
 const groupsReducer = (state = initialState, action) => {
     switch(action.type){
         case LOAD_GROUPS: {
-            const newState = {...state};
+            const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}};
             action.payload.Groups.forEach((group => {
-                newState[group.id] = group;
+                newState.allGroups[group.id] = group;
             }))
             return newState;
         }
         case LOAD_ONE_GROUP: {
-            const newState = {...state};
-            newState[action.payload.id] = action.payload
+            const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}};;
+            newState.singleGroup[action.payload.id] = action.payload
+            console.log('REDUCER', newState)
             return newState;
         }
         default: {

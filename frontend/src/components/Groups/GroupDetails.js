@@ -7,12 +7,11 @@ function GroupDetails() {
 
     const dispatch = useDispatch()
     const { groupId } = useParams();
-    const group = useSelector(state => state.groups)[groupId];
-
+    const group = useSelector(state => state.groups.singleGroup)[groupId];
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
-    }, [])
+    }, [dispatch])
 
     return (
         <>
