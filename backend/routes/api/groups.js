@@ -9,7 +9,9 @@ router.get('/', async (req, res) => {
         include:
             [
                 { model: Membership },
-                { model: GroupImage }
+                { model: GroupImage },
+                { model: Event      }
+
             ]
     })
     let groupsList = [];
@@ -560,7 +562,7 @@ router.get('/:groupId/members', async (req, res, next) => {
     for (let member of members) {
         if (member.userId !== group.organizerId) {
             const currMember = member.toJSON()
-            
+
             currMember.firstName = currMember.User.firstName;
             currMember.lastName = currMember.User.lastName;
             currMember.Membership = {}

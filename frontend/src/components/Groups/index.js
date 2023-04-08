@@ -17,7 +17,7 @@ function GroupsPage(){
     useEffect(() => {
         dispatch(getGroupsThunk());
     }, [])
-
+    
     return (
         <>
             <h1>It's the groups page!</h1>

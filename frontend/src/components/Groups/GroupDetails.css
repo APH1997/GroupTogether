@@ -1,0 +1,8 @@
+.upper-details{
+    display: flex;
+}
+
+.upper-left{
+    display: flex;
+    flex-flow: column, wrap;
+}

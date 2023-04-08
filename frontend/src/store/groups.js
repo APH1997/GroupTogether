@@ -17,14 +17,6 @@ export const getGroupsAction = (groups) => {
         payload: groups
     }
 }
-
-export const getGroupDetailsAction = (group) => {
-    return {
-        type: LOAD_ONE_GROUP,
-        payload: group
-    }
-}
-
 export const getGroupsThunk = () => async (dispatch) => {
     const response = await csrfFetch("/api/groups");
 
@@ -36,10 +28,15 @@ export const getGroupsThunk = () => async (dispatch) => {
     }
 }
 
+export const getGroupDetailsAction = (group) => {
+    return {
+        type: LOAD_ONE_GROUP,
+        payload: group
+    }
+}
 export const getGroupDetailsThunk = (groupId) => async (dispatch)=> {
     const response = await csrfFetch(`/api/groups/${groupId}`);
     const data = await response.json();
-    console.log("THUNK RESPONSE", data)
 
     if (response.ok){
         dispatch(getGroupDetailsAction(data));

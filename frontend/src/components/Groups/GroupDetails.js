@@ -7,8 +7,8 @@ function GroupDetails() {
 
     const dispatch = useDispatch()
     const { groupId } = useParams();
-
     const group = useSelector(state => state.groups)[groupId];
+    console.log(group)
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
@@ -16,8 +16,8 @@ function GroupDetails() {
 
     return (
         <>
-            <div className="upperDetails">
-                <div className="upperLeft">
+            <div className="upper-details">
+                <div className="upper-left">
                     <NavLink to="/groups/all">Back to Groups</NavLink>
                     <img src=""></img>
                 </div>
@@ -27,13 +27,14 @@ function GroupDetails() {
         ---city, state
         ---Organize by firstName, lastName
         ---Join this Group Button */}
-                <div className="upperRight">
-
+                <div className="upper-right">
+                    <h2>{group.name}</h2>
+                    <h4>{group.city}, {group.state}</h4>
                 </div>
 
                 {group.id}
             </div>
-            <div className="lowerDetails">
+            <div className="lower-details">
                 {/*
             -Organizer
             -firstName lastName
