@@ -2,7 +2,6 @@
     display: flex;
     flex-flow: column wrap;
     align-content: center;
-
 }
 
 .card-container{
@@ -11,6 +10,8 @@
     border-top: lightgray 2px solid;
     border-bottom: lightgray 1px solid;
     width: 40%;
-
-
+}
+.card-container:hover{
+    box-shadow: -1px 1px 1px red;
+    cursor: pointer;
 }

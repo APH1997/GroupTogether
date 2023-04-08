@@ -13,17 +13,17 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         groupId: 1,
-        url: 'www.picture1.com',
+        url: 'https://images.metroparent.com/wp-content/uploads/2020/12/FU-P-ClassicClown.jpg',
         preview: true,
       },
       {
         groupId: 2,
-        url: 'www.picture2.com',
+        url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUwyL2wRMF_ZMLz5WwHyr8SUWfBfzgqaTt7Z64E7x-CuKQud__54g5Rq44XH4RfV1YNKU&usqp=CAU',
         preview: true,
       },
       {
         groupId: 3,
-        url: 'www.picture3.com',
+        url: 'https://m.media-amazon.com/images/I/811AFmizQaL._AC_UL1500_.jpg',
         preview: true,
       }
     ], {})

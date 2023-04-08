@@ -1,8 +1,13 @@
 import './GroupCard.css';
+import {useHistory} from  'react-router-dom';
 
 function GroupsCard({group}){
+    const history = useHistory();
+    function navToGroupDetails(e){
+        history.push(`/groups/${group.id}`)
+    }
     return (
-        <div className="card-container">
+        <div className="card-container" onClick={navToGroupDetails} >
             <div className="cont-image">
                 <img src={`${group.previewImage}`}></img>
             </div>

@@ -1,8 +1,27 @@
 /* TODO: NAV CSS */
+.nav-bar{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    list-style-type: none;
+}
+
+ul>li{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+button{
+    height: 40%;
+}
+
 .profile-dropdown{
-    border: black solid 1px;
+    border: red solid 1px;
     background: lightgrey;
     width: fit-content;
+
 }
 
 ul.profile-dropdown{
@@ -10,7 +29,8 @@ ul.profile-dropdown{
 }
 
 ul.profile-dropdown > li{
-    border: grey solid 1px;
+    border: blue solid 1px;
+    
 }
 
 .hidden {
