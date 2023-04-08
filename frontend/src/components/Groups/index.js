@@ -17,10 +17,14 @@ function GroupsPage(){
     useEffect(() => {
         dispatch(getGroupsThunk());
     }, [])
-    
+
     return (
         <>
-            <h1>It's the groups page!</h1>
+            <h2>
+                <NavLink to="">Events</NavLink>
+                <NavLink to="/groups/all">Groups</NavLink>
+            </h2>
+            <h3>Groups in Meetup</h3>
             <div className="groups-card-display">
                 {groupsList.length > 0 &&
                     groupsList.map(group => {
