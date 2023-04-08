@@ -29,8 +29,9 @@ function App() {
           <Route exact path="/groups/all">
             <GroupsPage />
           </Route>
+          <Route exact path="/groups/new"></Route>
+          
           <Route exact path="/groups/:groupId">
-            <h1>This is group details</h1>
             <GroupDetails />
           </Route>
         </Switch>}

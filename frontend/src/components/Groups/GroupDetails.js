@@ -8,7 +8,7 @@ function GroupDetails(){
     const dispatch = useDispatch()
     const {groupId} = useParams();
 
-    const group = useSelector(state => state.groups)[1];
+    const group = useSelector(state => state.groups)[groupId];
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));

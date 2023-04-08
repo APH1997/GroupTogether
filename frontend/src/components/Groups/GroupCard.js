@@ -7,7 +7,7 @@ function GroupsCard({group}){
         history.push(`/groups/${group.id}`)
     }
     return (
-        <div className="card-container" onClick={navToGroupDetails} >
+        <div key={group.id} className="card-container" onClick={navToGroupDetails} >
             <div className="cont-image">
                 <img src={`${group.previewImage}`}></img>
             </div>
