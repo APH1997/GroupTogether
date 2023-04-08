@@ -4,12 +4,15 @@ import { useSelector } from 'react-redux';
 import { getGroupsThunk } from '../../store/groups';
 import { useDispatch } from "react-redux";
 import {useEffect} from 'react';
+import GroupsCard from './GroupCard';
+import "./GroupCard.css"
 
 function GroupsPage(){
     const dispatch = useDispatch();
 
-    const groups = useSelector(state => state.groups);
-    console.log(groups);
+    const groupsObj = useSelector(state => state.groups);
+    const groupsList = Object.values(groupsObj)
+
 
     useEffect(() => {
         dispatch(getGroupsThunk());
@@ -18,9 +21,15 @@ function GroupsPage(){
     return (
         <>
             <h1>It's the groups page!</h1>
-            {Object.values(groups).length > 0 &&
-                <div>GroupCard Compoent w/ group as prop</div>
-            }
+            <div className="groups-card-display">
+                {groupsList.length > 0 &&
+                    groupsList.map(group => {
+                        return (
+                            <GroupsCard group={group}/>
+                            )
+                        })
+                    }
+            </div>
             <NavLink exact to="/">Home</NavLink>
         </>
     )

@@ -1,0 +1,16 @@
+.groups-card-display{
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+
+}
+
+.card-container{
+    display: flex;
+    justify-content: center;
+    border-top: lightgray 2px solid;
+    border-bottom: lightgray 1px solid;
+    width: 40%;
+
+
+}
