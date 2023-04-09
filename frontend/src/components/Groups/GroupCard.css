@@ -4,16 +4,26 @@
     align-content: center;
 }
 
+.all-groups-header{
+    display: flex;
+    flex-flow: column wrap;
+    width: 70%;
+    align-content: center;
+    line-height: 8px;
+}
+
 .cont-image{
     display: flex;
     flex-flow: wrap;
     align-content: center;
 }
 img{
-    width: 200px;
+    width: 210px;
     height: 150px;
     border: 3px black solid;
     margin-right: 20px;
+    object-fit: cover;
+    border-radius: 5px;
 
 }
 .card-container{

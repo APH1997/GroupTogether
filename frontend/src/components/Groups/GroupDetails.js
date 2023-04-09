@@ -2,24 +2,28 @@ import { getGroupDetailsThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink } from "react-router-dom";
 import { useEffect } from "react";
+import "./GroupDetails.css";
 
 function GroupDetails() {
 
     const dispatch = useDispatch()
     const { groupId } = useParams();
-    const group = useSelector(state => state.groups.singleGroup)[groupId];
-
+    const group = useSelector(state => state.groups.singleGroup);
+    console.log(group);
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
     }, [dispatch])
 
+    console.log('Details:', group)
+
+    if (!group) return <h1>loading...</h1>
     return (
         <>
             <div className="upper-details">
                 <div className="upper-left">
                     <NavLink to="/groups/all">Back to Groups</NavLink>
-                    <img src=""></img>
-                </div>
+                    <img src={group.GroupImages[0].url}></img>
+            </div>
 
                 {/* -right side
         ---Group name

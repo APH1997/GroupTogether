@@ -56,8 +56,8 @@ const groupsReducer = (state = initialState, action) => {
         }
         case LOAD_ONE_GROUP: {
             const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}};;
-            newState.singleGroup[action.payload.id] = action.payload
-            console.log('REDUCER', newState)
+            newState.singleGroup = action.payload
+            console.log(newState);
             return newState;
         }
         default: {

@@ -20,15 +20,16 @@ function GroupsPage(){
 
     return (
         <>
-            <h2>
-                <NavLink to="">Events</NavLink>
-                <NavLink to="/groups/all">Groups</NavLink>
-            </h2>
-            <h3>Groups in Meetup</h3>
+            <div className="all-groups-header">
+                <h2>
+                    <NavLink to="">Events</NavLink>
+                    <NavLink to="/groups/all">Groups</NavLink>
+                </h2>
+                <h3>Groups in Meetup</h3>
+            </div>
             <div className="groups-card-display">
                 {groupsList.length > 0 &&
                     groupsList.map(group => {
-                        console.log("groupsList", group);
                         return (
                             <GroupsCard group={group}/>
                             )
