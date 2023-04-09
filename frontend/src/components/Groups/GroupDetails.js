@@ -45,6 +45,13 @@ function GroupDetails() {
                     <h3>Organizer</h3>
                     <p>{group.Organizer.firstName} {group.Organizer.lastName}</p>
                 </div>
+                <div className="details-block">
+
+                </div>
+                <div className="current-group-events">
+                    <div className="upcoming-events"></div>
+                    <div className="past-events"></div>
+                </div>
                 {/*
             -About (description)
             -Upcoming Events (#) (if applicable)

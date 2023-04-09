@@ -28,5 +28,6 @@ div.upper-left>img{
 }
 
 .lower-details{
+    margin-top: 25px;
     background-color: rgb(231, 226, 226);
 }
