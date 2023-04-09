@@ -15,6 +15,7 @@ div.upper-left>img{
     display: flex;
     flex-flow: column;
     justify-content: space-between;
+    line-height: 15px;
 }
 .upper-right>button{
     align-self: baseline;
@@ -24,4 +25,8 @@ div.upper-left>img{
     border-radius: 3px;
     background-color:#F34F51;
     color: whitesmoke;
+}
+
+.lower-details{
+    background-color: rgb(231, 226, 226);
 }

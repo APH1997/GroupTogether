@@ -37,17 +37,20 @@ function GroupDetails() {
                         {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
                         <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
-                    <button>Join this group</button>
+                    <button onClick={() => alert('Feature coming soon')}>Join this group</button>
                 </div>
             </div>
             <div className="lower-details">
+                <div className="organizer-details">
+                    <h3>Organizer</h3>
+                    <p>{group.Organizer.firstName} {group.Organizer.lastName}</p>
+                </div>
                 {/*
-            -Organizer
-            -firstName lastName
             -About (description)
             -Upcoming Events (#) (if applicable)
             -Past Events (#) (if applicable)
             */}
+
             </div>
         </>
     )
