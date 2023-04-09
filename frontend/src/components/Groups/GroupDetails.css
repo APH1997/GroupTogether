@@ -11,3 +11,17 @@ div.upper-left>img{
     width: 600px;
     height: 300px;
 }
+.upper-right{
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+.upper-right>button{
+    align-self: baseline;
+    padding: 10px;
+    width: 50%;
+    height: 15%;
+    border-radius: 3px;
+    background-color:#F34F51;
+    color: whitesmoke;
+}

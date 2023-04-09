@@ -14,9 +14,9 @@ function GroupDetails() {
         dispatch(getGroupDetailsThunk(groupId));
     }, [dispatch])
 
-    console.log('Details:', group)
 
-    if (!group) return <h1>loading...</h1>
+
+    if (!Object.values(group).length) return <h1>loading...</h1>
     return (
         <>
             <div className="upper-details">
@@ -31,11 +31,14 @@ function GroupDetails() {
         ---Organize by firstName, lastName
         ---Join this Group Button */}
                 <div className="upper-right">
-                    <h2>{group.name}</h2>
-                    <h4>{group.city}, {group.state}</h4>
+                    <div>
+                        <h2>{group.name}</h2>
+                        <p>{group.city}, {group.state}</p>
+                        {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
+                        <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
+                    </div>
+                    <button>Join this group</button>
                 </div>
-
-                {group.id}
             </div>
             <div className="lower-details">
                 {/*

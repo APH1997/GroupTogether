@@ -31,7 +31,7 @@ function GroupsPage(){
                 {groupsList.length > 0 &&
                     groupsList.map(group => {
                         return (
-                            <GroupsCard group={group}/>
+                            <GroupsCard id={group.id} group={group}/>
                             )
                         })
                     }

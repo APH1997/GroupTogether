@@ -44,7 +44,7 @@ export const getGroupDetailsThunk = (groupId) => async (dispatch)=> {
     }
 }
 
-const initialState = {allGroups: {}, singleGroup: {},};
+const initialState = {allGroups: {}, singleGroup: {}};
 const groupsReducer = (state = initialState, action) => {
     switch(action.type){
         case LOAD_GROUPS: {

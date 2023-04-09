@@ -2,7 +2,6 @@ import './GroupCard.css';
 import {useHistory} from  'react-router-dom';
 
 function GroupsCard({group}){
-    console.log('GROUPSCARD', group)
     const history = useHistory();
     function navToGroupDetails(e){
         history.push(`/groups/${group.id}`)
@@ -16,7 +15,7 @@ function GroupsCard({group}){
                 <h2>{group.name}</h2>
                 <h3>{group.city}, {group.state}</h3>
                 <p>{group.about}</p>
-                {/* {Object.values(group).length > 0 && <h3>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h3>} */}
+                {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
 
             </div>
         </div>
