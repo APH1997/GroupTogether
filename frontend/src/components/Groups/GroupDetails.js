@@ -9,7 +9,7 @@ function GroupDetails() {
     const dispatch = useDispatch()
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
-    console.log(group);
+
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
     }, [dispatch])
@@ -24,12 +24,6 @@ function GroupDetails() {
                     <NavLink to="/groups/all">Back to Groups</NavLink>
                     <img src={group.GroupImages[0].url}></img>
             </div>
-
-                {/* -right side
-        ---Group name
-        ---city, state
-        ---Organize by firstName, lastName
-        ---Join this Group Button */}
                 <div className="upper-right">
                     <div>
                         <h2>{group.name}</h2>
@@ -46,17 +40,16 @@ function GroupDetails() {
                     <p>{group.Organizer.firstName} {group.Organizer.lastName}</p>
                 </div>
                 <div className="details-block">
-
+                    <h3>What's all this, then?</h3>
+                    <p>{group.about}</p>
                 </div>
                 <div className="current-group-events">
-                    <div className="upcoming-events"></div>
+                    <div className="upcoming-events">
+                        
+                    </div>
                     <div className="past-events"></div>
                 </div>
-                {/*
-            -About (description)
-            -Upcoming Events (#) (if applicable)
-            -Past Events (#) (if applicable)
-            */}
+
 
             </div>
         </>
