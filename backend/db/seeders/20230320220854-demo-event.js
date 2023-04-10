@@ -31,7 +31,7 @@ module.exports = {
         capacity: 100,
         price: 5,
         startDate: new Date('2026-01-01 17:24:00'),
-        endDate: new Date('2026-01-02 17:24:00'),
+        endDate: new Date('2026-01-02 20:24:00'),
       },
       {
         venueId: 3,
