@@ -25,8 +25,12 @@ div.upper-left>img{
     border-radius: 3px;
     background-color:#F34F51;
     color: whitesmoke;
+    box-shadow: 1px 1px 3px rgb(89, 2, 38);
 }
-
+.upper-right>button:hover{
+    cursor: pointer;
+    transform:scale(.99, .99)
+}
 .lower-details{
     margin-top: 25px;
     background-color: rgb(231, 226, 226);
