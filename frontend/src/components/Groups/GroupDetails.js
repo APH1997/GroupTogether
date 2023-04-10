@@ -2,7 +2,7 @@ import { getGroupDetailsThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink } from "react-router-dom";
 import { useEffect } from "react";
-
+import EventsCard from "../Events/EventCard";
 
 function GroupDetails() {
 
@@ -16,9 +16,10 @@ function GroupDetails() {
     }, [dispatch])
 
 
-
     if (!Object.values(group).length) return <h1>loading...</h1>
+    const eventsArr = group.Events
 
+    console.log('eventsArr:', eventsArr)
     return (
         <>
             <div className="upper-details">
@@ -56,6 +57,12 @@ function GroupDetails() {
                 {/* TODO: PAST AND FUTURE EVENTS----------------------------------- */}
                 <div className="current-group-events">
                     <div className="upcoming-events">
+                        <h2>Upcoming Events</h2>
+                        {eventsArr.length > 0 && eventsArr.map(event => {
+                            return (
+                                <EventsCard event={event}/>
+                            )
+                        })}
 
                     </div>
                     <div className="past-events"></div>

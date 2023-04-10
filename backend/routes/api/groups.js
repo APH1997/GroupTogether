@@ -107,7 +107,7 @@ router.get('/:groupId', async (req, res, next) => {
                         as: 'Venue',
                         attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
                     },
-                    {model: Event}
+                    {model: Event, include: {model: EventImage, model: Venue}}
                 ]
         });
         group.dataValues.numMembers = (await Membership.findAll({
