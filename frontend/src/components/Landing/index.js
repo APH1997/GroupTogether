@@ -18,16 +18,25 @@ function LandingPage(){
                 <p>Caption for subtitle</p>
             </div>
             <div className='landing-section-three'>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div>
+                    <div>Groups caption here</div>
+                    <NavLink to="/groups/all">See All Groups</NavLink>
+                    <div>Groups Caption here</div>
+                </div>
+                <div>
+                    <div>Events icon here</div>
+                    <NavLink to="/events/all">Find an Event</NavLink>
+                    <div>Events caption here</div>
+                </div>
+                <div>
+                    <div>Start new group icon here</div>
+                    <NavLink to="/groups/new">Start a New Group</NavLink>
+                    <div>Start new group caption here</div>
+                </div>
             </div>
-            <div className='landing-section-four'>4</div>
+            <button className='landing-section-four'>Join Meetup</button>
         </div>
 
-        <NavLink to="/groups/all">See All Groups</NavLink>
-        <NavLink to="/events/all">Find an Event</NavLink>
-        <NavLink to="/groups/new">Start a New Group</NavLink>
         </>
     )
 }

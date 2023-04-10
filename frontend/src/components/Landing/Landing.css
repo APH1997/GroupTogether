@@ -16,3 +16,8 @@
     align-self: center;
     text-align: center;
 }
+
+.landing-section-three{
+    align-self: center;
+    display: flex;
+}
