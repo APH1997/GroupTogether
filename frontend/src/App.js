@@ -7,6 +7,7 @@ import Navigation from "./components/Navigation";
 import GroupsPage from "./components/Groups";
 import GroupDetails from "./components/Groups/GroupDetails";
 import EventsPage from "./components/Events";
+import LandingPage from "./components/Landing";
 
 
 function App() {
@@ -22,10 +23,7 @@ function App() {
       {isLoaded &&
         <Switch>
           <Route exact path="/">
-            <h1>Home</h1>
-            <NavLink to="/groups/all">See All Groups</NavLink>
-            <NavLink to="/events/all">Find an Event</NavLink>
-            <NavLink to="/groups/new">Start a New Group</NavLink>
+            <LandingPage />
           </Route>
           <Route exact path="/groups/all">
             <GroupsPage />

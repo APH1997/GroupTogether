@@ -1,0 +1,18 @@
+.landing-main{
+    display: flex;
+    flex-flow: column wrap;
+    align-content: center;
+
+}
+.landing-section-one{
+    align-content: center;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-section-two{
+    align-self: center;
+    text-align: center;
+}
