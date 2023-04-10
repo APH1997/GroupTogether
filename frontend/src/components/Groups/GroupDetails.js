@@ -65,16 +65,24 @@ function GroupDetails() {
                 {/* TODO: PAST AND FUTURE EVENTS----------------------------------- */}
                 <div className="current-group-events">
                     <div className="upcoming-events">
-                        <h2>Upcoming Events ({eventsArr.length})</h2>
-                        {eventsArr.length > 0 && eventsArr.map(event => {
+                        {futureEvents.length > 0 &&
+                        <h2>Upcoming Events ({futureEvents.length})</h2>}
+                        {futureEvents.length > 0 && futureEvents.map(event => {
                             return (
-
                                 <EventsCard id={event.id} event={event}/>
-
                             )
                         })}
                     </div>
-                    <div className="past-events"></div>
+                    <div className="past-events">
+                        {pastEvents.length > 0 &&
+                        <h2>Past Events ({pastEvents.length})</h2>}
+                        {pastEvents.length > 0 &&
+                            pastEvents.map(event => {
+                                return (
+                                    <EventsCard id={event.id} event={event}/>
+                                )
+                            })}
+                    </div>
                 </div>
 
 
