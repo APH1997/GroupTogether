@@ -60,7 +60,7 @@ router.get('/', async (req, res, next) => {
     })
 
     for (let event of eventsList) {
-        delete event.description;
+        // delete event.description;
         delete event.createdAt;
         delete event.updatedAt;
         delete event.capacity;

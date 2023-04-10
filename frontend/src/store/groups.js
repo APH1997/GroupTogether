@@ -1,7 +1,4 @@
-//TODO: GROUPS: REDUCER
-//CREATE, READ, UPDATE, DELETE
 import {csrfFetch} from './csrf';
-
 
 const LOAD_GROUPS = "groups/loadGroups";
 const LOAD_ONE_GROUP = "group/loadGroup";

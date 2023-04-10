@@ -2,7 +2,7 @@ import { getGroupDetailsThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink } from "react-router-dom";
 import { useEffect } from "react";
-import "./GroupDetails.css";
+
 
 function GroupDetails() {
 
@@ -43,9 +43,10 @@ function GroupDetails() {
                     <h3>What's all this, then?</h3>
                     <p>{group.about}</p>
                 </div>
+                {/* TODO: PAST AND FUTURE EVENTS----------------------------------- */}
                 <div className="current-group-events">
                     <div className="upcoming-events">
-                        
+
                     </div>
                     <div className="past-events"></div>
                 </div>

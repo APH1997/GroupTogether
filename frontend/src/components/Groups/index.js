@@ -9,7 +9,6 @@ import "./GroupCard.css"
 
 function GroupsPage(){
     const dispatch = useDispatch();
-
     const groupsObj = useSelector(state => state.groups.allGroups);
     const groupsList = Object.values(groupsObj)
 
@@ -22,7 +21,7 @@ function GroupsPage(){
         <>
             <div className="all-groups-header">
                 <h2>
-                    <NavLink to="">Events</NavLink>
+                    <NavLink to="/events/all">Events</NavLink>
                     <NavLink to="/groups/all">Groups</NavLink>
                 </h2>
                 <h3>Groups in Meetup</h3>
@@ -32,9 +31,9 @@ function GroupsPage(){
                     groupsList.map(group => {
                         return (
                             <GroupsCard id={group.id} group={group}/>
-                            )
-                        })
-                    }
+                        )
+                    })
+                }
             </div>
             <NavLink exact to="/">Home</NavLink>
         </>

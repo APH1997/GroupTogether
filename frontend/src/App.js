@@ -6,6 +6,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GroupsPage from "./components/Groups";
 import GroupDetails from "./components/Groups/GroupDetails";
+import EventsPage from "./components/Events";
 
 
 function App() {
@@ -29,10 +30,14 @@ function App() {
           <Route exact path="/groups/all">
             <GroupsPage />
           </Route>
-          <Route exact path="/groups/new"></Route>
-          
+          <Route exact path="/groups/new">
+
+          </Route>
           <Route exact path="/groups/:groupId">
             <GroupDetails />
+          </Route>
+          <Route exact path="/events/all">
+            <EventsPage />
           </Route>
         </Switch>}
     </>
