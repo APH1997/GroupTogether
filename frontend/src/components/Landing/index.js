@@ -1,6 +1,10 @@
-import {NavLink} from 'react-router-dom'
-import './Landing.css'
+import {NavLink} from 'react-router-dom';
+import './Landing.css';
+import {useSelector} from 'react-redux';
+
 function LandingPage(){
+    const user = useSelector(state => state.session.user)
+
     return (
         <>
         <div className='landing-main'>
@@ -30,7 +34,12 @@ function LandingPage(){
                 </div>
                 <div>
                     <div>Start new group icon here</div>
-                    <NavLink to="/groups/new">Start a New Group</NavLink>
+                    {
+                    user && Object.values(user).length > 0 &&
+                        <NavLink to="/groups/new">Start a New Group</NavLink> ||
+                        <div className='noAuth'>Start a New Group</div>
+                    }
+
                     <div>Start new group caption here</div>
                 </div>
             </div>

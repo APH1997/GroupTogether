@@ -21,3 +21,7 @@
     align-self: center;
     display: flex;
 }
+
+.noAuth{
+    color: lightgray;
+}
