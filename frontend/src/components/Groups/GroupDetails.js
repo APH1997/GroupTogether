@@ -10,7 +10,6 @@ function GroupDetails() {
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
     const user = useSelector(state => state.session.user);
-    console.log('USER:',user);
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
@@ -19,7 +18,7 @@ function GroupDetails() {
 
 
     if (!Object.values(group).length) return <h1>loading...</h1>
-    
+
     return (
         <>
             <div className="upper-details">
