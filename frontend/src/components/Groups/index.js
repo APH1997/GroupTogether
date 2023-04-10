@@ -21,8 +21,8 @@ function GroupsPage(){
         <>
             <div className="all-groups-header">
                 <h2>
-                    <NavLink to="/events/all">Events</NavLink>
-                    <NavLink to="/groups/all">Groups</NavLink>
+                    <NavLink id="other-nav"to="/events/all">Events</NavLink>
+                    <NavLink id="curr-nav"to="/groups/all">Groups</NavLink>
                 </h2>
                 <h3>Groups in Meetup</h3>
             </div>

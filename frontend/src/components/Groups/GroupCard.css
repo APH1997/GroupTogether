@@ -76,3 +76,13 @@ div.upper-left>img{
     background-color: rgb(231, 226, 226);
     background-size: 100%;
 }
+
+#other-nav{
+    text-decoration: none;
+    color: black;
+}
+
+#curr-nav{
+    text-decoration: underline;
+    color: rgba(23, 55, 98, 0.894)
+}
