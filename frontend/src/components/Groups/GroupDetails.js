@@ -9,6 +9,8 @@ function GroupDetails() {
     const dispatch = useDispatch()
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
+    const user = useSelector(state => state.session.user);
+    console.log('USER:',user);
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
@@ -17,6 +19,7 @@ function GroupDetails() {
 
 
     if (!Object.values(group).length) return <h1>loading...</h1>
+    
     return (
         <>
             <div className="upper-details">
@@ -29,9 +32,17 @@ function GroupDetails() {
                         <h2>{group.name}</h2>
                         <p>{group.city}, {group.state}</p>
                         {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
-                        <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
+                        <p>Organized by: {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
-                    <button onClick={() => alert('Feature coming soon')}>Join this group</button>
+                    {user && user.id !== group.organizerId &&
+                    <button onClick={() => alert('Feature coming soon')}>Join this group</button>}
+                    {user && user.id === group.organizerId &&
+                        <>
+                        <button id="organizer-btn-create">Create Event</button>
+                        <button id="organizer-btn-update">Update</button>
+                        <button id="organizer-btn-delete">Delete</button>
+                        </>
+                    }
                 </div>
             </div>
             <div className="lower-details">

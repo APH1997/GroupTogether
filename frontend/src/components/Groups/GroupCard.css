@@ -67,6 +67,11 @@ div.upper-left>img{
     color: whitesmoke;
     box-shadow: 1px 1px 3px rgb(89, 2, 38);
 }
+
+#organizer-btn-update, #organizer-btn-delete{
+    background-color: darkgray;
+}
+
 .upper-right>button:hover{
     cursor: pointer;
     transform:scale(.99, .99)
