@@ -6,6 +6,7 @@ function EventsCard({event}){
     function navToEventDetails(e){
         history.push(`/events/${event.id}`)
     }
+    
     return (
         <div key={event.id} className="card-container" onClick={navToEventDetails} >
             <div className="cont-image">

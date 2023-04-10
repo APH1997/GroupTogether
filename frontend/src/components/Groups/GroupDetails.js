@@ -18,8 +18,16 @@ function GroupDetails() {
 
     if (!Object.values(group).length) return <h1>loading...</h1>
     const eventsArr = group.Events
-
-    console.log('eventsArr:', eventsArr)
+    const futureEvents = [];
+    const pastEvents = [];
+    for (let event of eventsArr){
+        if (new Date(event.startDate) > new Date()){
+            futureEvents.push(event)
+        } else pastEvents.push(event)
+    }
+    console.log('all events', eventsArr)
+    console.log('FUTURE EVENTS', futureEvents)
+    console.log('PAST EVENTS', pastEvents)
     return (
         <>
             <div className="upper-details">
@@ -65,7 +73,6 @@ function GroupDetails() {
 
                             )
                         })}
-
                     </div>
                     <div className="past-events"></div>
                 </div>
