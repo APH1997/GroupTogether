@@ -12,7 +12,7 @@ function EventsCard({event}){
                 <img src={`${event.previewImage}`}></img>
             </div>
             <div className="cont-info">
-                <p>DATE AND TIME</p>
+                <p>{event.startDate}</p>
                 <h2>{event.name}</h2>
                 <h3>{event.Venue.city}, {event.Venue.state}</h3>
                 <p>{event.description}</p>

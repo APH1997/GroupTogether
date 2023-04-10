@@ -60,7 +60,9 @@ function GroupDetails() {
                         <h2>Upcoming Events ({eventsArr.length})</h2>
                         {eventsArr.length > 0 && eventsArr.map(event => {
                             return (
-                                <EventsCard event={event}/>
+
+                                <EventsCard id={event.id} event={event}/>
+
                             )
                         })}
 
