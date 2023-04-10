@@ -14,6 +14,10 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  
+  const disableBtn = (email.length < 1 ||username.length < 4 ||
+                        firstName.length < 1||lastName.length < 1 ||
+                        password.length < 6 ||confirmPassword.length < 1)
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -42,11 +46,13 @@ function SignupFormModal() {
   };
 
   return (
+
     <>
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label>
           Email
+          <br></br>
           <input
             type="text"
             value={email}
@@ -57,6 +63,7 @@ function SignupFormModal() {
         {errors.email && <p>{errors.email}</p>}
         <label>
           Username
+          <br></br>
           <input
             type="text"
             value={username}
@@ -67,6 +74,7 @@ function SignupFormModal() {
         {errors.username && <p>{errors.username}</p>}
         <label>
           First Name
+          <br></br>
           <input
             type="text"
             value={firstName}
@@ -77,6 +85,7 @@ function SignupFormModal() {
         {errors.firstName && <p>{errors.firstName}</p>}
         <label>
           Last Name
+          <br></br>
           <input
             type="text"
             value={lastName}
@@ -87,6 +96,7 @@ function SignupFormModal() {
         {errors.lastName && <p>{errors.lastName}</p>}
         <label>
           Password
+          <br></br>
           <input
             type="password"
             value={password}
@@ -97,6 +107,7 @@ function SignupFormModal() {
         {errors.password && <p>{errors.password}</p>}
         <label>
           Confirm Password
+          <br></br>
           <input
             type="password"
             value={confirmPassword}
@@ -107,7 +118,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
-        <button type="submit">Sign Up</button>
+        <button disabled={disableBtn} type="submit">Sign Up</button>
       </form>
     </>
   );
