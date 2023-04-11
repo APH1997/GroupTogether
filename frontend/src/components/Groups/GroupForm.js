@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -10,19 +10,32 @@ function GroupForm({ formType, group }) {
     const [imgUrl, setImgUrl] = useState('');
     const [cityState, setCityState] = useState(`${group?.city}, ${group?.state}`)
     const [errors, setErrors] = useState({});
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        setHasSubmitted(true);
+        console.log(errors)
+
+        if (errors) return window.alert('Cannot submit')
+    }
+
+    useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
-        if (cityState === ",") errObj.location = "Location is required";
+        if (cityState === ", " || !cityState.length) errObj.location = "Location is required";
         if (!name.length) errObj.name = "Name is required";
         if (about.length < 30) errObj.about = "Description must be at least 30 characters long";
         if (!type.length) errObj.type = "Group Type is required";
         if (!isPrivate.length) errObj.private = "Visibility type is require";
-        if(!imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
-        
-    }
+        if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
+
+        if (Object.keys(errObj).length){
+            setErrors(errObj);
+        } else setErrors({})
+
+    }, [name, about, type, isPrivate, imgUrl, cityState])
+    console.log(cityState)
     return (
         <form onSubmit={handleSubmit}>
             <h1>{formType === 'Create' ? 'Start a New Group' : 'Update Your Group'}</h1>
@@ -36,6 +49,7 @@ function GroupForm({ formType, group }) {
                         value={formType==='Create' ? null : cityState}
                         onChange={(e) => setCityState(e.target.value)}
                     />
+                    {hasSubmitted && errors.location && <p className='errors'>{errors.location}</p>}
 
             </div>
             <div>
@@ -48,6 +62,7 @@ function GroupForm({ formType, group }) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
+                {hasSubmitted && errors.name && <p className='errors'>{errors.name}</p>}
             </div>
             <div>
                 <h2>Describe the purpose of your group.</h2>
@@ -62,6 +77,7 @@ function GroupForm({ formType, group }) {
                     placeholder="Please write at least 30 characters."
                     onChange={(e) => setAbout(e.target.value)}
                 />
+                {hasSubmitted && errors.about && <p className='errors'>{errors.about}</p>}
             </div>
             <div>
                 <h2>Final steps...</h2>
@@ -72,6 +88,7 @@ function GroupForm({ formType, group }) {
                     <option value="In person" >In person</option>
                     <option value="Online">Online</option>
                 </select>
+                {hasSubmitted && errors.type && <p className='errors'>{errors.type}</p>}
 
                 <label htmlFor='groupPrivacy'>Is this group private or public?</label>
                 <select name='groupPrivacy' onChange={e => setIsPrivate(e.target.value)} value={isPrivate}>
@@ -79,6 +96,7 @@ function GroupForm({ formType, group }) {
                     <option value={true}>Private</option>
                     <option value={false}>Public</option>
                 </select>
+                {hasSubmitted && errors.private && <p className='errors'>{errors.private}</p>}
 
                 <label>
                     Please add an image url for your group below:
@@ -89,6 +107,7 @@ function GroupForm({ formType, group }) {
                         onChange={(e) => setImgUrl(e.target.value)}
                     />
                 </label>
+                {hasSubmitted && errors.img && <p className='errors'>{errors.img}</p>}
 
             </div>
             <div>
