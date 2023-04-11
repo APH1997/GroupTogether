@@ -6,14 +6,18 @@ function EventsCard({event}){
     function navToEventDetails(e){
         history.push(`/events/${event.id}`)
     }
-    
+
+    const splitDate = event.startDate.split('T');
+    const date = splitDate[0];
+    const time = splitDate[1];
+    console.log(time);
     return (
         <div key={event.id} className="card-container" onClick={navToEventDetails} >
             <div className="cont-image">
                 <img src={`${event.previewImage}`}></img>
             </div>
             <div className="cont-info">
-                <p>{event.startDate}</p>
+                <p>{date} · {time}</p>
                 <h2>{event.name}</h2>
                 <h3>{event.Venue.city}, {event.Venue.state}</h3>
                 <p>{event.description}</p>
