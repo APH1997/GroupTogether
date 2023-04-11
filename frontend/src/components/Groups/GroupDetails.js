@@ -27,9 +27,7 @@ function GroupDetails() {
             } else pastEvents.push(event)
         }
     }
-    console.log('all events', eventsArr)
-    console.log('FUTURE EVENTS', futureEvents)
-    console.log('PAST EVENTS', pastEvents)
+   
     if (!group) return <h1>Loading...</h1>
     return (
         <>
