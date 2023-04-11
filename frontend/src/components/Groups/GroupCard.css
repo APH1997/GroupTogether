@@ -33,6 +33,18 @@ img{
     border-bottom: lightgray 1px solid;
     width: 40%;
 }
+.event-card-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-top: lightgray 2px solid;
+    border-bottom: lightgray 1px solid;
+    width: 40%;
+    padding-top: 5px;
+}
+.event-card-top{
+    display: flex;
+}
 .card-container:hover{
     box-shadow: -1px 1px 1px red;
     cursor: pointer;
@@ -91,4 +103,3 @@ div.upper-left>img{
     text-decoration: underline;
     color: rgba(23, 55, 98, 0.894)
 }
-

@@ -12,18 +12,18 @@ function EventsCard({event}){
     const time = splitDate[1];
     console.log(time);
     return (
-        <div key={event.id} className="card-container" onClick={navToEventDetails} >
-            <div className="cont-image">
-                <img src={`${event.previewImage}`}></img>
+        <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
+            <div className="event-card-top">
+                <div className="cont-image">
+                    <img src={`${event.previewImage}`}></img>
+                </div>
+                <div className="cont-info">
+                    <p>{date} · {time}</p>
+                    <h2>{event.name}</h2>
+                    <h3>{event.Venue.city}, {event.Venue.state}</h3>
+                </div>
             </div>
-            <div className="cont-info">
-                <p>{date} · {time}</p>
-                <h2>{event.name}</h2>
-                <h3>{event.Venue.city}, {event.Venue.state}</h3>
                 <p>{event.description}</p>
-                {/* {Object.values(event).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>} */}
-
-            </div>
         </div>
     )
 }
