@@ -47,7 +47,7 @@ function GroupForm({ formType, group }) {
 
     }, [name, about, type, isPrivate, imgUrl, cityState])
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         setHasSubmitted(true);
 
@@ -64,8 +64,12 @@ function GroupForm({ formType, group }) {
         setHasSubmitted(false);
 
         if (formType === "Create"){
-            dispatch(createGroupThunk(newGroup))
-            history.push('/')
+            const createdGroup = await dispatch(createGroupThunk(newGroup))
+            if (createdGroup.errors){
+                setErrors(createdGroup.errors)
+            }else {
+                history.push(`/groups/${createdGroup.id}`)
+            }
         }
 
     }

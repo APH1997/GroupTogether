@@ -56,7 +56,7 @@ export const createGroupThunk = (group) => async (dispatch) => {
     const data = await response.json();
     if (response.ok){
         await dispatch(createGroupAction(data));
-        return response;
+        return data;
     } else return response;
 }
 
