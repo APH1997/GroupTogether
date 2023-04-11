@@ -9,17 +9,22 @@ function GroupForm({ formType, group }) {
     const [isPrivate, setIsPrivate] = useState(group?.private);
     const [imgUrl, setImgUrl] = useState('');
     const [cityState, setCityState] = useState(`${group?.city}, ${group?.state}`)
+
+    const [city, setCity] = useState(group?.city || '')
+    const [state, setState] = useState(group?.state || '');
+
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        setHasSubmitted(true);
-        console.log(errors)
-
-        if (errors) return window.alert('Cannot submit')
+    const setCityAndState = (city, state) => {
+        let trimmedState;
+        if (state){
+            trimmedState = state.trim();
+        } else trimmedState = state;
+        
+        setCity(city)
+        setState(trimmedState)
     }
-
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
@@ -35,7 +40,16 @@ function GroupForm({ formType, group }) {
         } else setErrors({})
 
     }, [name, about, type, isPrivate, imgUrl, cityState])
-    console.log(cityState)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        setHasSubmitted(true);
+
+        if (Object.keys(errors).length) return window.alert('Cannot submit')
+
+        console.log("HELLO?")
+    }
+    console.log({city},{state})
     return (
         <form onSubmit={handleSubmit}>
             <h1>{formType === 'Create' ? 'Start a New Group' : 'Update Your Group'}</h1>
@@ -47,7 +61,7 @@ function GroupForm({ formType, group }) {
                         type="text"
                         placeholder="city, STATE"
                         value={formType==='Create' ? null : cityState}
-                        onChange={(e) => setCityState(e.target.value)}
+                        onChange={(e) => setCityAndState(e.target.value.split(',')[0], e.target.value.split(',')[1])}
                     />
                     {hasSubmitted && errors.location && <p className='errors'>{errors.location}</p>}
 
