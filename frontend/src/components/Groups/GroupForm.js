@@ -9,14 +9,23 @@ function GroupForm({ formType, group }) {
     const [isPrivate, setIsPrivate] = useState(group?.private);
     const [imgUrl, setImgUrl] = useState('');
     const [cityState, setCityState] = useState(`${group?.city}, ${group?.state}`)
-
+    const [errors, setErrors] = useState({});
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        const imgSuffixes = ['png','jpeg','jpg']
+        const errObj = {};
+        if (cityState === ",") errObj.location = "Location is required";
+        if (!name.length) errObj.name = "Name is required";
+        if (about.length < 30) errObj.about = "Description must be at least 30 characters long";
+        if (!type.length) errObj.type = "Group Type is required";
+        if (!isPrivate.length) errObj.private = "Visibility type is require";
+        if(!imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
+        
     }
     return (
         <form onSubmit={handleSubmit}>
-            <div>Type-dependent header</div>
+            <h1>{formType === 'Create' ? 'Start a New Group' : 'Update Your Group'}</h1>
             <div>
                 <h2>Set your group's location</h2>
                 <p>Meetup groups meet locally, in person and online. We'll connect you with people
@@ -24,7 +33,7 @@ function GroupForm({ formType, group }) {
                     <input
                         type="text"
                         placeholder="city, STATE"
-                        value={formType==='create' ? null : cityState}
+                        value={formType==='Create' ? null : cityState}
                         onChange={(e) => setCityState(e.target.value)}
                     />
 

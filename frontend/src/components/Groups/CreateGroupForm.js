@@ -11,7 +11,7 @@ const CreateGroupForm = () => {
     };
 
     return (
-        <GroupForm formType="create" group={group}/>
+        <GroupForm formType="Create" group={group}/>
     )
 }
 
