@@ -8,27 +8,28 @@ function GroupForm({ formType, group }) {
     const [type, setType] = useState(group?.type);
     const [isPrivate, setIsPrivate] = useState(group?.private);
     const [imgUrl, setImgUrl] = useState('');
-    const [cityState, setCityState] = useState(`${group?.city}, ${group?.state}`)
 
+    const [cityState, setCityState] = useState(group?.city && group?.state ? `${group.city}, ${group.state}` : "")
     const [city, setCity] = useState(group?.city || '')
     const [state, setState] = useState(group?.state || '');
 
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    const setCityAndState = (city, state) => {
+    const setCityAndState = (e, city, state) => {
         let trimmedState;
         if (state){
             trimmedState = state.trim();
         } else trimmedState = state;
-        
+
+        setCityState(e.target.value);
         setCity(city)
         setState(trimmedState)
     }
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
-        if (cityState === ", " || !cityState.length) errObj.location = "Location is required";
+        if (!city || !state) errObj.location = "Location is required";
         if (!name.length) errObj.name = "Name is required";
         if (about.length < 30) errObj.about = "Description must be at least 30 characters long";
         if (!type.length) errObj.type = "Group Type is required";
@@ -47,7 +48,7 @@ function GroupForm({ formType, group }) {
 
         if (Object.keys(errors).length) return window.alert('Cannot submit')
 
-        console.log("HELLO?")
+
     }
     console.log({city},{state})
     return (
@@ -60,8 +61,8 @@ function GroupForm({ formType, group }) {
                     <input
                         type="text"
                         placeholder="city, STATE"
-                        value={formType==='Create' ? null : cityState}
-                        onChange={(e) => setCityAndState(e.target.value.split(',')[0], e.target.value.split(',')[1])}
+                        value={cityState}
+                        onChange={(e) => setCityAndState(e, e.target.value.split(',')[0], e.target.value.split(',')[1])}
                     />
                     {hasSubmitted && errors.location && <p className='errors'>{errors.location}</p>}
 
