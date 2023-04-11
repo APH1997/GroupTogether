@@ -9,6 +9,11 @@ function GroupForm({ formType, group }) {
     if (!sessionUser){
         history.push('/')
     }
+    if (formType === "Update" && sessionUser.id !== group.organizerId){
+       history.push('/')
+    }
+
+
 
     const dispatch = useDispatch();
 
@@ -39,9 +44,9 @@ function GroupForm({ formType, group }) {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
         if (!city || !state) errObj.location = "Location is required";
-        if (!name.length) errObj.name = "Name is required";
-        if (about.length < 30) errObj.about = "Description must be at least 30 characters long";
-        if (!type.length) errObj.type = "Group Type is required";
+        if (!name) errObj.name = "Name is required";
+        if (about < 30) errObj.about = "Description must be at least 30 characters long";
+        if (!type) errObj.type = "Group Type is required";
         if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
 
