@@ -10,11 +10,15 @@ function GroupForm({ formType, group }) {
     const [imgUrl, setImgUrl] = useState('');
     const [cityState, setCityState] = useState(`${group?.city}, ${group?.state}`)
 
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div>Type-dependent header</div>
             <div>
-                <h2>First, set your group's location</h2>
+                <h2>Set your group's location</h2>
                 <p>Meetup groups meet locally, in person and online. We'll connect you with people
                     in your area, and more can join you online.</p>
                     <input
@@ -26,17 +30,18 @@ function GroupForm({ formType, group }) {
 
             </div>
             <div>
-                <h2>What will your group's name be?DYNAMIC</h2>
+                <h2>What will your group's name be?</h2>
                 <p>Choose a name that will give people a clear idea of what the group is about.
                     Feel free to get creative! You can edit this later if you change your mind.</p>
                 <input
                     type="text"
+                    placeholder="What is your group name?"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
             </div>
             <div>
-                <h2>Now describe what your group will be about</h2>
+                <h2>Describe the purpose of your group.</h2>
                 <p>People will see this when we promote your group, but you'll be able to add to it later, too</p>
                 <ol>
                     <li>What's the purpose of the group?</li>
@@ -45,6 +50,7 @@ function GroupForm({ formType, group }) {
                 </ol>
                 <textarea
                     value={about}
+                    placeholder="Please write at least 30 characters."
                     onChange={(e) => setAbout(e.target.value)}
                 />
             </div>
@@ -70,6 +76,7 @@ function GroupForm({ formType, group }) {
                     <input
                         type="text"
                         value={imgUrl}
+                        placeholder="Image Url"
                         onChange={(e) => setImgUrl(e.target.value)}
                     />
                 </label>

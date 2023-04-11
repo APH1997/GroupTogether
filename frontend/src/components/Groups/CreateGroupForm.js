@@ -6,8 +6,8 @@ const CreateGroupForm = () => {
         about: "",
         type: "",
         private: "",
-        city: "easton",
-        state: "CT"
+        city: "",
+        state: ""
     };
 
     return (
