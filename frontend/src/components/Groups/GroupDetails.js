@@ -20,20 +20,23 @@ function GroupDetails() {
     const eventsArr = group.Events
     const futureEvents = [];
     const pastEvents = [];
-    for (let event of eventsArr){
-        if (new Date(event.startDate) > new Date()){
-            futureEvents.push(event)
-        } else pastEvents.push(event)
+    if (eventsArr?.length){
+        for (let event of eventsArr){
+            if (new Date(event.startDate) > new Date()){
+                futureEvents.push(event)
+            } else pastEvents.push(event)
+        }
     }
     console.log('all events', eventsArr)
     console.log('FUTURE EVENTS', futureEvents)
     console.log('PAST EVENTS', pastEvents)
+    if (!group) return <h1>Loading...</h1>
     return (
         <>
             <div className="upper-details">
                 <div className="upper-left">
                     <NavLink to="/groups/all">Back to Groups</NavLink>
-                    <img src={group.GroupImages[0].url}></img>
+                    <img src={group.GroupImages?.length ? group.GroupImages[0]?.url : ''}></img>
             </div>
                 <div className="upper-right">
                     <div>

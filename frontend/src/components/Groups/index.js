@@ -16,7 +16,7 @@ function GroupsPage(){
     useEffect(() => {
         dispatch(getGroupsThunk());
     }, [])
-
+    if (!groupsList.length) return <h1>Loading...</h1>
     return (
         <>
             <div className="all-groups-header">
