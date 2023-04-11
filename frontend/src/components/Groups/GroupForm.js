@@ -61,9 +61,11 @@ function GroupForm({ formType, group }) {
             city,
             state
         }
+        setHasSubmitted(false);
+
         if (formType === "Create"){
-            const doesthiswork = dispatch(createGroupThunk(newGroup))
-            console.log(doesthiswork)
+            dispatch(createGroupThunk(newGroup))
+            history.push('/')
         }
 
     }
