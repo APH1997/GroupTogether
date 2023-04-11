@@ -42,6 +42,9 @@ img{
     width: 40%;
     padding-top: 5px;
 }
+.event-card-container{
+    cursor: pointer;
+}
 .event-card-top{
     display: flex;
 }
