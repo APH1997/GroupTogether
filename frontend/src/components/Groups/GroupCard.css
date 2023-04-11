@@ -71,6 +71,7 @@ div.upper-left>img{
     flex-flow: column;
     justify-content: space-between;
     line-height: 15px;
+    width: 30%
 }
 .upper-right>button{
     align-self: baseline;
@@ -83,7 +84,8 @@ div.upper-left>img{
     box-shadow: 1px 1px 3px rgb(89, 2, 38);
 }
 
-#organizer-btn-update, #organizer-btn-delete{
+
+#organizer-btn-update, #organizer-btn-delete, #organizer-btn-create{
     background-color: darkgray;
 }
 
