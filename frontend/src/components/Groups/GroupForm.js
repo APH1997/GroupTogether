@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { createGroupThunk } from '../../store/groups';
 
 function GroupForm({ formType, group }) {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const storeState = useSelector(state => state.groups)
+
     const [name, setName] = useState(group?.name);
     const [about, setAbout] = useState(group?.about);
     const [type, setType] = useState(group?.type);
@@ -33,7 +38,7 @@ function GroupForm({ formType, group }) {
         if (!name.length) errObj.name = "Name is required";
         if (about.length < 30) errObj.about = "Description must be at least 30 characters long";
         if (!type.length) errObj.type = "Group Type is required";
-        if (!isPrivate.length) errObj.private = "Visibility type is require";
+        if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
 
         if (Object.keys(errObj).length){
@@ -48,9 +53,21 @@ function GroupForm({ formType, group }) {
 
         if (Object.keys(errors).length) return window.alert('Cannot submit')
 
+        const newGroup = {
+            name,
+            about,
+            type,
+            private: isPrivate,
+            city,
+            state
+        }
+        if (formType === "Create"){
+            const doesthiswork = dispatch(createGroupThunk(newGroup))
+            console.log(doesthiswork)
+        }
 
     }
-    console.log({city},{state})
+
     return (
         <form onSubmit={handleSubmit}>
             <h1>{formType === 'Create' ? 'Start a New Group' : 'Update Your Group'}</h1>
@@ -106,7 +123,7 @@ function GroupForm({ formType, group }) {
                 {hasSubmitted && errors.type && <p className='errors'>{errors.type}</p>}
 
                 <label htmlFor='groupPrivacy'>Is this group private or public?</label>
-                <select name='groupPrivacy' onChange={e => setIsPrivate(e.target.value)} value={isPrivate}>
+                <select name='groupPrivacy' onChange={e => setIsPrivate(e.target.value === "true" ? true : false)} value={isPrivate}>
                     <option value="" disabled>(select one)</option>
                     <option value={true}>Private</option>
                     <option value={false}>Public</option>
