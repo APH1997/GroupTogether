@@ -7,9 +7,8 @@ function GroupForm({ formType, group }) {
     const [about, setAbout] = useState(group?.about);
     const [type, setType] = useState(group?.type);
     const [isPrivate, setIsPrivate] = useState(group?.private);
-    const [city, setCity] = useState(group?.city);
-    const [state, setState] = useState(group?.state);
-
+    const [imgUrl, setImgUrl] = useState('');
+    const [cityState, setCityState] = useState(`${group?.city}, ${group?.state}`)
 
     return (
         <form>
@@ -18,22 +17,13 @@ function GroupForm({ formType, group }) {
                 <h2>First, set your group's location</h2>
                 <p>Meetup groups meet locally, in person and online. We'll connect you with people
                     in your area, and more can join you online.</p>
-                <label>
-                    <div>City:</div>
                     <input
                         type="text"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        placeholder="city, STATE"
+                        value={formType==='create' ? null : cityState}
+                        onChange={(e) => setCityState(e.target.value)}
                     />
-                </label>
-                <label>
-                    <div>State:</div>
-                    <input
-                        type="text"
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
-                    />
-                </label>
+
             </div>
             <div>
                 <h2>What will your group's name be?DYNAMIC</h2>
@@ -79,13 +69,15 @@ function GroupForm({ formType, group }) {
                     Please add an image url for your group below:
                     <input
                         type="text"
-                        value=""
-
+                        value={imgUrl}
+                        onChange={(e) => setImgUrl(e.target.value)}
                     />
                 </label>
 
             </div>
-            <div></div>
+            <div>
+                <button>{formType} Group</button>
+            </div>
         </form>
 
 
