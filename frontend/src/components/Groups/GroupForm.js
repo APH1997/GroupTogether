@@ -4,9 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createGroupThunk } from '../../store/groups';
 
 function GroupForm({ formType, group }) {
-    const dispatch = useDispatch();
     const history = useHistory();
-    const storeState = useSelector(state => state.groups)
+    const sessionUser = useSelector(state => state.session.user)
+    if (!sessionUser){
+        history.push('/')
+    }
+
+    const dispatch = useDispatch();
 
     const [name, setName] = useState(group?.name);
     const [about, setAbout] = useState(group?.about);

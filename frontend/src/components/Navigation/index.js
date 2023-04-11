@@ -13,7 +13,7 @@ function Navigation({ isLoaded }){
         <NavLink exact to="/"><h1>MeetUp</h1></NavLink>
       </li>
       <div className='right-nav'>
-        <li><NavLink exact to="/groups/new">Start a new Group</NavLink></li>
+        {sessionUser && <li><NavLink exact to="/groups/new">Start a new Group</NavLink></li>}
         {isLoaded && (
           <li>
             <ProfileButton user={sessionUser} />
