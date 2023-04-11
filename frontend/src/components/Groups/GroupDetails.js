@@ -1,12 +1,12 @@
 import { getGroupDetailsThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useHistory} from "react-router-dom";
 import { useEffect } from "react";
 import EventsCard from "../Events/EventCard";
 
 function GroupDetails() {
-
-    const dispatch = useDispatch()
+    const history = useHistory();
+    const dispatch = useDispatch();
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
     const user = useSelector(state => state.session.user);
@@ -27,7 +27,7 @@ function GroupDetails() {
             } else pastEvents.push(event)
         }
     }
-   
+
     if (!group) return <h1>Loading...</h1>
     return (
         <>
@@ -48,7 +48,7 @@ function GroupDetails() {
                     {user && user.id === group.organizerId &&
                         <>
                         <button id="organizer-btn-create">Create Event</button>
-                        <button id="organizer-btn-update">Update</button>
+                        <button onClick={() => history.push(`/groups/${groupId}/edit`)}id="organizer-btn-update">Update</button>
                         <button id="organizer-btn-delete">Delete</button>
                         </>
                     }
