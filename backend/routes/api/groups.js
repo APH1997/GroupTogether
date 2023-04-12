@@ -515,6 +515,7 @@ router.post('/:groupId/events', async (req, res, next) => {
     try {
 
         const newEvent = await group.createEvent({
+            hostId: user.Id,
             venueId,
             name,
             type,

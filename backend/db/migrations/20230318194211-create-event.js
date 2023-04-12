@@ -15,6 +15,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      hostId:{
+        type: Sequelize.INTEGER
+      },
       venueId: {
         type: Sequelize.INTEGER,
         references: {
