@@ -4,10 +4,7 @@ import { useModal } from "../../../context/Modal"
 
 function DeleteConfirmModal (){
     const {closeModal} = useModal();
-    const handleClose = () => {
-        //need to figure out how to close modal lol
-        closeModal();
-    }
+
     const handleDelete = () => {
         //dispatch thunk, redirect to all groups
     }
@@ -18,7 +15,7 @@ function DeleteConfirmModal (){
             <p>Are you sure you want to remove this group?</p>
             <div>
                 <button onClick={handleDelete}>Yes (Delete Group)</button>
-                <button onClick={handleClose}>No (Keep Group)</button>
+                <button onClick={closeModal}>No (Keep Group)</button>
             </div>
         </>
     )

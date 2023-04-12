@@ -9,7 +9,7 @@ function GroupForm({ formType, group }) {
     if (!sessionUser){
         history.push('/')
     }
-    
+
     if (formType === "Update" && sessionUser.id !== group.organizerId){
         history.push('/')
     }
@@ -44,7 +44,7 @@ function GroupForm({ formType, group }) {
         const errObj = {};
         if (!city || !state) errObj.location = "Location is required";
         if (!name) errObj.name = "Name is required";
-        if (about < 30) errObj.about = "Description must be at least 30 characters long";
+        if (!about || about.length < 50) errObj.about = "Description must be at least 50 characters long";
         if (!type) errObj.type = "Group Type is required";
         if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
@@ -127,7 +127,7 @@ function GroupForm({ formType, group }) {
                 </ol>
                 <textarea
                     value={about}
-                    placeholder="Please write at least 30 characters."
+                    placeholder="Please write at least 50 characters."
                     onChange={(e) => setAbout(e.target.value)}
                 />
                 {hasSubmitted && errors.about && <p className='errors'>{errors.about}</p>}
