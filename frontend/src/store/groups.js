@@ -79,6 +79,16 @@ export const updateGroupThunk = (group, groupId) => async (dispatch) => {
     } else return response;
 }
 
+export const deleteGroupAction = (groupId) => {
+    return {
+        type: DELETE_GROUP,
+        payload: groupId
+    }
+}
+export const deleteGroupThunk = (groupId) => async (disptach) => {
+
+}
+
 const initialState = {allGroups: {}, singleGroup: {}};
 const groupsReducer = (state = initialState, action) => {
     switch(action.type){
@@ -102,6 +112,10 @@ const groupsReducer = (state = initialState, action) => {
         }
         case EDIT_GROUP: {
             return state;
+            //it redirects to a page that grabs new state
+        }
+        case DELETE_GROUP: {
+
         }
         default: {
             return state;
