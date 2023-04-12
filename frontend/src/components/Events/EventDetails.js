@@ -36,7 +36,7 @@ function EventDetails(){
                     <div className="group-and-event-info">
                         <div className="group-info">
                             <div className="group-info-image">
-                                <img></img>
+                                <img src={event.Group.imgUrl}></img>
                             </div>
                             <div className="group-info">
                                 <h4>{event.Group.name}</h4>
