@@ -6,4 +6,4 @@ function DeleteButton() {
     )
 }
 
-export default DeleteButtonModal;
+export default DeleteButton;
