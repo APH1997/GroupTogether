@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory} from "react-router-dom";
 import { useEffect } from "react";
 import EventsCard from "../Events/EventCard";
-
+import DeleteButton from "./DeleteGroup/DeleteGroupButton";
 
 function GroupDetails() {
     const history = useHistory();
@@ -56,6 +56,7 @@ function GroupDetails() {
                         <>
                         <button id="organizer-btn-create">Create Event</button>
                         <button onClick={() => history.push(`/groups/${groupId}/edit`)}id="organizer-btn-update">Update</button>
+                        <DeleteButton />
                         <button id="organizer-btn-delete">Delete</button>
                         </>
                     }
