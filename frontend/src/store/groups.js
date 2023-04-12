@@ -87,8 +87,15 @@ export const deleteGroupAction = (groupId) => {
         payload: groupId
     }
 }
-export const deleteGroupThunk = (groupId) => async (disptach) => {
-
+export const deleteGroupThunk = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: "DELETE",
+    });
+    const data = await response.json();
+    if (response.ok){
+        await dispatch(deleteGroupAction(groupId));
+        return data;
+    } else return response;
 }
 
 
@@ -116,7 +123,9 @@ const groupsReducer = (state = initialState, action) => {
             //it redirects to a page that grabs new state
         }
         case DELETE_GROUP: {
-
+            const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
+            delete newState.allGroups[action.payload]
+            return newState;
         }
 
         default: {
