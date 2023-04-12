@@ -19,8 +19,14 @@ function EventDetails(){
 
     console.log(event);
 
-
     if (!event || !Object.values(event).length) return <></>
+
+    const [noMsStart] = event.startDate.split('.')
+    const [noMsEnd] = event.endDate.split('.')
+
+    const [startDate, startTime] = noMsStart.split('T')
+    const [endDate, endTime] = noMsEnd.split('T')
+
     return (
         <>
             <header>
@@ -47,8 +53,8 @@ function EventDetails(){
                             <div className="event-times">
                                 <i className="fas fa-stopwatch"></i>
                                 <div className="start-end">
-                                    <div>START</div>
-                                    <div>END</div>
+                                    <div>START {startDate} · {startTime}</div>
+                                    <div>END {endDate} · {endTime}</div>
                                 </div>
                             </div>
                             <div className="event-price">
