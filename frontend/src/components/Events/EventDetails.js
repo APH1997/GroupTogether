@@ -21,12 +21,12 @@ function EventDetails(){
 
 
     if (!event || !Object.values(event).length) return <></>
-    return(
+    return (
         <>
             <header>
                 <NavLink to="/events/all">Events</NavLink>
                 <h2>{event.name}</h2>
-                <p>Hosted by ?????</p>
+                <p>Hosted by {event.Group.Organizer.firstName} {event.Group.Organizer.lastName}</p>
             </header>
             <main className="main-content-container">
                 <div className="content-container-top">
@@ -45,18 +45,18 @@ function EventDetails(){
                         </div>
                         <div className="event-info">
                             <div className="event-times">
-                                <i class="fas fa-stopwatch"></i>
+                                <i className="fas fa-stopwatch"></i>
                                 <div className="start-end">
                                     <div>START</div>
                                     <div>END</div>
                                 </div>
                             </div>
                             <div className="event-price">
-                                <i class="fas fa-dollar-sign"></i>
+                                <i className="fas fa-dollar-sign"></i>
                                 {event.price > 0 ? `$${event.price}` : "FREE"}
                             </div>
                             <div className="event-type">
-                            <i class="fas fa-map-pin"></i>
+                            <i className="fas fa-map-pin"></i>
                                 {event.type}
                             </div>
                         </div>
