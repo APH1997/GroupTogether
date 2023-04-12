@@ -10,7 +10,7 @@ function EventsCard({event}){
     const splitDate = event.startDate.split('T');
     const date = splitDate[0];
     const time = splitDate[1];
-    console.log(time);
+    console.log("In EventCard",time);
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">

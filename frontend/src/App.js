@@ -42,6 +42,9 @@ function App() {
           <Route exact path="/events/all">
             <EventsPage />
           </Route>
+          <Route exact path="/events/:eventId">
+            Hello!
+          </Route>
 
           <Route>
             Page not found

@@ -12,6 +12,7 @@ module.exports = {
     options.tableName = 'Events';
     await queryInterface.bulkInsert(options, [
       {
+        hostId: 3,
         venueId: 1,
         groupId: 3,
         name: 'Wear an impractical hat',
@@ -23,6 +24,7 @@ module.exports = {
         endDate: new Date('2025-01-01 20:24:00'),
       },
       {
+        hostId: 1,
         venueId: 2,
         groupId: 1,
         name: 'Wear a silly hat',
@@ -34,6 +36,7 @@ module.exports = {
         endDate: new Date('2026-01-02 20:24:00'),
       },
       {
+        hostId: 1,
         venueId: 3,
         groupId: 1,
         name: 'Donating Silly Hats',
@@ -45,6 +48,7 @@ module.exports = {
         endDate: new Date('2020-03-01 13:24:00'),
       },
       {
+        hostId: 1,
         venueId: 1,
         groupId: 1,
         name: 'Shopping for Silly Hats',
@@ -56,6 +60,7 @@ module.exports = {
         endDate: new Date('2020-01-01 19:30:00'),
       },
       {
+        hostId: 2,
         venueId: 3,
         groupId: 2,
         name: 'Wear a haughty hat',

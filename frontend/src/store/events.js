@@ -15,12 +15,31 @@ export const getEventsAction = (events) => {
         payload: events
     }
 }
-
 export const getEventsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/events');
     const data = await response.json();
     if (response.ok){
         dispatch(getEventsAction(data));
+        return response;
+    } else {
+        return response;
+    }
+}
+
+export const getOneEventAction = (event) => {
+    return {
+        type: LOAD_ONE_EVENT,
+        payload: event
+    }
+}
+
+export const getOneEventThunk = (eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}`);
+    const data = await response.json();
+    if (response.ok){
+        dispatch(getOneEventAction(data));
+        return response;
+    } else {
         return response;
     }
 }
@@ -34,6 +53,11 @@ const eventsReducer = (state = initialState, action) => {
             action.payload.Events.forEach((event => {
                 newState.allEvents[event.id] = event;
             }))
+            return newState;
+        }
+        case LOAD_ONE_EVENT:{
+            const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}}
+            newState.singleEvent = action.payload;
             return newState;
         }
         default:
