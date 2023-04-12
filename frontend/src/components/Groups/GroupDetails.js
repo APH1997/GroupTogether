@@ -57,7 +57,6 @@ function GroupDetails() {
                         <button id="organizer-btn-create">Create Event</button>
                         <button onClick={() => history.push(`/groups/${groupId}/edit`)}id="organizer-btn-update">Update</button>
                         <DeleteButton />
-                        <button id="organizer-btn-delete">Delete</button>
                         </>
                     }
                 </div>
