@@ -10,10 +10,8 @@ function GroupForm({ formType, group }) {
         history.push('/')
     }
     if (formType === "Update" && sessionUser.id !== group.organizerId){
-       history.push('/')
+        history.push('/')
     }
-
-
 
     const dispatch = useDispatch();
 

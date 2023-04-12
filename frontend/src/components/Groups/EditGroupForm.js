@@ -11,11 +11,10 @@ const EditGroupForm = () => {
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
-
     }, [dispatch, groupId])
 
-
     if(!group) return <h1>Loading...</h1>
+
     return (
         <GroupForm formType="Update" group={group} />
     )
