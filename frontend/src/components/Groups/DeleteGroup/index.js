@@ -1,4 +1,4 @@
-function DeleteGroupModal (){
+function DeleteConfirmModal (){
     return (
         <>
             <h2>Confirm Delete</h2>
@@ -11,4 +11,4 @@ function DeleteGroupModal (){
     )
 }
 
-export default DeleteGroupModal
+export default DeleteConfirmModal

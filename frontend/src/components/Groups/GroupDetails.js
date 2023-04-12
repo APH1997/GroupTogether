@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory} from "react-router-dom";
 import { useEffect } from "react";
 import EventsCard from "../Events/EventCard";
-import OpenModalMenuItem from "../Navigation/OpenModalMenuItem";
+
 
 function GroupDetails() {
     const history = useHistory();
