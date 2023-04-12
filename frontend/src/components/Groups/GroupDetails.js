@@ -32,7 +32,6 @@ function GroupDetails() {
 
     if (!group) return <h1>Loading...</h1>
 
-    console.log("this is the group:",group)
     return (
         <>
             <div className="upper-details">
