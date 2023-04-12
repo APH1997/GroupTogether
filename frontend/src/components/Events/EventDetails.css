@@ -14,8 +14,13 @@
     display: flex;
     flex-flow: column;
 }
-.group-info{
+.group-info-container{
     border: yellow 2px solid;
+    display: flex;
+}
+.group-info{
+    display: flex;
+    flex-flow: column;
 }
 .event-info{
     border: green 2px solid;
