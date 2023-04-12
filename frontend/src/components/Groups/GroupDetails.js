@@ -40,7 +40,7 @@ function GroupDetails() {
                     <div>
                         <h2>{group.name}</h2>
                         <p>{group.city}, {group.state}</p>
-                        {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
+                        {group && Object.values(group) && Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
                         <p>Organized by: {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
                     {user && user.id !== group.organizerId &&

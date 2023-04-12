@@ -60,6 +60,25 @@ export const createGroupThunk = (group) => async (dispatch) => {
     } else return response;
 }
 
+export const updateGroupAction = (group) => {
+    return {
+        type: EDIT_GROUP,
+        payload: group
+    }
+}
+export const updateGroupThunk = (group, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(group)
+    })
+    const data = await response.json();
+    if (response.ok){
+        await dispatch(updateGroupAction(data));
+        return data;
+    } else return response;
+}
+
 const initialState = {allGroups: {}, singleGroup: {}};
 const groupsReducer = (state = initialState, action) => {
     switch(action.type){
@@ -76,6 +95,12 @@ const groupsReducer = (state = initialState, action) => {
             return newState;
         }
         case CREATE_GROUP: {
+            const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
+            newState.allGroups[action.payload.id] = action.payload;
+            newState.singleGroup = action.payload;
+            return newState;
+        }
+        case EDIT_GROUP: {
             const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
             newState.allGroups[action.payload.id] = action.payload;
             newState.singleGroup = action.payload;
