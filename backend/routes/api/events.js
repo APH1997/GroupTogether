@@ -89,7 +89,8 @@ router.get('/:eventId', async (req, res, next) => {
     const event = await Event.findByPk(req.params.eventId, {
         include:
             [
-                { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'] },
+                { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
+                    include: {model: GroupImage}},
                 { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
                 { model: Attendance}
@@ -107,7 +108,12 @@ router.get('/:eventId', async (req, res, next) => {
     delete resEvent.Attendances;
     delete resEvent.createdAt;
     delete resEvent.updatedAt;
-
+    resEvent.Group.GroupImages.forEach(groupImage => {
+        if (groupImage && groupImage.preview){
+            resEvent.Group.imgUrl = groupImage.url
+        }
+    })
+    delete resEvent.Group.GroupImages;
 
     return res.json(resEvent)
 });
