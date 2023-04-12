@@ -8,6 +8,8 @@ const EDIT_GROUP = "group/editGroup";
 
 const DELETE_GROUP = "group/deleteGroup";
 
+const CLEAR_SINGLE_GROUP = "group/clearGroup"
+
 export const getGroupsAction = (groups) => {
     return {
         type: LOAD_GROUPS,
@@ -89,6 +91,13 @@ export const deleteGroupThunk = (groupId) => async (disptach) => {
 
 }
 
+//Action for cleaning up singleGroup state
+export const clearSingleGroupAction = () => {
+    return{
+        type: CLEAR_SINGLE_GROUP
+    }
+}
+
 const initialState = {allGroups: {}, singleGroup: {}};
 const groupsReducer = (state = initialState, action) => {
     switch(action.type){
@@ -116,6 +125,10 @@ const groupsReducer = (state = initialState, action) => {
         }
         case DELETE_GROUP: {
 
+        }
+        case CLEAR_SINGLE_GROUP: {
+            const newState = {...state, allGroups:{...state.allGroups}, singleGroup: {...initialState.singleGroup}}
+            return newState
         }
         default: {
             return state;
