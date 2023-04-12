@@ -1,4 +1,5 @@
 import { getGroupDetailsThunk } from "../../store/groups";
+import { clearSingleGroupAction } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory} from "react-router-dom";
 import { useEffect } from "react";
@@ -14,6 +15,10 @@ function GroupDetails() {
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
+
+        return function clearState(){
+            dispatch(clearSingleGroupAction())
+        }
     }, [dispatch])
 
 
