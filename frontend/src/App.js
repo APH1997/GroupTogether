@@ -10,6 +10,7 @@ import EventsPage from "./components/Events";
 import LandingPage from "./components/Landing";
 import CreateGroupForm from "./components/Groups/CreateGroupForm"
 import EditGroupForm from "./components/Groups/EditGroupForm";
+import EventDetails from "./components/Events/EventDetails";
 
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
             <EventsPage />
           </Route>
           <Route exact path="/events/:eventId">
-            Hello!
+            <EventDetails />
           </Route>
 
           <Route>
