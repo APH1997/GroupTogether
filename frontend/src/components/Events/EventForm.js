@@ -9,6 +9,7 @@ function EventForm({ formType, event, group }) {
 
     const sessionUser = useSelector(state => state.session.user)
 
+    //Halt right there, criminal scum!
     if (!sessionUser) {
         history.push('/')
     };
@@ -17,19 +18,40 @@ function EventForm({ formType, event, group }) {
         history.push('/')
     };
 
+    //Error stuff
+    const [hasSubmitted, setHasSubmitted] = useState(false)
+    const [errors, setErrors] = useState("");
+    //New event variables
+    const hostId = sessionUser.id;
     const [name, setName] = useState(event.name || "");
     const [type, setType] = useState(event.type || "");
-    const [capacity, setCapacity] = useState(event.capacity || "");
     const [price, setPrice] = useState(event.price || "");
     const [description, setDescription] = useState(event.description || "");
     const [startDate, setStartDate] = useState(event.startDate || "");
     const [endDate, setEndDate] = useState(event.endDate || "");
     const [imgUrl, setImgUrl] = useState("")
 
-    console.log(startDate);
+    useEffect(() => {
+        const imgSuffixes = ['png','jpeg','jpg'];
+        const errObj = {};
+        if (!name) errObj.name = 'Name is required';
+        if (!type) errObj.type = 'Event Type is required';
+        if (!price && Number(price) !== 0) errObj.price = 'Price is required';
+        if (!description || description.length < 30) errObj.description = 'Description must be at least 30 characters long'
 
+        if (Object.keys(errObj).length){
+            setErrors(errObj);
+        } else setErrors({})
+
+    },[name, type, price, description, startDate, endDate, imgUrl])
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        setHasSubmitted(true);
+    }
+    console.log(typeof price);
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
 
             <div>
                 <h1>{formType === 'Create' ? `Create an event for ${group.name}` : 'Update your event'}</h1>
@@ -56,7 +78,7 @@ function EventForm({ formType, event, group }) {
                     <label htmlFor="priceInput">What is the price for your event?</label>
                     <input
                         type="number"
-                        placeholder="0"
+                        placeholder={0}
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
                     />
