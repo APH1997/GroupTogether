@@ -25,6 +25,9 @@ a{
     align-items: center;
     justify-content: space-between;
 }
+.right-nav a:hover {
+    font-weight: bolder;
+}
 .noUser{
     justify-content: flex-end;
 }
