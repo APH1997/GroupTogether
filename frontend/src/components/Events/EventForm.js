@@ -66,6 +66,8 @@ function EventForm({ formType, event, group }) {
             capacity: 10
         }
 
+        setHasSubmitted(false);
+
         if (formType === "Create"){
             try {
                 const createdEvent = await dispatch(createEventThunk(newEvent, group.id))
