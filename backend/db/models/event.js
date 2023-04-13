@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     hostId: {
       type: DataTypes.INTEGER,
-      
+
     },
     venueId: {
       type: DataTypes.INTEGER,
@@ -54,8 +54,8 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Groups'
       },
-      // onDelete: 'CASCADE',
-      // hooks: true
+      onDelete: 'CASCADE',
+      hooks: true
     },
     name: {
       type: DataTypes.STRING,
