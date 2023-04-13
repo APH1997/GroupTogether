@@ -1,6 +1,6 @@
 import { getGroupDetailsThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, NavLink, useHistory} from "react-router-dom";
+import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import EventsCard from "../Events/EventCard";
 import DeleteButton from "./DeleteGroup/DeleteGroupButton";
@@ -19,14 +19,52 @@ function GroupDetails() {
 
 
     if (!Object.values(group).length) return <h1>loading...</h1>
+
     const eventsArr = group.Events
+
     const futureEvents = [];
+    const orderedFutureEvents = [];
+
     const pastEvents = [];
-    if (eventsArr?.length){
-        for (let event of eventsArr){
-            if (new Date(event.startDate) > new Date()){
+    const orderedPastEvents = [];
+    //Order the events
+    if (eventsArr?.length) {
+        for (let event of eventsArr) {
+            if (new Date(event.startDate) > new Date()) {
                 futureEvents.push(event)
             } else pastEvents.push(event)
+        }
+
+        while (futureEvents.length) {
+            let currMin = Infinity;
+            let currEvent;
+            let currMinIndex;
+            for (let i = 0; i < futureEvents.length; i++) {
+                const event = futureEvents[i];
+                if (new Date(event.startDate) < currMin) {
+                    currMin = new Date(event.startDate);
+                    currEvent = event;
+                    currMinIndex = i;
+                }
+            }
+            orderedFutureEvents.push(currEvent);
+            futureEvents.splice(currMinIndex, 1);
+        }
+
+        while (pastEvents.length) {
+            let currMax = -Infinity;
+            let currEvent;
+            let currMaxIndex;
+            for (let i = 0; i < pastEvents.length; i++){
+                const event = pastEvents[i];
+                if (new Date(event.startDate) > currMax){
+                    currMax = new Date(event.startDate);
+                    currEvent = event;
+                    currMaxIndex = i;
+                }
+            }
+            orderedPastEvents.push(currEvent);
+            pastEvents.splice(currMaxIndex, 1);
         }
     }
 
@@ -40,7 +78,7 @@ function GroupDetails() {
                 <div className="upper-left">
                     <NavLink to="/groups/all">Back to Groups</NavLink>
                     <img src={group.GroupImages?.length ? group.GroupImages[0]?.url : ''}></img>
-            </div>
+                </div>
                 <div className="upper-right">
                     <div>
                         <h2>{group.name}</h2>
@@ -49,12 +87,12 @@ function GroupDetails() {
                         <p>Organized by: {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
                     {user && user.id !== group.organizerId &&
-                    <button onClick={() => alert('Feature coming soon')}>Join this group</button>}
+                        <button onClick={() => alert('Feature coming soon')}>Join this group</button>}
                     {user && user.id === group.organizerId &&
                         <>
-                        <button onClick={() => history.push(`/groups/${groupId}/events/new`)}id="organizer-btn-create">Create Event</button>
-                        <button onClick={() => history.push(`/groups/${groupId}/edit`)}id="organizer-btn-update">Update</button>
-                        <DeleteButton groupId={groupId} />
+                            <button onClick={() => history.push(`/groups/${groupId}/events/new`)} id="organizer-btn-create">Create Event</button>
+                            <button onClick={() => history.push(`/groups/${groupId}/edit`)} id="organizer-btn-update">Update</button>
+                            <DeleteButton groupId={groupId} />
                         </>
                     }
                 </div>
@@ -68,24 +106,23 @@ function GroupDetails() {
                     <h3>What's all this, then?</h3>
                     <p>{group.about}</p>
                 </div>
-                {/* TODO: PAST AND FUTURE EVENTS----------------------------------- */}
                 <div className="current-group-events">
                     <div className="upcoming-events">
-                        {futureEvents.length > 0 &&
-                        <h2>Upcoming Events ({futureEvents.length})</h2>}
-                        {futureEvents.length > 0 && futureEvents.map(event => {
+                        {orderedFutureEvents.length > 0 &&
+                            <h2>Upcoming Events ({orderedFutureEvents.length})</h2>}
+                        {orderedFutureEvents.length > 0 && orderedFutureEvents.map(event => {
                             return (
-                                <EventsCard id={event.id} event={event} group={group}/>
+                                <EventsCard id={event.id} event={event} group={group} />
                             )
                         })}
                     </div>
                     <div className="past-events">
-                        {pastEvents.length > 0 &&
-                        <h2>Past Events ({pastEvents.length})</h2>}
-                        {pastEvents.length > 0 &&
-                            pastEvents.map(event => {
+                        {orderedPastEvents.length > 0 &&
+                            <h2>Past Events ({orderedPastEvents.length})</h2>}
+                        {orderedPastEvents.length > 0 &&
+                            orderedPastEvents.map(event => {
                                 return (
-                                    <EventsCard id={event.id} event={event} group={group}/>
+                                    <EventsCard id={event.id} event={event} group={group} />
                                 )
                             })}
                     </div>
