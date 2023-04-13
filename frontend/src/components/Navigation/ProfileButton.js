@@ -52,8 +52,11 @@ function ProfileButton({ user }) {
           <>
             <li>Hello, {user.firstName}</li>
             <li>{user.email}</li>
-            <li>
+            <li onClick={closeMenu}>
               <NavLink to="/groups/all">View Groups</NavLink>
+            </li>
+            <li onClick={closeMenu}>
+              <NavLink exact to="/events/all">View Events</NavLink>
             </li>
             <li>
               <button onClick={logout}>Log Out</button>
