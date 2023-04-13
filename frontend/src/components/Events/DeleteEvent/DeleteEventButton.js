@@ -2,11 +2,11 @@ import React from "react";
 import DeleteConfirmModal from "./index";
 import { useModal } from "../../../context/Modal";
 
-function DeleteButton({eventId}) {
+function DeleteButton({eventId, groupId}) {
     const {setModalContent} = useModal()
 
     const onClick = () => {
-        setModalContent(<DeleteConfirmModal eventId={eventId}/>)
+        setModalContent(<DeleteConfirmModal eventId={eventId} groupId={groupId}/>)
     }
     return (
             <button onClick={onClick}>

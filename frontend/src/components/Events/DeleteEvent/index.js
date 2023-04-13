@@ -3,7 +3,7 @@ import { useModal } from "../../../context/Modal"
 import {useHistory} from "react-router-dom";
 import { deleteEventThunk } from "../../../store/events";
 
-function DeleteConfirmModal ({eventId}){
+function DeleteConfirmModal ({eventId, groupId}){
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -12,7 +12,7 @@ function DeleteConfirmModal ({eventId}){
     const handleDelete = () => {
         dispatch(deleteEventThunk(eventId))
         closeModal();
-        history.push('/events/all')
+        history.push(`/groups/${groupId}`)
     }
 
     return (
