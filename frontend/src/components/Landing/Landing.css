@@ -2,26 +2,88 @@
     display: flex;
     flex-flow: column wrap;
     align-content: center;
+    align-items: center;
 
 }
 .landing-section-one{
     align-content: center;
     display: flex;
-    flex-flow: wrap;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    width: 75%;
+    margin-top: 20px;
+}
+.section-one-left{
+    width: 50%;
+}
+.section-one-right{
+    width: 50%;
+     display: flex;
+    justify-content: center;
+}
+.section-one-right>img{
+    border:none;
+    box-shadow: 0px 3px 2px rgb(255 6 0);
 }
 
 .landing-section-two{
     align-self: center;
     text-align: center;
+    width: 40%;
+    margin-top: 10px;
 }
 
 .landing-section-three{
     align-self: center;
     display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+.landing-section-three>div{
+    width: 30%;
+    padding: 10px;
+}
+
+.landing-section-three img{
+    margin: 0;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 150px;
+}
+
+.landing-section-three a:hover {
+    font-weight: bolder;
+}
+.allGroupsBlurb{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.allEventsBlurb{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.createGroupBlurb{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 .noAuth{
     color: lightgray;
+}
+
+.landing-section-four {
+    padding: 8px 20px;
+    background-color: rgb(14, 119, 180);
+    color: white;
+    font-family: 'Lexend', sans-serif;
+    box-shadow: 1px 1px 1px grey;
+}
+.landing-section-four:hover {
+    scale: .99 .99;
+    box-shadow: 1px 1px 1px black;
 }
