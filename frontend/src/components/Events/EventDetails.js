@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory} from "react-router-dom";
 import { useEffect } from "react";
 import './EventDetails.css';
+import DeleteButton from "./DeleteEvent/DeleteEventButton";
 
 function EventDetails(){
     const history = useHistory();
@@ -69,7 +70,7 @@ function EventDetails(){
                     </div>
                     {user.id === event.Group.Organizer.id && <div className="host-buttons">
                         <button onClick={() => history.push(`/groups/${event.Group.id}/events/${eventId}/edit`)}>Update</button>
-                        <button>Delete</button>
+                        <DeleteButton eventId={eventId}/>
                     </div>}
                 </div>
 
