@@ -42,3 +42,14 @@
 .fas{
     font-size: 20px;
 }
+
+.host-buttons{
+    display:flex;
+    flex-flow:column wrap;
+    justify-content: flex-end;
+}
+.host-buttons>button{
+    height: 15%;
+    margin: 5px;
+    width: 150%;
+}

@@ -18,7 +18,7 @@ function EventDetails(){
     }, [dispatch])
 
     console.log(event);
-
+    console.log(user);
     if (!event || !Object.values(event).length) return <></>
 
     const [noMsStart] = event.startDate.split('.')
@@ -67,6 +67,10 @@ function EventDetails(){
                             </div>
                         </div>
                     </div>
+                    {user.id === event.hostId && <div className="host-buttons">
+                        <button>Update</button>
+                        <button>Delete</button>
+                    </div>}
                 </div>
 
                 <div className="content-container-bottom">
