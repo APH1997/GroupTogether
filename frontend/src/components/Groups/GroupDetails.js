@@ -32,6 +32,8 @@ function GroupDetails() {
 
     if (!group) return <h1>Loading...</h1>
 
+    console.log("Group in group details:", group)
+
     return (
         <>
             <div className="upper-details">
@@ -73,7 +75,7 @@ function GroupDetails() {
                         <h2>Upcoming Events ({futureEvents.length})</h2>}
                         {futureEvents.length > 0 && futureEvents.map(event => {
                             return (
-                                <EventsCard id={event.id} event={event}/>
+                                <EventsCard id={event.id} event={event} group={group}/>
                             )
                         })}
                     </div>
@@ -83,7 +85,7 @@ function GroupDetails() {
                         {pastEvents.length > 0 &&
                             pastEvents.map(event => {
                                 return (
-                                    <EventsCard id={event.id} event={event}/>
+                                    <EventsCard id={event.id} event={event} group={group}/>
                                 )
                             })}
                     </div>
