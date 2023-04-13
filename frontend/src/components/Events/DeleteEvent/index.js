@@ -1,16 +1,16 @@
 import {useDispatch} from "react-redux"
 import { useModal } from "../../../context/Modal"
 import {useHistory} from "react-router-dom";
-// import { deleteGroupThunk } from "../../../store/groups";
+import { deleteEventThunk } from "../../../store/events";
 
-function DeleteConfirmModal ({groupId}){
+function DeleteConfirmModal ({eventId}){
     const dispatch = useDispatch();
     const history = useHistory();
 
     const {closeModal} = useModal();
 
     const handleDelete = () => {
-        // dispatch(deleteGroupThunk(groupId));
+        dispatch(deleteEventThunk(eventId))
         closeModal();
         history.push('/events/all')
     }
