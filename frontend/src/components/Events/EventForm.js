@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createEventThunk } from '../../store/events';
+import { createEventThunk, updateEventThunk } from '../../store/events';
 
 function EventForm({ formType, event, group }) {
     const history = useHistory();
@@ -75,6 +75,14 @@ function EventForm({ formType, event, group }) {
             } catch(e){
                 const body = await e.json()
                 return setErrors(body.errors);
+            }
+        } else {
+            try{
+                const editedEvent = await dispatch(updateEventThunk(newEvent, event.id));
+                history.push(`/events/${event.id}`);
+            } catch (e){
+                const body = await e.json();
+                return setErrors(body.errors)
             }
         }
     }

@@ -67,8 +67,8 @@ function EventDetails(){
                             </div>
                         </div>
                     </div>
-                    {user.id === event.hostId && <div className="host-buttons">
-                        <button>Update</button>
+                    {user.id === event.Group.Organizer.id && <div className="host-buttons">
+                        <button onClick={() => history.push(`/groups/${event.Group.id}/events/${eventId}/edit`)}>Update</button>
                         <button>Delete</button>
                     </div>}
                 </div>

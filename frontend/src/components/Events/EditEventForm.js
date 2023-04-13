@@ -24,7 +24,6 @@ const EditEventForm = () => {
     return (
         <EventForm formType="Update" group={group} event={event} />
     )
-    //need to grab event and group??
 
 }
 

@@ -62,6 +62,26 @@ export const createEventThunk = (event, groupId) => async (dispatch) => {
     } else return data;
 }
 
+export const updateEventAction = (event) => {
+    return {
+        type: EDIT_EVENT,
+        payload: event
+    }
+}
+export const updateEventThunk = (event, eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}` , {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(event)
+    });
+    const data = await response.json();
+    if (response.ok){
+        await dispatch(updateEventAction(data));
+        return data
+    }  else return response;
+
+}
+
 
 const initialState = {allEvents: {}, singleEvent: {}};
 const eventsReducer = (state = initialState, action) => {
@@ -81,6 +101,9 @@ const eventsReducer = (state = initialState, action) => {
         case CREATE_EVENT:{
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}}
             return newState;
+        }
+        case EDIT_EVENT:{
+            return state;
         }
         default:
             return state;
