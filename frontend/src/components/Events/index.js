@@ -16,7 +16,7 @@ function EventsPage(){
 
     useEffect(() => {
         dispatch(getEventsThunk());
-    }, [])
+    }, [dispatch, eventsList.length])
 
     return (
         <>
