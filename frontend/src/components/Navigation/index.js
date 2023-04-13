@@ -12,7 +12,7 @@ function Navigation({ isLoaded }){
       <li>
         <NavLink exact to="/"><h1>GroupTogether</h1></NavLink>
       </li>
-      <div className='right-nav'>
+      <div className={`right-nav${!sessionUser ? ' noUser' : ''}`}>
         {sessionUser && <li><NavLink exact to="/groups/new">Start a new Group</NavLink></li>}
         {isLoaded && (
           <li>

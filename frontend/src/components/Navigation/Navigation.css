@@ -25,6 +25,9 @@ a{
     align-items: center;
     justify-content: space-between;
 }
+.noUser{
+    justify-content: flex-end;
+}
 
 ul>li{
     display: flex;
