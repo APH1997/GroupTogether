@@ -18,6 +18,9 @@
     border: yellow 2px solid;
     display: flex;
 }
+.group-info-container:hover{
+    cursor: pointer;
+}
 .group-info{
     display: flex;
     flex-flow: column;
