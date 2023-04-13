@@ -94,7 +94,7 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
     const data = await response.json();
     if (response.ok){
         await dispatch(deleteGroupAction(groupId));
-        return data;
+        return data
     } else return response;
 }
 

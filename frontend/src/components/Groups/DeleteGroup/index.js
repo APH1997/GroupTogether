@@ -11,10 +11,14 @@ function DeleteConfirmModal ({groupId}){
     const {closeModal} = useModal();
 
     const handleDelete = async () => {
-        await dispatch(deleteGroupThunk(groupId));
-        await dispatch(getEventsThunk());
-        closeModal();
-        history.push('/groups/all')
+        const deleted = await dispatch(deleteGroupThunk(groupId));
+
+        if (deleted.message){
+            await dispatch(getEventsThunk());
+            closeModal();
+            history.push('/groups/all')
+        } else return deleted;
+
     }
 
     return (
