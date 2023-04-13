@@ -5,6 +5,24 @@
     align-content: center;
     justify-content: space-between;
     list-style-type: none;
+    border-bottom: lightgray solid 1.5px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-bar h1{
+    margin: 10px;
+    padding: 3px;
+}
+a{
+    text-decoration: none;
+}
+
+.right-nav{
+    display: flex;
+    width: 25%;
+    align-items: center;
+    justify-content: space-between;
 }
 
 ul>li{

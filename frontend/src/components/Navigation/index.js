@@ -10,7 +10,7 @@ function Navigation({ isLoaded }){
   return (
     <ul className='nav-bar'>
       <li>
-        <NavLink exact to="/"><h1>MeetUp</h1></NavLink>
+        <NavLink exact to="/"><h1>GroupTogether</h1></NavLink>
       </li>
       <div className='right-nav'>
         {sessionUser && <li><NavLink exact to="/groups/new">Start a new Group</NavLink></li>}
