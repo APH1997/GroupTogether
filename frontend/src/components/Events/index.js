@@ -18,6 +18,52 @@ function EventsPage(){
         dispatch(getEventsThunk());
     }, [dispatch, eventsList.length])
 
+    const futureEvents = [];
+    const orderedFutureEvents = [];
+
+    const pastEvents = [];
+    const orderedPastEvents = [];
+    //Order the events
+    if (eventsList?.length) {
+        for (let event of eventsList) {
+            if (new Date(event.startDate) > new Date()) {
+                futureEvents.push(event)
+            } else pastEvents.push(event)
+        }
+
+        while (futureEvents.length) {
+            let currMin = Infinity;
+            let currEvent;
+            let currMinIndex;
+            for (let i = 0; i < futureEvents.length; i++) {
+                const event = futureEvents[i];
+                if (new Date(event.startDate) < currMin) {
+                    currMin = new Date(event.startDate);
+                    currEvent = event;
+                    currMinIndex = i;
+                }
+            }
+            orderedFutureEvents.push(currEvent);
+            futureEvents.splice(currMinIndex, 1);
+        }
+
+        while (pastEvents.length) {
+            let currMax = -Infinity;
+            let currEvent;
+            let currMaxIndex;
+            for (let i = 0; i < pastEvents.length; i++){
+                const event = pastEvents[i];
+                if (new Date(event.startDate) > currMax){
+                    currMax = new Date(event.startDate);
+                    currEvent = event;
+                    currMaxIndex = i;
+                }
+            }
+            orderedPastEvents.push(currEvent);
+            pastEvents.splice(currMaxIndex, 1);
+        }
+    }
+
     return (
         <>
             <div className="all-groups-header">
@@ -28,8 +74,15 @@ function EventsPage(){
                 <h3>Events in Meetup</h3>
             </div>
             <div className="groups-card-display">
-                {eventsList.length > 0 &&
-                    eventsList.map(event => {
+                {orderedFutureEvents.length > 0 &&
+                    orderedFutureEvents.map(event => {
+                        return (
+                            <EventsCard id={event.id} event={event}/>
+                        )
+                    })
+                }
+                {orderedPastEvents.length > 0 &&
+                    orderedPastEvents.map(event => {
                         return (
                             <EventsCard id={event.id} event={event}/>
                         )
