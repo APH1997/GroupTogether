@@ -10,7 +10,7 @@ const EditGroupForm = () => {
     const {groupId} = useParams();
     const group = useSelector(state => state.groups.singleGroup)
 
-
+    
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
     }, [dispatch, groupId])
@@ -21,4 +21,4 @@ const EditGroupForm = () => {
         <GroupForm formType="Update" group={group} />
     )
 }
-export default EditGroupForm
+export default EditGroupForm;
