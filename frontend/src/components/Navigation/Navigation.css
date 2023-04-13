@@ -46,12 +46,18 @@ button{
 
 ul.profile-dropdown{
     list-style-type: none;
+    background: transparent;
 }
 
 ul.profile-dropdown > li{
-    border: blue solid 1px;
+    /* border: blue solid 1px; */
+    background-color: lightgray;
+    border: darkgray 1px solid;
+    border-radius: 1px 1px 1px black;
+}
 
-
+ul.profile-dropdown a:hover {
+    font-weight: bold;
 }
 
 .hidden {
