@@ -13,6 +13,7 @@
 .nav-bar h1{
     margin: 10px;
     padding: 3px;
+    color: rgb(251, 102, 21);
 }
 a{
     text-decoration: none;
@@ -36,10 +37,11 @@ button{
 }
 
 .profile-dropdown{
-    border: red solid 1px;
     background: lightgrey;
-    width: fit-content;
 
+    width: fit-content;
+    position: absolute;
+    right: 9px;
 }
 
 ul.profile-dropdown{
@@ -48,6 +50,7 @@ ul.profile-dropdown{
 
 ul.profile-dropdown > li{
     border: blue solid 1px;
+
 
 }
 
