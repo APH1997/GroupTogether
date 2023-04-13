@@ -44,6 +44,24 @@ export const getOneEventThunk = (eventId) => async (dispatch) => {
     }
 }
 
+export const createEventAction = () => {
+    return {
+        type: CREATE_EVENT,
+    }
+}
+export const createEventThunk = (event, groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/events`, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(event)
+    })
+    const data = await response.json();
+    if (response.ok){
+        await dispatch(createEventAction());
+        return data;
+    } else return data;
+}
+
 
 const initialState = {allEvents: {}, singleEvent: {}};
 const eventsReducer = (state = initialState, action) => {
@@ -58,6 +76,10 @@ const eventsReducer = (state = initialState, action) => {
         case LOAD_ONE_EVENT:{
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}}
             newState.singleEvent = action.payload;
+            return newState;
+        }
+        case CREATE_EVENT:{
+            const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}}
             return newState;
         }
         default:

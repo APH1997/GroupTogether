@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { createEventThunk } from '../../store/events';
 
 function EventForm({ formType, event, group }) {
     const history = useHistory();
     const dispatch = useDispatch();
-    console.log(group);
 
     const sessionUser = useSelector(state => state.session.user)
 
@@ -36,8 +36,11 @@ function EventForm({ formType, event, group }) {
         const errObj = {};
         if (!name) errObj.name = 'Name is required';
         if (!type) errObj.type = 'Event Type is required';
-        if (!price && Number(price) !== 0) errObj.price = 'Price is required';
+        if (!price && price !== 0) errObj.price = 'Price is required';
         if (!description || description.length < 30) errObj.description = 'Description must be at least 30 characters long'
+        if (!startDate) errObj.startDate = 'Event start is required';
+        if (!endDate) errObj.endDate = 'Event end is required';
+        if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
 
         if (Object.keys(errObj).length){
             setErrors(errObj);
@@ -48,8 +51,32 @@ function EventForm({ formType, event, group }) {
     const handleSubmit = async (e) =>{
         e.preventDefault();
         setHasSubmitted(true);
+
+        if (Object.keys(errors).length) return window.alert('Cannot submit');
+
+        const newEvent = {
+            venueId: 1,
+            hostId,
+            name,
+            type,
+            price,
+            description,
+            startDate,
+            endDate,
+            capacity: 10
+        }
+
+        if (formType === "Create"){
+            try {
+                const createdEvent = await dispatch(createEventThunk(newEvent, group.id))
+                history.push(`/events/${createdEvent.id}`)
+            } catch(e){
+                const body = await e.json()
+                return setErrors(body.errors);
+            }
+        }
     }
-    console.log(typeof price);
+
     return (
         <form onSubmit={handleSubmit}>
 
@@ -64,6 +91,7 @@ function EventForm({ formType, event, group }) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
+                {hasSubmitted && errors.name && <p className='error'>{errors.name}</p>}
             </div>
             <div>
                 <div>
@@ -73,16 +101,18 @@ function EventForm({ formType, event, group }) {
                         <option value="In person" >In person</option>
                         <option value="Online">Online</option>
                     </select>
+                {hasSubmitted && errors.type && <p className='error'>{errors.type}</p>}
                 </div>
                 <div>
                     <label htmlFor="priceInput">What is the price for your event?</label>
                     <input
                         type="number"
-                        placeholder={0}
+                        placeholder="0"
                         value={price}
-                        onChange={(e) => setPrice(e.target.value)}
+                        onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
                     />
                 </div>
+                {hasSubmitted && errors.price && <p className='error'>{errors.price}</p>}
             </div>
             <div>
                 <div>
@@ -95,6 +125,7 @@ function EventForm({ formType, event, group }) {
                         onChange={(e) => setStartDate(e.target.value)}
                     />
                 </div>
+                {hasSubmitted && errors.startDate && <p className='error'>{errors.startDate}</p>}
                 <div>
                     <label htmlFor='endDateInput'>When does your event end?</label>
                     <input
@@ -105,6 +136,8 @@ function EventForm({ formType, event, group }) {
                         onChange={(e) => setEndDate(e.target.value)}
                     />
                 </div>
+                {hasSubmitted && errors.endDate && <p className='error'>{errors.endDate}</p>}
+
             </div>
             <div>
                 <label htmlFor='imageInput'>Please add an image url for your event below</label>
@@ -116,6 +149,7 @@ function EventForm({ formType, event, group }) {
                     onChange={(e) => setImgUrl(e.target.value)}
                 />
             </div>
+            {hasSubmitted && errors.img && <p className='error'>{errors.img}</p>}
             <div>
                 <label htmlFor='describeInput'>Please describe your event:</label>
                 <textarea
@@ -125,6 +159,7 @@ function EventForm({ formType, event, group }) {
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
+            {hasSubmitted && errors.description && <p className='error'>{errors.description}</p>}
             <div>
                 <button>{formType === 'Create' ? 'Create' : 'Update'} Event</button>
             </div>
