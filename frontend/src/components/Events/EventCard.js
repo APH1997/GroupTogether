@@ -20,7 +20,7 @@ function EventsCard({event}){
                 <div className="cont-info">
                     <p>{date} · {time}</p>
                     <h2>{event.name}</h2>
-                    <h3>{event.Venue.city}, {event.Venue.state}</h3>
+                    <h3>{event.Venue?.city}, {event.Venue?.state}</h3>
                 </div>
             </div>
                 <p>{event.description}</p>
