@@ -2,11 +2,11 @@ import {csrfFetch} from './csrf';
 
 const LOAD_EVENTS = "events/loadGroups";
 const LOAD_ONE_EVENT = "events/loadGroup";
-
 const CREATE_EVENT = "events/createGroup";
+const CREATE_EVENT_IMAGE = "events/createImage";
 const EDIT_EVENT = "events/editGroup";
-
 const DELETE_EVENT = "events/deleteGroup";
+
 
 
 export const getEventsAction = (events) => {
@@ -96,6 +96,25 @@ export const deleteEventThunk = (eventId) => async (dispatch) => {
     const data = await response.json();
     if (response.ok){
         await dispatch(deleteEventAction(eventId));
+        return data;
+    } else return response;
+}
+
+export const createEventImageAction = (image) => {
+    return {
+        type: CREATE_EVENT_IMAGE,
+        payload: image
+    }
+}
+export const createEventImageThunk = (eventId, image) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/images`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(image)
+    });
+    const data = await response.json();
+    if (response.ok){
+        await dispatch(createEventImageAction(image));
         return data;
     } else return response;
 }

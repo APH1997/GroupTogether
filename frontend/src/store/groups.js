@@ -2,14 +2,12 @@ import {csrfFetch} from './csrf';
 
 const LOAD_GROUPS = "groups/loadGroups";
 const LOAD_ONE_GROUP = "group/loadGroup";
-
 const CREATE_GROUP = "groups/createGroup";
 const CREATE_GROUP_IMAGE = "groups/createImage";
 const EDIT_GROUP = "group/editGroup";
-
 const DELETE_GROUP = "group/deleteGroup";
 
-const CLEAR_SINGLE_GROUP = "group/clearGroup"
+
 
 export const getGroupsAction = (groups) => {
     return {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createEventThunk, updateEventThunk } from '../../store/events';
+import { createEventImageThunk, createEventThunk, updateEventThunk } from '../../store/events';
 
 function EventForm({ formType, event, group }) {
     const history = useHistory();
@@ -71,6 +71,12 @@ function EventForm({ formType, event, group }) {
         if (formType === "Create"){
             try {
                 const createdEvent = await dispatch(createEventThunk(newEvent, group.id))
+                //Check if image was given
+                if (imgUrl){
+                    const image = {url: imgUrl, preview: true};
+                    await dispatch(createEventImageThunk(createdEvent.id, image))
+                }
+
                 history.push(`/events/${createdEvent.id}`)
             } catch(e){
                 const body = await e.json()

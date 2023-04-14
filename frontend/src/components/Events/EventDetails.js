@@ -28,6 +28,13 @@ function EventDetails(){
     const [startDate, startTime] = noMsStart.split('T')
     const [endDate, endTime] = noMsEnd.split('T')
 
+    let previewImage;
+    for (let image of event.EventImages){
+        if (image.preview){
+            previewImage = image.url
+        }
+    }
+
     return (
         <>
             <header>
@@ -38,7 +45,7 @@ function EventDetails(){
             <main className="main-content-container">
                 <div className="content-container-top">
                     <div className="event-image-container">
-                        <img></img>
+                        <img src={previewImage}></img>
                     </div>
                     <div className="group-and-event-info">
                         <div onClick={() => history.push(`/groups/${event.Group.id}`)}className="group-info-container">
