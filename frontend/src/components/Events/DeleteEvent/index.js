@@ -17,6 +17,8 @@ function DeleteConfirmModal ({eventId, groupId}){
             await dispatch(getGroupDetailsThunk(groupId))
                 .then(closeModal())
                 .then(history.push(`/groups/${groupId}`))
+        } else {
+            return deleted
         }
 
     }
