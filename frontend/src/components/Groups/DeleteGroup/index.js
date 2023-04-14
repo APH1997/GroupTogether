@@ -14,9 +14,9 @@ function DeleteConfirmModal ({groupId}){
         const deleted = await dispatch(deleteGroupThunk(groupId));
 
         if (deleted.message){
-            await dispatch(getEventsThunk());
-            closeModal();
-            history.push('/groups/all')
+            await dispatch(getEventsThunk())
+            .then(closeModal())
+            .then(history.push('/groups/all'))
         } else return deleted;
 
     }

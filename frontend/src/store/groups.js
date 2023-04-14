@@ -107,6 +107,7 @@ const groupsReducer = (state = initialState, action) => {
             action.payload.Groups.forEach((group => {
                 newState.allGroups[group.id] = group;
             }))
+            newState.singleGroup = {};
             return newState;
         }
         case LOAD_ONE_GROUP: {

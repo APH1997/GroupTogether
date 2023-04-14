@@ -108,6 +108,7 @@ const eventsReducer = (state = initialState, action) => {
             action.payload.Events.forEach((event => {
                 newState.allEvents[event.id] = event;
             }))
+            newState.singleEvent = {};
             return newState;
         }
         case LOAD_ONE_EVENT:{
