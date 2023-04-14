@@ -1,4 +1,4 @@
-/* TODO: STYLE LOGIN */
+
 div.login-model-container{
     display: flex;
     flex-flow: column wrap;
@@ -9,7 +9,6 @@ div.login-model-container{
 div.login-model-container input {
     width: 260px;
     margin-bottom: 10px;
-
 }
 
 #login-btn{
@@ -27,7 +26,6 @@ div.login-model-container input {
     cursor: pointer;
     scale: 50%, 50%;
     box-shadow: 1px 1px 2px darkgray;
-
 }
 #demo-user-login{
     text-decoration: underline;

@@ -5,3 +5,40 @@ form {
     flex-flow: column wrap;
     align-content: center;
 }
+
+div.signup-model-container{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 300px;
+}
+
+div.signup-model-container input{
+    width: 260px;
+    margin-bottom: 10px;
+}
+
+#signup-btn{
+    width: 90%;
+    align-self: center;
+    margin: 10px;
+    margin-top: 0;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 2px 2px 2px grey;
+    font-family: 'Lexend', sans-serif;
+    color: grey;
+}
+
+#signup-btn:hover{
+    cursor: pointer;
+    scale: 50%, 50%;
+    box-shadow: 1px 1px 2px darkgray;
+}
+
+#signup-btn.disabled{
+    box-shadow: 0 0 0 white;
+}
+#signup-btn.disabled:hover{
+    cursor: auto;
+}

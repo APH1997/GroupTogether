@@ -14,7 +14,7 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
-  
+
   const disableBtn = (email.length < 1 ||username.length < 4 ||
                         firstName.length < 1||lastName.length < 1 ||
                         password.length < 6 ||confirmPassword.length < 1)
@@ -47,80 +47,67 @@ function SignupFormModal() {
 
   return (
 
-    <>
+    <div className="signup-model-container">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-        <label>
-          Email
-          <br></br>
+        <label>Email</label>
           <input
+            name="email"
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-          />
-        </label>
+            />
+
         {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
-          <br></br>
+        <label>Username</label>
           <input
+            name="username"
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-          />
-        </label>
+            />
+
         {errors.username && <p>{errors.username}</p>}
-        <label>
-          First Name
-          <br></br>
+        <label>First Name</label>
           <input
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
-        </label>
         {errors.firstName && <p>{errors.firstName}</p>}
-        <label>
-          Last Name
-          <br></br>
+        <label>Last Name</label>
           <input
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
-        </label>
         {errors.lastName && <p>{errors.lastName}</p>}
-        <label>
-          Password
-          <br></br>
+        <label>Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
         {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
-          <br></br>
+        <label>Confirm Password</label>
           <input
             type="password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-        </label>
         {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
         )}
-        <button disabled={disableBtn} type="submit">Sign Up</button>
+        <br/>
+        <button id={`signup-btn`} className={disableBtn ? 'disabled' : ''} disabled={disableBtn} type="submit">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 
