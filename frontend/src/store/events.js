@@ -18,6 +18,7 @@ export const getEventsAction = (events) => {
 export const getEventsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/events');
     const data = await response.json();
+    console.log("GETTING THE NEW EVENTS IN THUNK", data)
     if (response.ok){
         dispatch(getEventsAction(data));
         return response;
@@ -105,6 +106,7 @@ const eventsReducer = (state = initialState, action) => {
     switch (action.type){
         case LOAD_EVENTS: {
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}}
+            newState.allEvents = {};
             action.payload.Events.forEach((event => {
                 newState.allEvents[event.id] = event;
             }))
