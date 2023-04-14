@@ -27,6 +27,7 @@ function GroupDetails() {
 
     const pastEvents = [];
     const orderedPastEvents = [];
+
     //Order the events
     if (eventsArr?.length) {
         for (let event of eventsArr) {
@@ -69,8 +70,6 @@ function GroupDetails() {
     }
 
     if (!group) return <h1>Loading...</h1>
-
-    console.log("Group in group details:", group)
 
     return (
         <>
