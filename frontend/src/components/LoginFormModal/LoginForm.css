@@ -21,12 +21,20 @@ div.login-model-container input {
     font-family: 'Lexend', sans-serif;
     color: grey;
 }
+#login-btn:disabled{
+    box-shadow: 0 0 0 white;
+}
+#login-btn:disabled:hover{
+    cursor: auto;
+    box-shadow: 0 0 0 white;
+}
 
 #login-btn:hover{
     cursor: pointer;
     scale: 50%, 50%;
     box-shadow: 1px 1px 2px darkgray;
 }
+
 #demo-user-login{
     text-decoration: underline;
     color: rgb(0, 140, 255)

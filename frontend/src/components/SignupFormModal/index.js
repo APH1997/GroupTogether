@@ -105,7 +105,7 @@ function SignupFormModal() {
           <p>{errors.confirmPassword}</p>
         )}
         <br/>
-        <button id={`signup-btn`} className={disableBtn ? 'disabled' : ''} disabled={disableBtn} type="submit">Sign Up</button>
+        <button id={`signup-btn`} disabled={disableBtn} type="submit">Sign Up</button>
       </form>
     </div>
   );

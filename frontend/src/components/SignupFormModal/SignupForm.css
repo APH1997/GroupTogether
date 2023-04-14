@@ -36,9 +36,9 @@ div.signup-model-container input{
     box-shadow: 1px 1px 2px darkgray;
 }
 
-#signup-btn.disabled{
+#signup-btn:disabled{
     box-shadow: 0 0 0 white;
 }
-#signup-btn.disabled:hover{
+#signup-btn:disabled:hover{
     cursor: auto;
 }
