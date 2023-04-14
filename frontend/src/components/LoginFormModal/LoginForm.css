@@ -19,21 +19,27 @@ div.login-model-container input {
     background-color: white;
     box-shadow: 2px 2px 2px grey;
     font-family: 'Lexend', sans-serif;
-    color: grey;
+    color: #2a5c60;
+    background-color: #faca33;
+    border-radius: 5px;
+
 }
+#login-btn:hover{
+    cursor: pointer;
+    scale: 50%, 50%;
+    box-shadow: 1px 1px 2px darkgray;
+}
+
 #login-btn:disabled{
     box-shadow: 0 0 0 white;
+    background-color: white;
+    color: grey;
 }
 #login-btn:disabled:hover{
     cursor: auto;
     box-shadow: 0 0 0 white;
 }
 
-#login-btn:hover{
-    cursor: pointer;
-    scale: 50%, 50%;
-    box-shadow: 1px 1px 2px darkgray;
-}
 
 #demo-user-login{
     text-decoration: underline;
