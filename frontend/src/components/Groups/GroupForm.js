@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { createGroupThunk, updateGroupThunk } from '../../store/groups';
+import { createGroupImageThunk, createGroupThunk, updateGroupThunk } from '../../store/groups';
 
 function GroupForm({ formType, group }) {
     const history = useHistory();
@@ -76,8 +76,13 @@ function GroupForm({ formType, group }) {
             if (createdGroup.errors){
                 setErrors(createdGroup.errors)
             } else {
+                if (imgUrl){
+                    const image = {url: imgUrl, preview: true}
+                    await dispatch(createGroupImageThunk(createdGroup.id, image))
+                }
                 history.push(`/groups/${createdGroup.id}`)
             }
+
         } else {
             const update = await dispatch(updateGroupThunk(newGroup, group.id))
             if (update.errors){

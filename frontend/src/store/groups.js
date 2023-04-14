@@ -4,6 +4,7 @@ const LOAD_GROUPS = "groups/loadGroups";
 const LOAD_ONE_GROUP = "group/loadGroup";
 
 const CREATE_GROUP = "groups/createGroup";
+const CREATE_GROUP_IMAGE = "groups/createImage";
 const EDIT_GROUP = "group/editGroup";
 
 const DELETE_GROUP = "group/deleteGroup";
@@ -95,6 +96,25 @@ export const deleteGroupThunk = (groupId) => async (dispatch) => {
     if (response.ok){
         await dispatch(deleteGroupAction(groupId));
         return data
+    } else return response;
+}
+
+export const createGroupImageAction = (image) => {
+    return {
+        type: CREATE_GROUP_IMAGE,
+        payload: image
+    }
+}
+export const createGroupImageThunk = (groupId, image) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/images`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(image)
+    });
+    const data = await response.json();
+    if (response.ok){
+        await dispatch(createGroupImageAction(image));
+        return data;
     } else return response;
 }
 
