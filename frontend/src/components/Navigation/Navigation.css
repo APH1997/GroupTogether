@@ -42,13 +42,8 @@ ul>li{
 button{
     height: 40%;
 }
-
-.profile-dropdown{
-    background: lightgrey;
-
-    width: fit-content;
-    position: absolute;
-    right: 9px;
+button:hover{
+    cursor: pointer;
 }
 
 ul.profile-dropdown{
@@ -74,4 +69,48 @@ ul.profile-dropdown a:hover {
 .modalListItem:hover{
     cursor: pointer;
     color: rgb(10, 95, 144)
+}
+
+.profile-dropdown{
+    background: lightgrey;
+    width: fit-content;
+    position: absolute;
+    right: 9px;
+}
+
+.profile-dropdown li {
+    line-height: 32px;
+    padding-left: 5px;
+    padding-right: 5px;
+    align-self: center;
+}
+
+#greeting{
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
+}
+#email{
+    border-top: none;
+    line-height: 20px;
+    padding-bottom: 5px;
+}
+#view-groups{}
+#view-events{}
+#view-groups:hover, #view-events:hover{
+    background-color: white;
+    color: rgb(251, 102, 21);
+}
+
+#logout{
+    margin: 0px auto;
+    color: darkgray;
+    display: flex;
+    justify-content: flex-start;
+
+}
+#logout:hover{
+    cursor: pointer;
+    background-color: white;
+    color:black;
 }

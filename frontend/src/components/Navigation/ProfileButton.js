@@ -50,16 +50,16 @@ function ProfileButton({ user }) {
       <ul className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <li>Hello, {user.firstName}</li>
-            <li>{user.email}</li>
-            <li onClick={closeMenu}>
+            <li id="greeting">Hello, {user.firstName}</li>
+            <li id="email">{user.email}</li>
+            <li onClick={closeMenu} id="view-groups">
               <NavLink to="/groups/all">View Groups</NavLink>
             </li>
-            <li onClick={closeMenu}>
+            <li onClick={closeMenu} id="view-events">
               <NavLink exact to="/events/all">View Events</NavLink>
             </li>
-            <li>
-              <button onClick={logout}>Log Out</button>
+            <li onClick={logout} id="logout">
+              Log Out
             </li>
           </>
         ) : (
