@@ -54,6 +54,7 @@
 
 .landing-section-three a:hover {
     font-weight: bolder;
+    text-decoration: underline;
 }
 .allGroupsBlurb{
     display: flex;

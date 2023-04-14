@@ -23,7 +23,8 @@ a{
     display: flex;
     width: 25%;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    column-gap: 40px;
 }
 .right-nav a:hover {
     font-weight: bolder;
