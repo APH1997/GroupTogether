@@ -493,8 +493,9 @@ router.post('/:groupId/events', async (req, res, next) => {
     }
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
     const errors = {};
-    const venue = await Venue.findByPk(venueId);
-    if (!venue) errors.venueId = "Venue does not exist";
+    // THIS IS A SHORT FIX FOR MY CASCADE ISSUES
+    // const venue = await Venue.findByPk(venueId);
+    // if (!venue) errors.venueId = "Venue does not exist";
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";

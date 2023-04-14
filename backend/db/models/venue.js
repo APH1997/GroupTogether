@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       Venue.belongsTo(models.Group, {
         foreignKey: 'groupId',
         as: 'Venue',
-        // onDelete: 'CASCADE',
-        // hooks: true
+        onDelete: 'SET NULL',
+        hooks: true
       })
       Venue.belongsToMany(models.Group, {
         through: 'Event',

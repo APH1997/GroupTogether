@@ -13,7 +13,7 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         hostId: 3,
-        venueId: 1,
+        venueId: null,
         groupId: 3,
         name: 'Wear an impractical hat',
         description: 'if you are not inconvenienced by your hat, it is not impractical enough.',
@@ -25,7 +25,7 @@ module.exports = {
       },
       {
         hostId: 1,
-        venueId: 2,
+        venueId: null,
         groupId: 1,
         name: 'Wear a silly hat',
         description: 'if you are not amused by your hat, it is not silly enough.',
@@ -37,7 +37,7 @@ module.exports = {
       },
       {
         hostId: 1,
-        venueId: 3,
+        venueId: null,
         groupId: 1,
         name: 'Donating Silly Hats',
         description: 'We did not think it possible, but we bought too many silly hats! Argh!',
@@ -49,7 +49,7 @@ module.exports = {
       },
       {
         hostId: 1,
-        venueId: 1,
+        venueId: null,
         groupId: 1,
         name: 'Shopping for Silly Hats',
         description: 'The crew is going to hit the outlets and find the silliest hats they have to offer',
@@ -61,7 +61,7 @@ module.exports = {
       },
       {
         hostId: 2,
-        venueId: 3,
+        venueId: null,
         groupId: 2,
         name: 'Wear a haughty hat',
         description: 'if you are not feeling superior because of your hat, it is not haughty enough.',

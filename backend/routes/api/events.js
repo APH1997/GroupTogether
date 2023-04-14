@@ -234,11 +234,12 @@ router.put('/:eventId', async (req, res, next) => {
     const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
 
     const errors = {};
-    const venue = await Venue.findByPk(venueId)
-    if (!venue) {
-        res.status(404);
-        return res.json({ "message": "Venue couldn't be found" })
-    }
+    // THIS IS PART OF MY HOTFIX FOR CASCADE
+    // const venue = await Venue.findByPk(venueId)
+    // if (!venue) {
+    //     res.status(404);
+    //     return res.json({ "message": "Venue couldn't be found" })
+    // }
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";

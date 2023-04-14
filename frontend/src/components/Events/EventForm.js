@@ -55,7 +55,7 @@ function EventForm({ formType, event, group }) {
         if (Object.keys(errors).length) return window.alert('Cannot submit');
 
         const newEvent = {
-            venueId: 1,
+            venueId: null,
             hostId,
             name,
             type,
