@@ -17,6 +17,10 @@ form{
     margin: 0 auto;
 }
 
+form input{
+    margin-bottom: 10px;
+}
+
 form>div {
     border: darkgrey solid 2px;
     border-left: 0;
