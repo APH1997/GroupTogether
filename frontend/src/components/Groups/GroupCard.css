@@ -51,7 +51,7 @@ img{
     padding-top: 20px;
     overflow-wrap: anywhere;
 }
-.event-card-container{
+.event-card-container:hover{
     cursor: pointer;
 }
 .event-card-top{
@@ -139,7 +139,9 @@ div.upper-left>img{
     margin-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
+    box-shadow: 1px 1px 1px grey;
 }
+
 
 .past-events .event-card-container{
     background-color: white;
@@ -147,4 +149,9 @@ div.upper-left>img{
     margin-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
+    box-shadow: 1px 1px 1px grey;
+}
+
+.current-group-events{
+    padding-top: 10px;
 }
