@@ -95,8 +95,7 @@ ul.profile-dropdown a:hover {
     line-height: 20px;
     padding-bottom: 5px;
 }
-#view-groups{}
-#view-events{}
+
 #view-groups:hover, #view-events:hover{
     background-color: white;
     color: rgb(251, 102, 21);
