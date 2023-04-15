@@ -1,0 +1,25 @@
+.final-steps{
+    display: flex;
+    flex-flow: column wrap;
+    row-gap: 10px;
+    margin-bottom: 10px;
+}
+.final-steps input{
+    width: 25%;
+}
+.final-steps select{
+    width: 12%;
+}
+
+form{
+    width: 75%;
+    display: flex;
+    margin: 0 auto;
+}
+
+form>div {
+    border: darkgrey solid 2px;
+    border-left: 0;
+    border-right: 0;
+    padding-bottom: 5px;
+}

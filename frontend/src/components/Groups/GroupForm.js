@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createGroupImageThunk, createGroupThunk, updateGroupThunk } from '../../store/groups';
+import './GroupForm.css';
 
 function GroupForm({ formType, group }) {
     const history = useHistory();
@@ -137,7 +138,7 @@ function GroupForm({ formType, group }) {
                 />
                 {hasSubmitted && errors.about && <p className='errors'>{errors.about}</p>}
             </div>
-            <div>
+            <div className='final-steps'>
                 <h2>Final steps...</h2>
 
                 <label htmlFor='groupType'>Is this an in person or online group?</label>
@@ -156,21 +157,20 @@ function GroupForm({ formType, group }) {
                 </select>
                 {hasSubmitted && errors.private && <p className='errors'>{errors.private}</p>}
 
-                <label>
-                    Please add an image url for your group below:
+                <label>Please add an image url for your group below:</label>
                     <input
                         type="text"
                         value={imgUrl}
                         placeholder="Image Url"
                         onChange={(e) => setImgUrl(e.target.value)}
                     />
-                </label>
+
                 {hasSubmitted && errors.img && <p className='errors'>{errors.img}</p>}
 
             </div>
-            <div>
+            <span>
                 <button>{formType} Group</button>
-            </div>
+            </span>
         </form>
 
 

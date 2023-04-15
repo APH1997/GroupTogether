@@ -3,3 +3,12 @@ body{
     font-family: 'Lexend', sans-serif;
     margin: 0;
 }
+
+p.errors {
+    color:red;
+    line-height: 0;
+}
+
+p.errors::before{
+    content:"*"
+}

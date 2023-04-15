@@ -107,7 +107,7 @@ function EventForm({ formType, event, group }) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                {hasSubmitted && errors.name && <p className='error'>{errors.name}</p>}
+                {hasSubmitted && errors.name && <p className='errors'>{errors.name}</p>}
             </div>
             <div>
                 <div>
@@ -117,7 +117,7 @@ function EventForm({ formType, event, group }) {
                         <option value="In person" >In person</option>
                         <option value="Online">Online</option>
                     </select>
-                {hasSubmitted && errors.type && <p className='error'>{errors.type}</p>}
+                {hasSubmitted && errors.type && <p className='errors'>{errors.type}</p>}
                 </div>
                 <div>
                     <label htmlFor="priceInput">What is the price for your event?</label>
@@ -128,7 +128,7 @@ function EventForm({ formType, event, group }) {
                         onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
                     />
                 </div>
-                {hasSubmitted && errors.price && <p className='error'>{errors.price}</p>}
+                {hasSubmitted && errors.price && <p className='errors'>{errors.price}</p>}
             </div>
             <div>
                 <div>
@@ -141,7 +141,7 @@ function EventForm({ formType, event, group }) {
                         onChange={(e) => setStartDate(e.target.value)}
                     />
                 </div>
-                {hasSubmitted && errors.startDate && <p className='error'>{errors.startDate}</p>}
+                {hasSubmitted && errors.startDate && <p className='errors'>{errors.startDate}</p>}
                 <div>
                     <label htmlFor='endDateInput'>When does your event end?</label>
                     <input
@@ -152,7 +152,7 @@ function EventForm({ formType, event, group }) {
                         onChange={(e) => setEndDate(e.target.value)}
                     />
                 </div>
-                {hasSubmitted && errors.endDate && <p className='error'>{errors.endDate}</p>}
+                {hasSubmitted && errors.endDate && <p className='errors'>{errors.endDate}</p>}
 
             </div>
             <div>
@@ -165,7 +165,7 @@ function EventForm({ formType, event, group }) {
                     onChange={(e) => setImgUrl(e.target.value)}
                 />
             </div>
-            {hasSubmitted && errors.img && <p className='error'>{errors.img}</p>}
+            {hasSubmitted && errors.img && <p className='errors'>{errors.img}</p>}
             <div>
                 <label htmlFor='describeInput'>Please describe your event:</label>
                 <textarea
@@ -175,7 +175,7 @@ function EventForm({ formType, event, group }) {
                     onChange={(e) => setDescription(e.target.value)}
                 />
             </div>
-            {hasSubmitted && errors.description && <p className='error'>{errors.description}</p>}
+            {hasSubmitted && errors.description && <p className='errors'>{errors.description}</p>}
             <div>
                 <button>{formType === 'Create' ? 'Create' : 'Update'} Event</button>
             </div>
