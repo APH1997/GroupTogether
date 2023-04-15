@@ -7,9 +7,15 @@
 .all-groups-header{
     display: flex;
     flex-flow: column wrap;
-    width: 70%;
+    width: 50%;
     align-content: center;
     line-height: 8px;
+    margin-left: 95px;
+}
+.all-groups-header>h2{
+    margin-top: 100px;
+    display: flex;
+    column-gap: 20px;
 }
 
 .cont-image{
@@ -31,7 +37,7 @@ img{
     justify-content: flex-start;
     border-top: lightgray 2px solid;
     border-bottom: lightgray 1px solid;
-    width: 40%;
+    width: 50%;
     overflow-wrap: anywhere;
 }
 
@@ -41,8 +47,9 @@ img{
     flex-direction: column;
     border-top: lightgray 2px solid;
     border-bottom: lightgray 1px solid;
-    width: 40%;
-    padding-top: 5px;
+    width: 50%;
+    padding-top: 20px;
+    overflow-wrap: anywhere;
 }
 .event-card-container{
     cursor: pointer;
