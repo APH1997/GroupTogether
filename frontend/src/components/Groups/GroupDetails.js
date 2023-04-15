@@ -102,7 +102,7 @@ function GroupDetails() {
                     <p>{group.Organizer.firstName} {group.Organizer.lastName}</p>
                 </div>
                 <div className="details-block">
-                    <h3>What's all this, then?</h3>
+                    <h3>What we're about</h3>
                     <p>{group.about}</p>
                 </div>
                 <div className="current-group-events">
