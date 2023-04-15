@@ -108,6 +108,8 @@ div.upper-left>img{
     background-color: rgb(231, 226, 226);
     background-size: 100%;
     padding-left: 9%;
+    padding-top: 15px;
+    padding-bottom: 100%;
 }
 
 #other-nav{

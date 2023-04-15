@@ -25,6 +25,7 @@ a{
     align-items: center;
     justify-content: flex-end;
     column-gap: 40px;
+    padding-right: 10px;
 }
 .right-nav a:hover {
     font-weight: bolder;
