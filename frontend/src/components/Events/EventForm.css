@@ -1,0 +1,23 @@
+form{
+    width: 75%;
+    display: flex;
+    margin: 0 auto;
+}
+
+form input{
+    margin-bottom: 10px;
+}
+
+form>div {
+    border: darkgrey solid 2px;
+    border-left: 0;
+    border-right: 0;
+    padding-bottom: 5px;
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.event-form-section-two > div , .event-form-section-three > div{
+    display: flex;
+    flex-flow: column wrap;
+}

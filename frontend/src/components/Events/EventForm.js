@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createEventImageThunk, createEventThunk, updateEventThunk } from '../../store/events';
+import './EventForm.css';
 
 function EventForm({ formType, event, group }) {
     const history = useHistory();
@@ -109,7 +110,7 @@ function EventForm({ formType, event, group }) {
                 />
                 {hasSubmitted && errors.name && <p className='errors'>{errors.name}</p>}
             </div>
-            <div>
+            <div className="event-form-section-two">
                 <div>
                     <label htmlFor="typeSelect">Is this an in person or online event?</label>
                     <select name='typeSelect' onChange={e => setType(e.target.value)} value={type}>
@@ -130,7 +131,7 @@ function EventForm({ formType, event, group }) {
                 </div>
                 {hasSubmitted && errors.price && <p className='errors'>{errors.price}</p>}
             </div>
-            <div>
+            <div className='event-form-section-three'>
                 <div>
                     <label htmlFor='startDateInput'>When does your event start?</label>
                     <input
