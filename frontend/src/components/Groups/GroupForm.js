@@ -60,7 +60,7 @@ function GroupForm({ formType, group }) {
         e.preventDefault()
         setHasSubmitted(true);
 
-        if (Object.keys(errors).length) return window.alert('Cannot submit')
+        if (Object.keys(errors).length) return;
 
         const newGroup = {
             name,
@@ -157,7 +157,7 @@ function GroupForm({ formType, group }) {
                 </select>
                 {hasSubmitted && errors.private && <p className='errors'>{errors.private}</p>}
 
-                <label>Please add an image url for your group below:</label>
+                <label>(Optional) Please add an image url for your group below:</label>
                     <input
                         type="text"
                         value={imgUrl}
@@ -169,7 +169,7 @@ function GroupForm({ formType, group }) {
 
             </div>
             <span>
-                <button>{formType} Group</button>
+                <button id="submit-btn">{formType} Group</button>
             </span>
         </form>
 

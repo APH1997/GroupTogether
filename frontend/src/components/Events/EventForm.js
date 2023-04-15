@@ -52,7 +52,7 @@ function EventForm({ formType, event, group }) {
         e.preventDefault();
         setHasSubmitted(true);
 
-        if (Object.keys(errors).length) return window.alert('Cannot submit');
+        if (Object.keys(errors).length) return;
 
         const newEvent = {
             venueId: null,
@@ -156,7 +156,7 @@ function EventForm({ formType, event, group }) {
 
             </div>
             <div>
-                <label htmlFor='imageInput'>Please add an image url for your event below</label>
+                <label htmlFor='imageInput'> (Optional) Please add an image url for your event below</label>
                 <input
                     type='text'
                     name='imageInput'
@@ -177,7 +177,7 @@ function EventForm({ formType, event, group }) {
             </div>
             {hasSubmitted && errors.description && <p className='errors'>{errors.description}</p>}
             <div>
-                <button>{formType === 'Create' ? 'Create' : 'Update'} Event</button>
+                <button id="submit-btn">{formType === 'Create' ? 'Create' : 'Update'} Event</button>
             </div>
 
         </form>

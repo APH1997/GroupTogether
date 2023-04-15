@@ -67,6 +67,9 @@ img{
     justify-content: center;
     margin-top: 75px;
 }
+.upper-right h2{
+    line-height: 27px;
+}
 
 div.upper-left{
     display: flex;
