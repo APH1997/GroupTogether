@@ -95,7 +95,7 @@ function EventForm({ formType, event, group }) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form id="event-form" onSubmit={handleSubmit}>
 
             <div className='event-form-section-one'>
                 <h2>{formType === 'Create' ? `Create an event for ${group.name}` : 'Update your event'}</h2>
