@@ -1,13 +1,21 @@
 form{
-    width: 75%;
+    width: 40%;
     display: flex;
     margin: 0 auto;
 }
 
-form input{
+form input, select {
     margin-bottom: 10px;
+    margin-top: 3px;
+    border: 1px solid black;
+    border-radius: 2px;
+
+    padding: 4px;
 }
 
+form label{
+    margin-top: 10px;
+}
 form>div {
     border: darkgrey solid 2px;
     border-left: 0;
@@ -17,7 +25,46 @@ form>div {
     flex-flow: column wrap;
 }
 
+
+.event-form-section-one{
+    border-top: none;
+}
+.event-form-section-one input{
+    width: 75%;
+}
 .event-form-section-two > div , .event-form-section-three > div{
     display: flex;
     flex-flow: column wrap;
+}
+.event-form-section-two input{
+    width:80px;
+    text-align: end;
+
+}
+.event-form-section-two input::placeholder{
+    text-align: end;
+}
+#currency-symbol{
+padding-bottom: 15px;
+padding-left: 10px;
+transform: translate(10px);
+position: absolute;
+transform: translate(-5px, 35px);
+
+
+}
+.event-form-section-two select{
+    width: fit-content;
+}
+.event-form-section-three input{
+    width: 175px;
+}
+.event-form-section-six{
+    border-bottom: none;
+}
+
+#submit-btn{
+    align-self: flex-start;
+    margin-left: 0;
+    width: fit-content;
 }

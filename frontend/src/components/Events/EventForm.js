@@ -97,8 +97,8 @@ function EventForm({ formType, event, group }) {
     return (
         <form onSubmit={handleSubmit}>
 
-            <div>
-                <h1>{formType === 'Create' ? `Create an event for ${group.name}` : 'Update your event'}</h1>
+            <div className='event-form-section-one'>
+                <h2>{formType === 'Create' ? `Create an event for ${group.name}` : 'Update your event'}</h2>
 
                 <label htmlFor='nameInput'>What is the name of your event?</label>
                 <input
@@ -122,12 +122,15 @@ function EventForm({ formType, event, group }) {
                 </div>
                 <div>
                     <label htmlFor="priceInput">What is the price for your event?</label>
-                    <input
-                        type="number"
-                        placeholder="0"
-                        value={price}
-                        onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
-                    />
+                        <div id="currency-symbol">$</div>
+                        <input
+                            type="number"
+                            step=".01"
+                            placeholder="0.00"
+                            value={price !== 0 ? price : ''}
+                            onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
+                        />
+
                 </div>
                 {hasSubmitted && errors.price && <p className='errors'>{errors.price}</p>}
             </div>
@@ -138,7 +141,7 @@ function EventForm({ formType, event, group }) {
                         type="text"
                         name='startDateInput'
                         value={startDate}
-                        placeholder='MM/DD/YYYY, HH/mm AM'
+                        placeholder='MM/DD/YYYY, HH:mm AM'
                         onChange={(e) => setStartDate(e.target.value)}
                     />
                 </div>
@@ -149,15 +152,15 @@ function EventForm({ formType, event, group }) {
                         type="text"
                         name='endDateInput'
                         value={endDate}
-                        placeholder='MM/DD/YYYY, HH/mm PM'
+                        placeholder='MM/DD/YYYY, HH:mm PM'
                         onChange={(e) => setEndDate(e.target.value)}
                     />
                 </div>
                 {hasSubmitted && errors.endDate && <p className='errors'>{errors.endDate}</p>}
 
             </div>
-            <div>
-                <label htmlFor='imageInput'> (Optional) Please add an image url for your event below</label>
+            <div className='event-form-section-four'>
+                <label htmlFor='imageInput'> (Optional) Please add an image url for your event below:</label>
                 <input
                     type='text'
                     name='imageInput'
@@ -167,7 +170,7 @@ function EventForm({ formType, event, group }) {
                 />
             </div>
             {hasSubmitted && errors.img && <p className='errors'>{errors.img}</p>}
-            <div>
+            <div className='event-form-section-five'>
                 <label htmlFor='describeInput'>Please describe your event:</label>
                 <textarea
                     name='describeInput'
@@ -177,7 +180,7 @@ function EventForm({ formType, event, group }) {
                 />
             </div>
             {hasSubmitted && errors.description && <p className='errors'>{errors.description}</p>}
-            <div>
+            <div className='event-form-section-six'>
                 <button id="submit-btn">{formType === 'Create' ? 'Create' : 'Update'} Event</button>
             </div>
 
