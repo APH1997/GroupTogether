@@ -70,3 +70,29 @@
     margin: 5px;
     width: 150%;
 }
+
+.event-details-header{
+    width: 925px;
+    background-color: white;
+    padding-top: 60px;
+    padding-bottom: 30px;
+    display: flex;
+    flex-flow: column wrap;
+    align-content: flex-start;
+    margin: 0 auto;
+    line-height: 35px;
+}
+.event-details-header span::before{
+    content: '< ';
+}
+.event-details-header a{
+    text-decoration: underline;
+}
+.header-background-wrapper{
+    width:100%;
+    background-color: white;
+}
+
+.event-details-header h2, p{
+    margin: 0;
+}

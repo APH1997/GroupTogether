@@ -37,12 +37,14 @@ function EventDetails(){
 
     return (
         <>
-            <header>
-                <NavLink to="/events/all">Events</NavLink>
-                <h2>{event.name}</h2>
-                <p>Hosted by {event.Group.Organizer.firstName} {event.Group.Organizer.lastName}</p>
-            </header>
             <main className="main-content-container">
+                <div className="header-background-wrapper">
+                    <div className="event-details-header">
+                        <span><NavLink to="/events/all">Events</NavLink></span>
+                        <h2>{event.name}</h2>
+                        <p>Hosted by {event.Group.Organizer.firstName} {event.Group.Organizer.lastName}</p>
+                    </div>
+                </div>
                 <div className="content-container-top">
                     <div className="event-image-container">
                         <img src={previewImage}></img>
