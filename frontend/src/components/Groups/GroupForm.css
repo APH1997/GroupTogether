@@ -28,7 +28,7 @@ form>div {
     padding-bottom: 5px;
 }
 
-#submit-btn{
+#group-submit-btn{
     font-family: 'Lexend', sans-serif;
     margin-bottom: 50px;
     width: 15%;
@@ -43,7 +43,7 @@ form>div {
     border-radius: 5px;
 }
 
-#submit-btn:hover{
+#group-submit-btn:hover{
     box-shadow: 1px 1px 1px black;
     scale: .99;
 }

@@ -169,7 +169,7 @@ function GroupForm({ formType, group }) {
 
             </div>
             <span>
-                <button id="submit-btn">{formType} Group</button>
+                <button id="group-submit-btn">{formType} Group</button>
             </span>
         </form>
 
