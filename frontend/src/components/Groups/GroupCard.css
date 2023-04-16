@@ -86,16 +86,6 @@ div.upper-left>img{
     line-height: 15px;
     width: 30%
 }
-/* .upper-right button{
-    align-self: baseline;
-    padding: 10px;
-    width: 50%;
-    height: 15%;
-    border-radius: 3px;
-    background-color:#F34F51;
-    color: whitesmoke;
-    box-shadow: 1px 1px 3px rgb(89, 2, 38);
-} */
 
 
 #organizer-btn-update, #organizer-btn-delete, #organizer-btn-create{

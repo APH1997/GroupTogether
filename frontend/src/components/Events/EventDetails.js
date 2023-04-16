@@ -1,14 +1,14 @@
 import { getOneEventThunk } from "../../store/events";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, NavLink, useHistory} from "react-router-dom";
+import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import './EventDetails.css';
 import DeleteButton from "./DeleteEvent/DeleteEventButton";
 
-function EventDetails(){
+function EventDetails() {
     const history = useHistory();
     const dispatch = useDispatch()
-    const {eventId} = useParams();
+    const { eventId } = useParams();
 
     const user = useSelector(state => state.session.user);
     const event = useSelector(state => state.events.singleEvent);
@@ -29,8 +29,8 @@ function EventDetails(){
     const [endDate, endTime] = noMsEnd.split('T')
 
     let previewImage;
-    for (let image of event.EventImages){
-        if (image.preview){
+    for (let image of event.EventImages) {
+        if (image.preview) {
             previewImage = image.url
         }
     }
@@ -50,13 +50,13 @@ function EventDetails(){
                         <img src={previewImage}></img>
                     </div>
                     <div className="group-and-event-info">
-                        <div onClick={() => history.push(`/groups/${event.Group.id}`)}className="group-info-container">
+                        <div onClick={() => history.push(`/groups/${event.Group.id}`)} className="group-info-container">
                             <div className="group-info-image">
                                 <img src={event.Group.imgUrl}></img>
                             </div>
                             <div className="group-info">
                                 <h4>{event.Group.name}</h4>
-                                <p>{event.Group.private ? "Private": "Public"}</p>
+                                <p>{event.Group.private ? "Private" : "Public"}</p>
                             </div>
                         </div>
                         <div className="event-info">
@@ -84,15 +84,16 @@ function EventDetails(){
                                 {event.price > 0 ? `$${event.price}` : "FREE"}
                             </div>
                             <div className="event-type">
-                            <i className="fas fa-map-pin"></i>
-                                {event.type}
+                                <i className="fas fa-map-pin"><span id="event-type">{event.type}</span></i>
+                                {user?.id === event.Group.Organizer.id &&
+                                    <span id="event-organizer-buttons">
+                                        <button onClick={() => history.push(`/groups/${event.Group.id}/events/${eventId}/edit`)}>Update</button>
+                                        <DeleteButton eventId={eventId} groupId={event.Group.id} />
+                                    </span>}
                             </div>
                         </div>
                     </div>
-                    {user?.id === event.Group.Organizer.id && <div className="host-buttons">
-                        <button onClick={() => history.push(`/groups/${event.Group.id}/events/${eventId}/edit`)}>Update</button>
-                        <DeleteButton eventId={eventId} groupId={event.Group.id}/>
-                    </div>}
+
                 </div>
 
                 <div className="content-container-bottom">

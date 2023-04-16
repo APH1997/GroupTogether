@@ -1,15 +1,19 @@
 .main-content-container{
-    border:red 2px solid;
     display: flex;
     flex-flow: column wrap;
     align-content: center;
     background-color: rgb(231, 226, 226);
+    padding-bottom: 100%;
 }
 .content-container-top{
-    border: blue 2px solid;
     display: flex;
     justify-content: center;
     padding-top: 23px;
+}
+
+.content-container-bottom{
+    width: 925px;
+    margin: auto;
 }
 
 .group-and-event-info{
@@ -51,9 +55,25 @@
     justify-content: space-evenly;
     margin-top: 15px;
 }
+.event-info i {
+    padding-left: 14px;
+}
+.event-price .fas {
+    padding-right: 18px;
+}
 .event-times{
     display:flex;
     align-items: center;
+}
+
+.event-type{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+}
+
+.event-type .fas{
+    padding-right: 18px;
 }
 .event-times .dot-separator, .event-times .start-end-time{
     padding: 0;
@@ -66,6 +86,35 @@
     width: 500px;
 }
 
+#event-type{
+    padding-left:26px;
+    font-family: 'Lexend', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#event-organizer-buttons{
+    margin-right: 25px;
+    display: flex;
+    justify-content: space-between;
+    width: 140px;
+}
+
+#event-organizer-buttons button{
+    background-color: darkgray;
+    align-self: center;
+    height: max-content;
+    border-radius: 3px;
+    background-color:darkgray;
+    color: whitesmoke;
+    box-shadow: 1px 1px 2px rgb(89, 2, 38);
+    text-align: center;
+    width:fit-content;
+    font-family: 'Lexend', sans-serif;
+}
+#event-organizer-buttons button:hover{
+    transform:scale(.99, .99)
+}
 .fas{
     font-size: 20px;
 }
