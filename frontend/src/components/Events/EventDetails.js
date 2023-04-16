@@ -55,7 +55,7 @@ function EventDetails() {
                                 <img src={event.Group.imgUrl}></img>
                             </div>
                             <div className="group-info">
-                                <h4>{event.Group.name}</h4>
+                                <h4 style={{paddingRight:'10px'}}>{event.Group.name}</h4>
                                 <p>{event.Group.private ? "Private" : "Public"}</p>
                             </div>
                         </div>
@@ -81,7 +81,7 @@ function EventDetails() {
                             </div>
                             <div className="event-price">
                                 <i className="fas fa-dollar-sign"></i>
-                                {event.price > 0 ? `$${event.price}` : "FREE"}
+                                {event.price > 0 ? `$${event.price.toFixed(2)}` : "FREE"}
                             </div>
                             <div className="event-type">
                                 <i className="fas fa-map-pin"><span id="event-type">{event.type}</span></i>
