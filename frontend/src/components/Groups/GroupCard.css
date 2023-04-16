@@ -51,6 +51,10 @@ img{
     padding-top: 20px;
     overflow-wrap: anywhere;
 }
+
+.event-card-container p {
+    padding: 5px 0;
+}
 .event-card-container:hover{
     cursor: pointer;
 }
@@ -130,8 +134,8 @@ div.upper-left>img{
     margin-right: auto;
 }
 .group-details-lower-background{
-width:100%;
-background-color: rgb(231, 226, 226);
+    width:100%;
+    background-color: rgb(231, 226, 226);
 }
 
 #other-nav{
