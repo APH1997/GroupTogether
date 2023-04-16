@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import DeleteConfirmModal from "./index";
 import { useModal } from "../../../context/Modal";
 
+
 function DeleteButton({groupId}) {
     const {setModalContent} = useModal()
 

@@ -3,6 +3,7 @@ import { useModal } from "../../../context/Modal"
 import {useHistory} from "react-router-dom";
 import { deleteEventThunk } from "../../../store/events";
 import { getGroupDetailsThunk } from "../../../store/groups";
+import './DeleteEventModal.css'
 
 function DeleteConfirmModal ({eventId, groupId}){
     const dispatch = useDispatch();
@@ -24,14 +25,14 @@ function DeleteConfirmModal ({eventId, groupId}){
     }
 
     return (
-        <>
+        <div className="delete-form">
             <h2>Confirm Delete</h2>
             <p>Are you sure you want to remove this event?</p>
             <div>
-                <button onClick={handleDelete}>Yes (Delete Event)</button>
-                <button onClick={closeModal}>No (Keep Event)</button>
+                <button id="event-delete-yes" onClick={handleDelete}>Yes (Delete Event)</button>
+                <button id="event-delete-no" onClick={closeModal}>No (Keep Event)</button>
             </div>
-        </>
+        </div>
     )
 }
 

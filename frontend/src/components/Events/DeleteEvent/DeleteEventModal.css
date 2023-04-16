@@ -1,0 +1,31 @@
+.delete-form{
+    display:flex;
+    flex-flow: column wrap;
+    align-items: center;
+    padding: 10px;
+    padding-bottom: 20px;
+}
+
+.delete-form button{
+    font-family: 'Lexend', sans-serif;
+    padding: 10px;
+    margin-top:15px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px grey;
+}
+
+.delete-form button:hover{
+    box-shadow: 0px 0px 1px black;
+    scale: .99 .99;
+}
+
+#event-delete-yes{
+    background-color: rgb(224, 35, 35);
+    color: white;
+    margin-right: 8px;
+}
+#event-delete-no{
+    background-color: darkgray;
+    color:white;
+    margin-left: 8px;
+}
