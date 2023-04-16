@@ -21,6 +21,7 @@
     background-color: white;
     border-radius: 25px;
     box-shadow: 1px 1px 1px grey;
+    width: 400px;
 }
 .group-info-container:hover{
     cursor: pointer;
@@ -29,13 +30,13 @@
     display: flex;
     flex-flow: column;
     justify-content: space-between;
-    height: 95%;
+    height: 85%;
 }
 .group-info p {
     color: grey;
 }
 .group-info-image{
-    width: 60%;
+    width: 200px;
 }
 .group-info-image>img{
     scale:75%;
