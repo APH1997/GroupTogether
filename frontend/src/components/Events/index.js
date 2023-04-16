@@ -12,7 +12,6 @@ function EventsPage(){
     const eventsObj = useSelector(state => state.events.allEvents);
 
     const eventsList = Object.values(eventsObj)
-    console.log(eventsList)
 
     useEffect(() => {
         dispatch(getEventsThunk());

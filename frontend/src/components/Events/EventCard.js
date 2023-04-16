@@ -10,8 +10,9 @@ function EventsCard({event, group}){
     const splitDate = event.startDate.split('T');
     const date = splitDate[0];
     const time = splitDate[1];
-    console.log("In EventCard",time);
-    console.log("event card group prop:", group)
+
+    console.log({time})
+
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
@@ -19,7 +20,7 @@ function EventsCard({event, group}){
                     <img src={`${event.previewImage}`}></img>
                 </div>
                 <div className="cont-info">
-                    <p>{date} · {time}</p>
+                    <p>{date} · {time }</p>
                     <h2>{event.name}</h2>
                     <h3>{event.Group?.city || group?.city}, {event.Group?.state || group?.state}</h3>
                 </div>

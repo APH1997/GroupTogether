@@ -18,15 +18,20 @@ function EventDetails() {
         dispatch(getOneEventThunk(eventId))
     }, [dispatch])
 
-    console.log(event);
-    console.log(user);
     if (!event || !Object.values(event).length) return <></>
+
+    const convertedStartDate = new Date(event.startDate).toLocaleString("en-US")
+    const convertedEndDate = new Date(event.endDate).toLocaleString("en-US");
+
+    const startTime = convertedStartDate.split(', ')[1]
+    const endTime = convertedEndDate.split(', ')[1]
 
     const [noMsStart] = event.startDate.split('.')
     const [noMsEnd] = event.endDate.split('.')
 
-    const [startDate, startTime] = noMsStart.split('T')
-    const [endDate, endTime] = noMsEnd.split('T')
+    const [startDate, startMilTime] = noMsStart.split('T')
+    const [endDate, endMilTime] = noMsEnd.split('T')
+
 
     let previewImage;
     for (let image of event.EventImages) {
