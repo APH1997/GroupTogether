@@ -181,3 +181,20 @@ div.upper-left>img{
 .current-group-events{
     padding-top: 10px;
 }
+
+#join-group-btn{
+    width: fit-content;
+    height:50px;
+    font-family: 'Lexend', sans-serif;
+    background-color: rgb(216, 51, 29);
+    color:white;
+    font-size: 16px;
+    padding-left: 25px;
+    padding-right:25px;
+    box-shadow: 2px 2px 1px grey;
+    border-radius: 5px;
+}
+
+#join-group-btn:hover{
+    box-shadow: .5px .5px 1px black;
+}

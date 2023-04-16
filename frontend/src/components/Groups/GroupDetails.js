@@ -86,7 +86,7 @@ function GroupDetails() {
                         <p>Organized by: {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
                     {user && user.id !== group.organizerId &&
-                        <button onClick={() => alert('Feature coming soon')}>Join this group</button>}
+                        <button id="join-group-btn" onClick={() => alert('Feature coming soon')}>Join this group</button>}
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">
                             <button onClick={() => history.push(`/groups/${groupId}/events/new`)} id="organizer-btn-create">Create Event</button>
