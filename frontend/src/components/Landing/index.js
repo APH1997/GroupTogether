@@ -1,8 +1,11 @@
 import {NavLink} from 'react-router-dom';
 import './Landing.css';
 import {useSelector} from 'react-redux';
+import { useModal } from '../../context/Modal';
+import SignupFormModal from '../SignupFormModal';
 
 function LandingPage(){
+    const {setModalContent} = useModal()
     const user = useSelector(state => state.session.user)
 
     return (
@@ -43,7 +46,7 @@ function LandingPage(){
                     <div>Start new group caption here</div>
                 </div>
             </div>
-            <button className='landing-section-four'>Join Meetup</button>
+            <button onClick={() => setModalContent(<SignupFormModal/>)}className='landing-section-four'>Join Meetup</button>
         </div>
 
         </>
