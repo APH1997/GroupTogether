@@ -24,6 +24,9 @@ form>div {
     display: flex;
     flex-flow: column wrap;
 }
+form input, textarea, select{
+    margin-top: 6px;
+}
 
 
 .event-form-section-one{
@@ -38,12 +41,14 @@ form>div {
 }
 .event-form-section-two input{
     width:80px;
-    text-align: end;
+    text-align: center;
 
 }
 .event-form-section-two input::placeholder{
-    text-align: end;
+    text-align: center;
+
 }
+
 #currency-symbol{
 padding-bottom: 15px;
 padding-left: 10px;
@@ -59,7 +64,16 @@ transform: translate(-5px, 35px);
 .event-form-section-three input{
     width: 175px;
 }
+
+.event-form-section-four input{
+    width:350px;
+}
+
+.event-form-section-five {
+    border-bottom: none;
+}
 .event-form-section-six{
+    border-top: none;
     border-bottom: none;
 }
 
@@ -67,4 +81,9 @@ transform: translate(-5px, 35px);
     align-self: flex-start;
     margin-left: 0;
     width: fit-content;
+}
+
+textarea{
+    rows: 5;
+
 }

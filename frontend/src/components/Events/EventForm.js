@@ -125,7 +125,7 @@ function EventForm({ formType, event, group }) {
                         <div id="currency-symbol">$</div>
                         <input
                             type="number"
-                            step=".01"
+                            step="1.00"
                             placeholder="0.00"
                             value={price !== 0 ? price : ''}
                             onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
@@ -173,6 +173,8 @@ function EventForm({ formType, event, group }) {
             <div className='event-form-section-five'>
                 <label htmlFor='describeInput'>Please describe your event:</label>
                 <textarea
+                    rows='8'
+                    cols='12'
                     name='describeInput'
                     value={description}
                     placeholder='Please include at least 30 characters'
