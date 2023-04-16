@@ -81,7 +81,7 @@ function EventDetails() {
                             </div>
                             <div className="event-price">
                                 <i className="fas fa-dollar-sign"></i>
-                                {event.price > 0 ? `$${event.price.toFixed(2)}` : "FREE"}
+                                {Number(event.price) > 0 ? `$${Number(event.price).toFixed(2)}` : "FREE"}
                             </div>
                             <div className="event-type">
                                 <i className="fas fa-map-pin"><span id="event-type">{event.type}</span></i>
