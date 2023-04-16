@@ -50,7 +50,7 @@ function LoginFormModal() {
           />
 
         {errors.credential && (
-          <p>{errors.credential}</p>
+          <p style={{color:'red'}}>{errors.credential}</p>
         )}
         <button id="login-btn" disabled={credential.length < 4 || password.length < 6} type="submit">Log In</button>
       </form>

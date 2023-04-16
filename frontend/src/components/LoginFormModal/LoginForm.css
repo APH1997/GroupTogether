@@ -43,7 +43,8 @@ div.login-model-container input {
 
 #demo-user-login{
     text-decoration: underline;
-    color: rgb(0, 140, 255)
+    color: rgb(0, 140, 255);
+    padding-bottom: 8px;
 }
 #demo-user-login:hover{
     cursor: pointer;

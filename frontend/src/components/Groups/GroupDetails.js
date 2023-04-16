@@ -96,37 +96,39 @@ function GroupDetails() {
                     }
                 </div>
             </div>
-            <div className="lower-details">
-                <div className="organizer-details">
-                    <h3>Organizer</h3>
-                    <p>{group.Organizer.firstName} {group.Organizer.lastName}</p>
-                </div>
-                <div className="details-block">
-                    <h3>What we're about</h3>
-                    <p>{group.about}</p>
-                </div>
-                <div className="current-group-events">
-                    <div className="upcoming-events">
-                        {orderedFutureEvents.length > 0 &&
-                            <h2>Upcoming Events ({orderedFutureEvents.length})</h2>}
-                        {orderedFutureEvents.length > 0 && orderedFutureEvents.map(event => {
-                            return (
-                                <EventsCard id={event.id} event={event} group={group} />
-                            )
-                        })}
+            <div className="group-details-lower-background">
+
+                <div className="lower-details">
+                    <div className="organizer-details">
+                        <h3>Organizer</h3>
+                        <p>{group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
-                    <div className="past-events">
-                        {orderedPastEvents.length > 0 &&
-                            <h2>Past Events ({orderedPastEvents.length})</h2>}
-                        {orderedPastEvents.length > 0 &&
-                            orderedPastEvents.map(event => {
+                    <div className="details-block">
+                        <h3>What we're about</h3>
+                        <p>{group.about}</p>
+                    </div>
+                    <div className="current-group-events">
+                        <div className="upcoming-events">
+                            {orderedFutureEvents.length > 0 &&
+                                <h2>Upcoming Events ({orderedFutureEvents.length})</h2>}
+                            {orderedFutureEvents.length > 0 && orderedFutureEvents.map(event => {
                                 return (
                                     <EventsCard id={event.id} event={event} group={group} />
                                 )
                             })}
+                        </div>
+                        <div className="past-events">
+                            {orderedPastEvents.length > 0 &&
+                                <h2>Past Events ({orderedPastEvents.length})</h2>}
+                            {orderedPastEvents.length > 0 &&
+                                orderedPastEvents.map(event => {
+                                    return (
+                                        <EventsCard id={event.id} event={event} group={group} />
+                                    )
+                                })}
+                        </div>
                     </div>
                 </div>
-
 
             </div>
         </>

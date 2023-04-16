@@ -125,6 +125,13 @@ div.upper-left>img{
     padding-left: 9%;
     padding-top: 15px;
     padding-bottom: 100%;
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.group-details-lower-background{
+width:100%;
+background-color: rgb(231, 226, 226);
 }
 
 #other-nav{
