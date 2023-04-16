@@ -132,6 +132,8 @@ function GroupForm({ formType, group }) {
                     <li>What will you do at your events?</li>
                 </ol>
                 <textarea
+                    rows='5'
+                    cols='50'
                     value={about}
                     placeholder="Please write at least 50 characters."
                     onChange={(e) => setAbout(e.target.value)}
