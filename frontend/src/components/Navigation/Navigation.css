@@ -76,7 +76,7 @@ ul.profile-dropdown a:hover {
     background: lightgrey;
     width: fit-content;
     position: absolute;
-    right: 9px;
+    right: 13px;
 }
 
 .profile-dropdown li {
@@ -113,4 +113,23 @@ ul.profile-dropdown a:hover {
     cursor: pointer;
     background-color: white;
     color:black;
+}
+
+#profile-menu-container{
+    border: black 1px solid;
+    border-radius: 5px;
+    padding: 4px;
+    display: flex;
+    justify-content: space-between;
+    width: 40px;
+    box-shadow: 1px 1px 1px grey;
+}
+
+#profile-menu-container.modal-is-open{
+    background-color: rgba(166, 166, 166, 0.257);
+}
+
+#profile-menu-container:hover{
+    background-color: rgba(166, 166, 166, 0.257);
+    box-shadow: .5px .5px 1px black;
 }
