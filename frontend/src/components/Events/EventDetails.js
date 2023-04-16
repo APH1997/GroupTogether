@@ -63,8 +63,20 @@ function EventDetails(){
                             <div className="event-times">
                                 <i className="fas fa-stopwatch"></i>
                                 <div className="start-end">
-                                    <div>START {startDate} · {startTime}</div>
-                                    <div>END {endDate} · {endTime}</div>
+                                    <div>START</div>
+                                    <div>END</div>
+                                </div>
+                                <div className="start-end-date">
+                                    <div>{startDate}</div>
+                                    <div>{endDate}</div>
+                                </div>
+                                <div className="dot-separator">
+                                    <div> · </div>
+                                    <div> · </div>
+                                </div>
+                                <div className="start-end-time">
+                                    <div>{startTime}</div>
+                                    <div>{endTime}</div>
                                 </div>
                             </div>
                             <div className="event-price">

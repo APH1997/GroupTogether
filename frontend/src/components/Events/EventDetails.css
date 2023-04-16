@@ -42,15 +42,24 @@
     scale:75%;
 }
 .event-info{
-    border: green 2px solid;
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: 1px 1px 1px grey;
     height: 150px;
     display: flex;
     flex-flow: column;
     justify-content: space-evenly;
+    margin-top: 15px;
 }
 .event-times{
     display:flex;
     align-items: center;
+}
+.event-times .dot-separator, .event-times .start-end-time{
+    padding: 0;
+}
+.event-times div{
+    padding-left: 10px;
 }
 .event-image-container>img{
     height: 100%;
