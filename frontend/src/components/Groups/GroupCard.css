@@ -83,6 +83,15 @@ div.upper-left>img{
     width: 500px;
     height: 300px;
 }
+
+div.upper-left span::before{
+    content:'< '
+}
+
+div.upper-left span>a{
+    text-decoration: underline;
+    padding-bottom:10px;
+}
 .upper-right{
     display: flex;
     flex-flow: column;
