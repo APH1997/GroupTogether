@@ -17,8 +17,8 @@ function GroupDetails() {
 
     }, [dispatch])
 
-
     if (!Object.values(group).length) return <h1>loading...</h1>
+
 
     const eventsArr = group.Events
 

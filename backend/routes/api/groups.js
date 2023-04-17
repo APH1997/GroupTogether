@@ -107,7 +107,7 @@ router.get('/:groupId', async (req, res, next) => {
                         as: 'Venue',
                         attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
                     },
-                    {model: Event, include: {model: EventImage, model: Venue}}
+                    {model: Event, include: {model: EventImage}}
                 ]
         });
         group.dataValues.numMembers = (await Membership.findAll({
@@ -116,6 +116,7 @@ router.get('/:groupId', async (req, res, next) => {
 
         jsonGroup = group.toJSON();
         jsonGroup.Venues = jsonGroup.Venue;
+       
         delete jsonGroup.Venue;
         if (jsonGroup.numMembers === 0){
             jsonGroup.numMembers = 1;
