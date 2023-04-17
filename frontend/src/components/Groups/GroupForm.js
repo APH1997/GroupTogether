@@ -89,6 +89,10 @@ function GroupForm({ formType, group }) {
             if (update.errors){
                 setErrors(update.errors)
             } else {
+                if (imgUrl){
+                    const image = {url: imgUrl, preview: true}
+                    await dispatch(createGroupImageThunk(update.id, image))
+                }
                 history.push(`/groups/${update.id}`)
             }
         }
