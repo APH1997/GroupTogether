@@ -127,7 +127,7 @@ function EventForm({ formType, event, group }) {
                             type="number"
                             step="1.00"
                             placeholder="0.00"
-                            value={price !== 0 ? price : ''}
+                            value={price}
                             onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
                         />
 
