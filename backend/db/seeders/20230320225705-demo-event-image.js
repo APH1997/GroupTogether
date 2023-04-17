@@ -13,18 +13,28 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         eventId: 1,
-        url: 'www.picture1.com',
+        url: 'https://i.imgur.com/XKlm5OZ.jpg',
         preview: true,
       },
       {
         eventId: 2,
-        url: 'www.picture2.com',
+        url: 'https://i.imgur.com/GRisYUw.jpg',
         preview: true,
       },
       {
         eventId: 3,
-        url: 'www.picture3.com',
+        url: 'https://i.imgur.com/IxMu8iM.jpg',
         preview: true,
+      },
+      {
+        eventId: 4,
+        url: 'https://i.imgur.com/UFuo9bG.jpg',
+        preview: true
+      },
+      {
+        eventId: 5,
+        url: "https://i.imgur.com/SsJpxQN.jpg",
+        preview: true
       }
     ], {})
   },

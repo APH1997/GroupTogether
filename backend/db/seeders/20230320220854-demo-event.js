@@ -36,6 +36,18 @@ module.exports = {
         endDate: new Date('2026-01-02 20:24:00'),
       },
       {
+        hostId: 2,
+        venueId: null,
+        groupId: 2,
+        name: 'Wear a haughty hat',
+        description: 'if you are not feeling superior because of your hat, it is not haughty enough.',
+        type: 'Online',
+        capacity: 3,
+        price: 250.99,
+        startDate: new Date('2050-01-01 9:30:00'),
+        endDate: new Date('2050-01-01 10:30:00'),
+      },
+      {
         hostId: 1,
         venueId: null,
         groupId: 1,
@@ -58,18 +70,6 @@ module.exports = {
         price: 0,
         startDate: new Date('2020-01-01 18:30:00'),
         endDate: new Date('2020-01-01 19:30:00'),
-      },
-      {
-        hostId: 2,
-        venueId: null,
-        groupId: 2,
-        name: 'Wear a haughty hat',
-        description: 'if you are not feeling superior because of your hat, it is not haughty enough.',
-        type: 'Online',
-        capacity: 3,
-        price: 250.99,
-        startDate: new Date('2050-01-01 9:30:00'),
-        endDate: new Date('2050-01-01 10:30:00'),
       }
     ], {})
 
