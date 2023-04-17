@@ -46,7 +46,7 @@ function LandingPage(){
                     <div id="start-group-caption">Forge your own destiny</div>
                 </div>
             </div>
-            <button onClick={() => setModalContent(<SignupFormModal/>)}className='landing-section-four'>Join Meetup</button>
+            <button onClick={() => setModalContent(<SignupFormModal/>)}className='landing-section-four'>Join GroupTogether</button>
         </div>
 
         </>
