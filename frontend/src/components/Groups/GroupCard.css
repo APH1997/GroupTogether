@@ -57,13 +57,15 @@ img{
 }
 .event-card-container:hover{
     cursor: pointer;
+    background-color: rgba(211, 211, 211, 0.203);
 }
 .event-card-top{
     display: flex;
 }
 .card-container:hover{
-    box-shadow: -1px 1px 1px red;
     cursor: pointer;
+    background-color: rgba(211, 211, 211, 0.203);
+
 }
 
 .upper-details{
