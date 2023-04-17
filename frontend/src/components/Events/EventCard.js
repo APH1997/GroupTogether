@@ -11,8 +11,6 @@ function EventsCard({event, group}){
     const date = splitDate[0];
     const time = splitDate[1];
 
-    console.log({time})
-
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
