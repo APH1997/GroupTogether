@@ -7,10 +7,11 @@ function EventsCard({event, group}){
         history.push(`/events/${event.id}`)
     }
 
-    const splitDate = event.startDate.split('T');
-    const date = splitDate[0];
-    const time = splitDate[1];
-    console.log('EVENT CARD EVENT OBJ', event)
+    //time formatting
+    const convertedStartDate = new Date(event.startDate).toLocaleString("en-US")
+    const startTime = convertedStartDate.split(', ')[1]
+    const [noMsStart] = event.startDate.split('.')
+    const [startDate, startMilTime] = noMsStart.split('T')
 
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
@@ -19,7 +20,7 @@ function EventsCard({event, group}){
                     <img src={`${event?.previewImage || event?.EventImages[0]?.url}`}></img>
                 </div>
                 <div className="cont-info">
-                    <p>{date} · {time }</p>
+                    <p>{startDate} · {startTime}</p>
                     <h2>{event.name}</h2>
                     <h3>{event.Group?.city || group?.city}, {event.Group?.state || group?.state}</h3>
                 </div>
