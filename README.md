@@ -76,14 +76,6 @@ Logged in Users can:
 * Update group/event photos if user has permission
 
 
-# Meetup Clone
-
-## Database Schema Design
-
-![meetup-dbdiagram]
-
-[meetup-dbdiagram]: ./assets/meetup_dbdiagram.png
-
 ## API Documentation
 
 ## USER AUTHENTICATION/AUTHORIZATION
