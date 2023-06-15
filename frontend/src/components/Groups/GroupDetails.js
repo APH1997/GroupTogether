@@ -74,7 +74,7 @@ function GroupDetails() {
     }
 
     if (!group) return <h1>Loading...</h1>
-
+    console.log(group.Memberships)
     return (
         <>
             <div className="upper-details">
@@ -89,9 +89,9 @@ function GroupDetails() {
                         {Object.values(group)?.length > 0 && <h4>{group.Events?.length || 0} event{group.Events?.length > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
                         <p>Organized by: {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
-                    {user && user.id !== group.organizerId 
-                    // (!memberIds.includes(user.id) && <button id="join-group-btn" onClick={requestMembership}>Join this group</button>)
-                    // || ()
+                    {user && user.id !== group.organizerId &&
+                    (!group.Memberships[user.id] && <button id="join-group-btn" onClick={requestMembership}>Join this group</button>)
+                    || (group.Memberships[user.id].status === "pending" ? <button>Pending...</button> : <button>Leave Group</button>)
                         }
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">
