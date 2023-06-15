@@ -106,7 +106,7 @@ function GroupDetails() {
                             <button disabled={true} id="pending-btn">Pending...</button>
                             <button id="cancel-pending-btn" onClick={deleteOwnMembership}>Cancel</button>
                         </div>
-                        : <button id="leave-group-btn" onClick={leaveGroup}>Leave Group</button>)
+                        : user.id !== group.organizerId && <button id="leave-group-btn" onClick={leaveGroup}>Leave Group</button>)
                         }
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">
