@@ -7,9 +7,9 @@ const CREATE_GROUP_IMAGE = "groups/createImage";
 const EDIT_GROUP = "group/editGroup";
 const DELETE_GROUP = "group/deleteGroup";
 const REQUEST_MEMBERSHIP = "group/membership/post"
+const DELETE_MEMBERSHIP = "group/membership/delete"
 
-
-// MEMBERSHIPS
+// CREATE MEMBERSHIP
 const updateMembershipsAction = (membership) => {
     return {
         type: REQUEST_MEMBERSHIP,
@@ -22,9 +22,31 @@ export const requestMembershipThunk = (groupId) => async (dispatch) => {
         method: "POST"
     })
     const data = await response.json()
-
     if (response.ok){
         dispatch(updateMembershipsAction(data))
+        return data
+    } else {
+        return data
+    }
+}
+
+// DELETE MEMBERSHIP
+const deleteMembershipAction = (userId) => {
+    return {
+        type: DELETE_MEMBERSHIP,
+        payload: userId
+    }
+}
+
+export const deleteMembershipThunk = (groupId, userId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
+        method: "DELETE",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({memberId: userId})
+    })
+    const data = await response.json()
+    if (response.ok){
+        dispatch(deleteMembershipAction(userId))
         return data
     } else {
         return data
@@ -172,6 +194,11 @@ const groupsReducer = (state = initialState, action) => {
         case REQUEST_MEMBERSHIP: {
             const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
             newState.singleGroup.Memberships[action.payload.userId] = action.payload
+            return newState
+        }
+        case DELETE_MEMBERSHIP: {
+            const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
+            delete newState.singleGroup.Memberships[action.payload]
             return newState
         }
 

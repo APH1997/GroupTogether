@@ -669,7 +669,7 @@ router.post('/:groupId/membership', async (req, res, next) => {
     const jsonNewMembership = newMembership.toJSON();
     delete jsonNewMembership.updatedAt;
     delete jsonNewMembership.createdAt;
-    
+
     return res.json(jsonNewMembership);
 })
 

@@ -1,4 +1,4 @@
-import { getGroupDetailsThunk, requestMembershipThunk } from "../../store/groups";
+import { deleteMembershipThunk, getGroupDetailsThunk, requestMembershipThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
@@ -73,7 +73,7 @@ function GroupDetails() {
         dispatch(requestMembershipThunk(group.id))
     }
     function deleteOwnMembership(){
-        console.log('deleting..')
+        dispatch(deleteMembershipThunk(group.id, user.id))
     }
 
     if (!group) return <h1>Loading...</h1>
