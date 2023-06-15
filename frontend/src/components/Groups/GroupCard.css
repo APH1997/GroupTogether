@@ -103,7 +103,7 @@ div.upper-left span>a{
 }
 
 
-#organizer-btn-update, #organizer-btn-delete, #organizer-btn-create{
+#organizer-btn-update, #organizer-btn-delete, #organizer-btn-create, #organizer-btn-manage{
     background-color: darkgray;
     align-self: baseline;
     padding: 10px;
