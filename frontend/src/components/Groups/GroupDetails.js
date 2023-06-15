@@ -6,6 +6,7 @@ import EventsCard from "../Events/EventCard";
 import DeleteButton from "./DeleteGroup/DeleteGroupButton";
 import { useModal } from "../../context/Modal";
 import DeleteConfirmModal from "./DeleteGroup";
+import ManageGroup from "./ManageGroupModal";
 
 function GroupDetails() {
     const {setModalContent} = useModal()
@@ -81,6 +82,9 @@ function GroupDetails() {
     function leaveGroup(){
         setModalContent(<DeleteConfirmModal groupId={groupId} membership={true}/>)
     }
+    function manageGroup(){
+        setModalContent(<ManageGroup group={group}/>)
+    }
 
     if (!group) return <h1>Loading...</h1>
 
@@ -113,7 +117,7 @@ function GroupDetails() {
                             <button onClick={() => history.push(`/groups/${groupId}/events/new`)} id="organizer-btn-create">Create Event</button>
                             <button onClick={() => history.push(`/groups/${groupId}/edit`)} id="organizer-btn-update">Update</button>
                             <DeleteButton groupId={groupId} />
-                            <button id="organizer-btn-manage">Manage Group</button>
+                            <button onClick={manageGroup} id="organizer-btn-manage">Manage Members</button>
 
                         </div>
                     }
