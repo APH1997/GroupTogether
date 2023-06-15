@@ -70,12 +70,14 @@ function GroupDetails() {
     }
 
     function requestMembership(){
-        console.log('requesting...')
         dispatch(requestMembershipThunk(group.id))
+    }
+    function deleteOwnMembership(){
+        console.log('deleting..')
     }
 
     if (!group) return <h1>Loading...</h1>
-    console.log(group.Memberships)
+
     return (
         <>
             <div className="upper-details">
@@ -92,7 +94,13 @@ function GroupDetails() {
                     </div>
                     {user && user.id !== group.organizerId &&
                     (!group.Memberships[user.id] && <button id="join-group-btn" onClick={requestMembership}>Join this group</button>)
-                    || (group.Memberships[user.id].status === "pending" ? <button disabled={true} id="pending-btn">Pending...</button> : <button id="leave-group-btn">Leave Group</button>)
+                    || (group.Memberships[user.id].status
+                        === "pending" ?
+                        <div className="pending-btns">
+                            <button disabled={true} id="pending-btn">Pending...</button>
+                            <button id="cancel-pending-btn" onClick={deleteOwnMembership}>Cancel</button>
+                        </div>
+                        : <button id="leave-group-btn">Leave Group</button>)
                         }
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">

@@ -193,7 +193,19 @@ div.upper-left span>a{
     padding-top: 10px;
 }
 
-#join-group-btn, #pending-btn, #leave-group-btn{
+.pending-btns{
+    display: flex;
+    gap: 5px;
+}
+
+#pending-btn:hover{
+    cursor: pointer;
+}
+
+#join-group-btn,
+#pending-btn,
+#leave-group-btn,
+#cancel-pending-btn{
     width: fit-content;
     height:50px;
     font-family: 'Lexend', sans-serif;
