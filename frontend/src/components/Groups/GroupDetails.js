@@ -4,8 +4,11 @@ import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import EventsCard from "../Events/EventCard";
 import DeleteButton from "./DeleteGroup/DeleteGroupButton";
+import { useModal } from "../../context/Modal";
+import DeleteConfirmModal from "./DeleteGroup";
 
 function GroupDetails() {
+    const {setModalContent} = useModal()
     const history = useHistory();
     const dispatch = useDispatch();
     const { groupId } = useParams();
@@ -75,6 +78,9 @@ function GroupDetails() {
     function deleteOwnMembership(){
         dispatch(deleteMembershipThunk(group.id, user.id))
     }
+    function leaveGroup(){
+        setModalContent(<DeleteConfirmModal groupId={groupId} membership={true}/>)
+    }
 
     if (!group) return <h1>Loading...</h1>
 
@@ -100,7 +106,7 @@ function GroupDetails() {
                             <button disabled={true} id="pending-btn">Pending...</button>
                             <button id="cancel-pending-btn" onClick={deleteOwnMembership}>Cancel</button>
                         </div>
-                        : <button id="leave-group-btn">Leave Group</button>)
+                        : <button id="leave-group-btn" onClick={leaveGroup}>Leave Group</button>)
                         }
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">
