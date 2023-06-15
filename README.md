@@ -8,6 +8,7 @@ Check out [GroupTogether](https://group-together.onrender.com)
 ## Technologies Used
 ![javascript](https://github.com/APH1997/GroupTogether/assets/118479307/e8626769-f6c6-460d-b81d-1909df939a9e)
 ![expressjs](https://github.com/APH1997/GroupTogether/assets/118479307/c310c5d9-f261-4535-8a54-3c9bf6a5ab57)
+![Sequelize](https://img.shields.io/badge/Sequelize-52B0E7?style=for-the-badge&logo=Sequelize&logoColor=white)
 ![nodejs](https://github.com/APH1997/GroupTogether/assets/118479307/9da090b9-13d5-4eb7-b6cb-c8b720fb8acb)
 ![html5](https://github.com/APH1997/GroupTogether/assets/118479307/5c4700db-0cd2-4c17-ab53-66c5d3dcaff7)
 ![css3](https://github.com/APH1997/GroupTogether/assets/118479307/8fd09621-af42-45ef-8063-90822cffa262)
