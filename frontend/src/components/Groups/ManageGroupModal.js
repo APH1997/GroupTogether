@@ -1,19 +1,40 @@
-function ManageGroup({group}){
-    console.log(Object.values(group.Memberships))
+function ManageGroup({ group }) {
+    function addMember(){
+
+    }
+    function removeMember(){
+        
+    }
     return (
         <div>
-            <h1>Manage {group.name}</h1>
-            <h2>Your members</h2>
-            {Object.values(group.Memberships)
-            .map(membership =>
-                membership.User.id !== group.organizerId &&
-                <div>
-                    <p>
-                        {membership.User.firstName} {membership.User.lastName}
-                    </p>
-                    <p>{membership.status}</p>
-                </div>
-            )}
+            <h1>{group.name} members</h1>
+            <table id="manage-members-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.values(group.Memberships)
+                        .map(membership =>
+                            membership.User.id !== group.organizerId &&
+                            <tr className="member-card-container">
+                                <td>
+                                    {membership.User.firstName} {membership.User.lastName}
+                                </td>
+                                <td>{membership.status}</td>
+                                <td>
+                                    {membership.status === "pending" &&
+                                        <button>Accept</button>
+                                    }
+                                    <button>Remove</button>
+                                </td>
+                            </tr>
+                        )}
+                </tbody>
+            </table>
         </div>
     )
 }

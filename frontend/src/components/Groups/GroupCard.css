@@ -221,3 +221,17 @@ div.upper-left span>a{
 #join-group-btn:hover{
     box-shadow: .5px .5px 1px black;
 }
+
+#manage-members-table{
+    width: 100%;
+    margin: 0 auto;
+}
+#manage-members-table thead{
+    text-align: left;
+    font-weight: bolder;
+    border-bottom: 1px solid black;
+}
+
+.member-card-container:hover{
+    background-color: whitesmoke;
+}
