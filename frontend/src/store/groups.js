@@ -6,7 +6,23 @@ const CREATE_GROUP = "groups/createGroup";
 const CREATE_GROUP_IMAGE = "groups/createImage";
 const EDIT_GROUP = "group/editGroup";
 const DELETE_GROUP = "group/deleteGroup";
+const REQUEST_MEMBERSHIP = "group/membership/post"
 
+
+// MEMBERSHIPS
+export const requestMembershipThunk = (groupId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
+        method: "POST"
+    })
+    const data = await response.json()
+
+    if (response.ok){
+        
+        return data
+    } else {
+        return data
+    }
+}
 
 
 export const getGroupsAction = (groups) => {

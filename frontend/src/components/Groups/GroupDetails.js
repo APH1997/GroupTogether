@@ -1,4 +1,4 @@
-import { getGroupDetailsThunk } from "../../store/groups";
+import { getGroupDetailsThunk, requestMembershipThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
@@ -71,6 +71,7 @@ function GroupDetails() {
 
     function requestMembership(){
         console.log('requesting...')
+        dispatch(requestMembershipThunk(group.id))
     }
 
     if (!group) return <h1>Loading...</h1>
@@ -91,7 +92,7 @@ function GroupDetails() {
                     </div>
                     {user && user.id !== group.organizerId &&
                     (!group.Memberships[user.id] && <button id="join-group-btn" onClick={requestMembership}>Join this group</button>)
-                    || (group.Memberships[user.id].status === "pending" ? <button>Pending...</button> : <button>Leave Group</button>)
+                    || (group.Memberships[user.id].status === "pending" ? <button disabled={true} id="pending-btn">Pending...</button> : <button id="leave-group-btn">Leave Group</button>)
                         }
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">

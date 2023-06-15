@@ -193,7 +193,7 @@ div.upper-left span>a{
     padding-top: 10px;
 }
 
-#join-group-btn{
+#join-group-btn, #pending-btn, #leave-group-btn{
     width: fit-content;
     height:50px;
     font-family: 'Lexend', sans-serif;
