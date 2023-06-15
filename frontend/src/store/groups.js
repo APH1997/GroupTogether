@@ -10,6 +10,13 @@ const REQUEST_MEMBERSHIP = "group/membership/post"
 
 
 // MEMBERSHIPS
+const updateMembershipsAction = (membership) => {
+    return {
+        type: REQUEST_MEMBERSHIP,
+        payload: membership
+    }
+}
+
 export const requestMembershipThunk = (groupId) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
         method: "POST"
@@ -17,7 +24,7 @@ export const requestMembershipThunk = (groupId) => async (dispatch) => {
     const data = await response.json()
 
     if (response.ok){
-        
+        dispatch(updateMembershipsAction(data))
         return data
     } else {
         return data
@@ -161,6 +168,11 @@ const groupsReducer = (state = initialState, action) => {
             const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
             delete newState.allGroups[action.payload]
             return newState;
+        }
+        case REQUEST_MEMBERSHIP: {
+            const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
+            newState.singleGroup.Memberships[action.payload.userId] = action.payload
+            return newState
         }
 
         default: {
