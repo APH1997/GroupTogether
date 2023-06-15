@@ -128,6 +128,10 @@ router.get('/:groupId', async (req, res, next) => {
         if (jsonGroup.numMembers === 0){
             jsonGroup.numMembers = 1;
         }
+        members = [...jsonGroup.Memberships]
+        jsonGroup.Memberships = {}
+        members.forEach(member => jsonGroup.Memberships[member.id] = member)
+
 
         return res.json(jsonGroup)
 

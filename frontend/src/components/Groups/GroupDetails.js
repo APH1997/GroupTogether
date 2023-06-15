@@ -69,6 +69,10 @@ function GroupDetails() {
         }
     }
 
+    function requestMembership(){
+        console.log('requesting...')
+    }
+
     if (!group) return <h1>Loading...</h1>
 
     return (
@@ -85,8 +89,10 @@ function GroupDetails() {
                         {Object.values(group)?.length > 0 && <h4>{group.Events?.length || 0} event{group.Events?.length > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
                         <p>Organized by: {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
-                    {user && user.id !== group.organizerId &&
-                        <button id="join-group-btn" onClick={() => alert('Feature coming soon')}>Join this group</button>}
+                    {user && user.id !== group.organizerId 
+                    // (!memberIds.includes(user.id) && <button id="join-group-btn" onClick={requestMembership}>Join this group</button>)
+                    // || ()
+                        }
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">
                             <button onClick={() => history.push(`/groups/${groupId}/events/new`)} id="organizer-btn-create">Create Event</button>
