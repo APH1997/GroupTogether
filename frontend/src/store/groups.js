@@ -154,6 +154,7 @@ export const deleteGroupAction = (groupId) => {
         payload: groupId
     }
 }
+
 export const deleteGroupThunk = (groupId) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/${groupId}`, {
         method: "DELETE",
