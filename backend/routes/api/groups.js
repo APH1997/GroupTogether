@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Attendance, Event, EventImage, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
+const { Attendance, Event, EventImage, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
 router.get('/', async (req, res) => {
@@ -103,11 +103,6 @@ router.get('/:groupId', async (req, res, next) => {
                         attributes: ['id', 'firstName', 'lastName']
                     },
                     {
-                        model: Venue,
-                        as: 'Venue',
-                        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
-                    },
-                    {
                         model: Event,
                         include: {model: EventImage}
                     },
@@ -122,9 +117,7 @@ router.get('/:groupId', async (req, res, next) => {
         })).length;
 
         jsonGroup = group.toJSON();
-        jsonGroup.Venues = jsonGroup.Venue;
 
-        delete jsonGroup.Venue;
         if (jsonGroup.numMembers === 0){
             jsonGroup.numMembers = 1;
         }
@@ -320,115 +313,6 @@ router.delete('/:groupId', async (req, res, next) => {
     res.json({ "message": "Successfully deleted" })
 })
 
-router.get('/:groupId/venues', async (req, res, next) => {
-    const { user } = req;
-    const group = await Group.findByPk(req.params.groupId, {
-        include: {
-            model: Venue,
-            as: 'Venue'
-        }
-    })
-    if (!user) {
-        res.status(401);
-        return res.json({ "message": "Authentication required" })
-    }
-    if (!group) {
-        res.status(404);
-        return res.json({ "message": "Group couldn't be found" })
-    }
-    const membership = await user.getMemberships({
-        where: { groupId: group.id }
-    })
-    let userStatus;
-    if (membership.length){
-        userStatus = membership[0].status;
-    }
-
-    if (user.id === group.organizerId) userStatus = 'organizer'
-
-    if (userStatus !== 'organizer' && userStatus !== 'co-host') {
-        res.status(403);
-        return res.json({ "message": "Forbidden" })
-    }
-
-    const venueList = [];
-    group.Venue.forEach(venue => {
-        venueList.push(venue.toJSON())
-    })
-
-    for (let venue of venueList) {
-        delete venue.createdAt;
-        delete venue.updatedAt;
-    }
-    return res.json({ Venues: venueList });
-})
-
-router.post('/:groupId/venues', async (req, res, next) => {
-    const { user } = req;
-    const group = await Group.findByPk(req.params.groupId)
-    if (!user) {
-        res.status(401);
-        return res.json({ "message": "Authentication required" })
-    }
-    if (!group) {
-        res.status(404);
-        return res.json({ "message": "Group couldn't be found" })
-    }
-    const membership = await user.getMemberships({
-        where: { groupId: group.id }
-    })
-
-    let userStatus;
-    for (let member of membership){
-        if (member.userId === user.id){
-            userStatus = member.status
-        }
-    }
-    // if (membership.length){
-    //     userStatus = membership[0].status;
-    // }
-    if (user.id === group.organizerId) userStatus = 'organizer'
-
-    if (userStatus !== 'organizer' && userStatus !== 'co-host') {
-        res.status(403);
-        return res.json({ "message": "Forbidden" })
-    }
-
-    const { address, city, state, lat, lng } = req.body;
-    const errors = {};
-    if (!address) errors.address = "Street address is required";
-    if (!city) errors.city = "City is required";
-    if (!state) errors.state = "State is required";
-    if (lat < -90 || lat > 90) errors.lat = "Latitude is not valid";
-    if (lng < -180 || lng > 180) errors.lng = "Longitude is not valid";
-    if (Object.keys(errors).length) {
-        let err = {};
-        err.message = "Bad Request"
-        err.errors = { ...errors }
-        err.status = 400;
-        err.title = 'Validation Error'
-        next(err);
-    }
-    try {
-
-        const newVenue = await group.createVenue({
-            address,
-            city,
-            state,
-            lat,
-            lng
-        });
-
-        const jsonVenue = newVenue.toJSON()
-        delete jsonVenue.updatedAt;
-        delete jsonVenue.createdAt;
-
-        return res.json(jsonVenue)
-
-    } catch (e) {
-        next(e);
-    }
-})
 
 router.get('/:groupId/events', async (req, res, next) => {
     const group = await Group.findByPk(req.params.groupId)
@@ -442,7 +326,6 @@ router.get('/:groupId/events', async (req, res, next) => {
             [
                 { model: Group, attributes: ['id', 'name', 'city', 'state'] },
                 { model: Attendance },
-                { model: Venue, attributes: ['id', 'city', 'state'] },
                 { model: EventImage }
             ]
     })
@@ -503,11 +386,9 @@ router.post('/:groupId/events', async (req, res, next) => {
         res.status(403);
         return res.json({ "message": "Forbidden" })
     }
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const { lat, lng, name, type, capacity, price, description, startDate, endDate } = req.body;
     const errors = {};
-    // THIS IS A SHORT FIX FOR MY CASCADE ISSUES
-    // const venue = await Venue.findByPk(venueId);
-    // if (!venue) errors.venueId = "Venue does not exist";
+
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
@@ -515,7 +396,9 @@ router.post('/:groupId/events', async (req, res, next) => {
     if (!description) errors.description = "Description is required";
     if (new Date(startDate) < new Date()) errors.startDate = 'Start date must be in the future';
     if (new Date (endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
+    // TODO: validations for lat/lng
 
+    
     if (Object.keys(errors).length) {
         let err = {};
         err.message = "Bad Request"
@@ -529,7 +412,8 @@ router.post('/:groupId/events', async (req, res, next) => {
 
         const newEvent = await group.createEvent({
             hostId: user.Id,
-            venueId,
+            lat,
+            lng,
             name,
             type,
             capacity,
