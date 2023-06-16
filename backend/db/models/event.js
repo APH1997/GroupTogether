@@ -10,9 +10,6 @@ module.exports = (sequelize, DataTypes) => {
         // onDelete: 'CASCADE',
         // hooks: true
       })
-      Event.belongsTo(models.Venue, {
-        foreignKey: 'venueId'
-      })
       Event.hasMany(models.EventImage, {
         foreignKey: 'eventId',
         onDelete: 'CASCADE',
@@ -37,17 +34,22 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
+    lat: {
+      type: DataTypes.DECIMAL(9,7),
+      validate: {
+        min: -90,
+        max: 90
+      }
+    },
+    lng: {
+      type: DataTypes.DECIMAL(10,7),
+      validate: {
+        min: -180,
+        max: 180
+      }
+    },
     hostId: {
       type: DataTypes.INTEGER,
-
-    },
-    venueId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: 'Venues'
-      },
-      // onDelete: 'CASCADE',
-      // hooks: true
     },
     groupId: {
       type: DataTypes.INTEGER,
