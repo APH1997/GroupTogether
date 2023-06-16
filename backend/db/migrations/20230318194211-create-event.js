@@ -18,13 +18,11 @@ module.exports = {
       hostId:{
         type: Sequelize.INTEGER
       },
-      venueId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Venues'
-        },
-        // onDelete: 'CASCADE',
-        // hooks: true
+      lat: {
+        type: Sequelize.DECIMAL(9,7),
+      },
+      lng: {
+        type: Sequelize.DECIMAL(10,7),
       },
       groupId: {
         type: Sequelize.INTEGER,
