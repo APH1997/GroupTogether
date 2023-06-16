@@ -738,7 +738,9 @@ router.put('/:groupId/membership', async (req, res, next) => {
     if (group.organizerId === user.id) {
         userStatus = 'organizer'
     }
-    const targetMembership = await Membership.findByPk(targetMembershipId);
+    const targetMembership = await Membership.findByPk(targetMembershipId, {
+        include: {model: User}
+    });
 
     if (userStatus === 'organizer' || userStatus === 'co-host') {
 
@@ -748,6 +750,7 @@ router.put('/:groupId/membership', async (req, res, next) => {
         const resTargetMembership = targetMembership.toJSON();
         delete resTargetMembership.updatedAt;
         delete resTargetMembership.createdAt;
+
 
         return res.json(resTargetMembership)
     } else {

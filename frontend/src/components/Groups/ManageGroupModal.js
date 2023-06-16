@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from "react-redux"
-import { deleteMembershipThunk } from "../../store/groups"
+import { deleteMembershipThunk, editMembershipThunk } from "../../store/groups"
 
 function ManageGroup({ group }) {
     const dispatch = useDispatch()
     const currGroup = useSelector(state => state.groups.singleGroup)
-    function addMember(){
 
+    function addMember(id){
+        dispatch(editMembershipThunk(group.id, id))
     }
     function removeMember(id){
         dispatch(deleteMembershipThunk(group.id, id))
     }
-
+    console.log(Object.values(group.Memberships))
     return (
         <div>
             <h1>{group.name} members</h1>
@@ -34,9 +35,9 @@ function ManageGroup({ group }) {
                                 <td>{membership.status}</td>
                                 <td>
                                     {membership.status === "pending" &&
-                                        <button>Accept</button>
+                                        <button onClick={() => addMember(membership.userId)}>Accept</button>
                                     }
-                                    <button onClick={() =>removeMember(membership.User.id)}>Remove</button>
+                                    <button onClick={() =>removeMember(membership.userId)}>Remove</button>
                                 </td>
                             </tr>
                         )}
