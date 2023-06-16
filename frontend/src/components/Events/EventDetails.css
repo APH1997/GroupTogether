@@ -155,3 +155,10 @@
 .event-details-header h2, p{
     margin: 0;
 }
+
+
+.gmap-container{
+    padding-top: 20px;
+    width: fit-content;
+    margin: 0 auto;
+}

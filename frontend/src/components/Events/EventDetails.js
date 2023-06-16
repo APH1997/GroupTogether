@@ -4,6 +4,7 @@ import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import './EventDetails.css';
 import DeleteButton from "./DeleteEvent/DeleteEventButton";
+import MapContainer from "../Maps";
 
 function EventDetails() {
     const history = useHistory();
@@ -106,6 +107,9 @@ function EventDetails() {
                     <div>
                         {event.description}
                     </div>
+                </div>
+                <div className="gmap-container">
+                    <MapContainer />
                 </div>
             </main>
         </>
