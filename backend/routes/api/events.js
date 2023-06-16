@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Attendance, EventImage, Event, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
+const { Attendance, EventImage, Event, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 
 router.get('/', async (req, res, next) => {
     let { page, size, name, type, startDate } = req.query;
@@ -44,7 +44,6 @@ router.get('/', async (req, res, next) => {
         where,
         include:
             [
-                { model: Venue, attributes: ['id', 'city', 'state'] },
                 { model: Attendance },
                 { model: EventImage },
                 { model: Group, attributes: ['id', 'name', 'city', 'state'] }
@@ -91,7 +90,6 @@ router.get('/:eventId', async (req, res, next) => {
             [
                 { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
                     include: [{model: GroupImage}, {model: User, as: 'Organizer'}]},
-                { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
                 { model: Attendance}
             ],
@@ -231,15 +229,10 @@ router.put('/:eventId', async (req, res, next) => {
         return res.json({ "message": "Forbidden" })
     }
 
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const { lat, lng, name, type, capacity, price, description, startDate, endDate } = req.body;
 
     const errors = {};
-    // THIS IS PART OF MY HOTFIX FOR CASCADE
-    // const venue = await Venue.findByPk(venueId)
-    // if (!venue) {
-    //     res.status(404);
-    //     return res.json({ "message": "Venue couldn't be found" })
-    // }
+
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
@@ -258,7 +251,8 @@ router.put('/:eventId', async (req, res, next) => {
     }
 
     try {
-        event.venueId = venueId;
+        event.lat = lat;
+        event.lng = lng;
         event.name = name;
         event.type = type;
         event.capacity = capacity;
