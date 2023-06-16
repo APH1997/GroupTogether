@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const apiRouter = require('./api');
+const mapsRouter = require('./maps')
 
 if (process.env.NODE_ENV === 'production') {
   const path = require('path');
@@ -30,6 +31,8 @@ if (process.env.NODE_ENV !== 'production') {
     return res.json({});
   });
 }
+
+router.use('/maps', mapsRouter)
 
 router.use('/api', apiRouter);
 
