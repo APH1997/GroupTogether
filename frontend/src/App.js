@@ -13,7 +13,7 @@ import EditGroupForm from "./components/Groups/EditGroupForm";
 import EventDetails from "./components/Events/EventDetails";
 import CreateEventForm from "./components/Events/CreateEventForm";
 import EditEventForm from "./components/Events/EditEventForm";
-
+import MapContainer from "./components/Maps";
 
 function App() {
   const dispatch = useDispatch();
@@ -54,7 +54,9 @@ function App() {
           <Route exact path="/events/:eventId">
             <EventDetails />
           </Route>
-
+          <Route exact path="/maps">
+            <MapContainer />
+          </Route>
           <Route>
             Page not found
           </Route>

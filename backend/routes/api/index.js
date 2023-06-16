@@ -6,10 +6,11 @@ const venuesRouter = require('./venues.js')
 const eventsRouter = require('./events.js')
 const groupImagesRouter = require('./group-images.js')
 const eventImagesRouter = require('./event-images.js')
-
+const mapsRouter = require('./maps.js')
 const { restoreUser } = require('../../utils/auth.js');
 router.use(restoreUser);
 
+router.use('/maps', mapsRouter)
 
 router.use('/session', sessionRouter);
 
