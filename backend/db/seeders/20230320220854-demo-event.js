@@ -13,8 +13,8 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         hostId: 3,
-        lat: 0.1234567,
-        lng: 0.1234567,
+        lat: 40.7128,
+        lng: 74.0060,
         groupId: 3,
         name: 'Wear an impractical hat',
         description: 'if you are not inconvenienced by your hat, it is not impractical enough.',
@@ -27,8 +27,8 @@ module.exports = {
       {
         hostId: 1,
         groupId: 1,
-        lat: 10.1234567,
-        lng: 10.1234567,
+        lat: 39.9307,
+        lng: 75.3202,
         name: 'Wear a silly hat',
         description: 'if you are not amused by your hat, it is not silly enough.',
         type: 'In person',
@@ -40,8 +40,8 @@ module.exports = {
       {
         hostId: 2,
         groupId: 2,
-        lat: 20.1234567,
-        lng: 20.1234567,
+        lat: 41.0262,
+        lng: 73.6282,
         name: 'Wear a haughty hat',
         description: 'if you are not feeling superior because of your hat, it is not haughty enough.',
         type: 'Online',
@@ -53,8 +53,8 @@ module.exports = {
       {
         hostId: 1,
         groupId: 1,
-        lat: 30.1234567,
-        lng: 30.1234567,
+        lat: 39.9307,
+        lng: 75.3202,
         name: 'Donating Silly Hats',
         description: 'We did not think it possible, but we bought too many silly hats! Argh!',
         type: 'In person',
@@ -66,8 +66,8 @@ module.exports = {
       {
         hostId: 1,
         groupId: 1,
-        lat: 40.1234567,
-        lng: 40.1234567,
+        lat: 39.9307,
+        lng: 75.3202,
         name: 'Shopping for Silly Hats',
         description: 'The crew is going to hit the outlets and find the silliest hats they have to offer',
         type: 'In person',
