@@ -109,7 +109,10 @@ function EventDetails() {
                     </div>
                 </div>
                 <div className="gmap-container">
-                    <MapContainer />
+                    <MapContainer eventLoc={{
+                        lat: event.lat,
+                        lng: event.lng
+                    }}/>
                 </div>
             </main>
         </>

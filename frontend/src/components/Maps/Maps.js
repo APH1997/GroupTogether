@@ -11,18 +11,19 @@ const center = {
   lng: 77.0369,
 };
 
-const Maps = ({ apiKey }) => {
+const Maps = ({ apiKey, eventLoc}) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: apiKey,
   });
 
+  
   return (
     <>
       {isLoaded && (
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={center}
+          center={eventLoc || center}
           zoom={10}
         />
       )}
