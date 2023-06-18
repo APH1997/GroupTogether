@@ -29,16 +29,8 @@ function GroupForm({ formType, group }) {
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    // const setCityAndState = (e, city, state) => {
-    //     let trimmedState;
-    //     if (state){
-    //         trimmedState = state.trim();
-    //     } else trimmedState = state;
-
-    //     setCityState(e.target.value);
-    //     setCity(city)
-    //     setState(trimmedState)
-    // }
+    //useState for states dropdown
+    const [size, setSize] = useState(0)
 
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
@@ -97,7 +89,7 @@ function GroupForm({ formType, group }) {
             }
         }
     }
-    
+
     return (
         <form onSubmit={handleSubmit}>
             <h1>{formType === 'Create' ? 'Start a New Group' : 'Update Your Group'}</h1>
@@ -111,7 +103,7 @@ function GroupForm({ formType, group }) {
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                     />
-                    <select name='state'
+                    <select id="states-dropdown" name='state'
                     onChange={(e) => setState(e.target.value)}>
                         {Object.keys(states).map((abbr) =>
                             <option id={abbr} value={abbr}>{abbr}</option>
