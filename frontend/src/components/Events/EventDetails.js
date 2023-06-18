@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import './EventDetails.css';
 import DeleteButton from "./DeleteEvent/DeleteEventButton";
 import MapContainer from "../Maps";
+import { Marker } from "@react-google-maps/api";
 
 function EventDetails() {
     const history = useHistory();
@@ -61,7 +62,7 @@ function EventDetails() {
                                 <img src={event.Group.imgUrl}></img>
                             </div>
                             <div className="group-info">
-                                <h4 style={{paddingRight:'10px'}}>{event.Group.name}</h4>
+                                <h4 style={{ paddingRight: '10px' }}>{event.Group.name}</h4>
                                 <p>{event.Group.private ? "Private" : "Public"}</p>
                             </div>
                         </div>
@@ -103,16 +104,18 @@ function EventDetails() {
                 </div>
 
                 <div className="content-container-bottom">
-                    <h2>Details</h2>
                     <div>
-                        {event.description}
+                        <h2>Details</h2>
+                        <div>
+                            {event.description}
+                        </div>
                     </div>
-                </div>
-                <div className="gmap-container">
-                    <MapContainer eventLoc={{
-                        lat: event.lat,
-                        lng: event.lng
-                    }}/>
+                    <div className="gmap-container">
+                        <MapContainer eventLoc={{
+                            lat: event.lat,
+                            lng: event.lng
+                        }} />
+                    </div>
                 </div>
             </main>
         </>
