@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createEventImageThunk, createEventThunk, updateEventThunk } from '../../store/events';
 import './EventForm.css';
+import MapContainer from '../Maps';
+import states from '../Maps/states';
 
 function EventForm({ formType, event, group }) {
     const history = useHistory();
@@ -31,7 +33,7 @@ function EventForm({ formType, event, group }) {
     const [startDate, setStartDate] = useState(event.startDate || "");
     const [endDate, setEndDate] = useState(event.endDate || "");
     const [imgUrl, setImgUrl] = useState("")
-    
+
 
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg'];
@@ -124,6 +126,7 @@ function EventForm({ formType, event, group }) {
                 {type === "In person" &&
                 <div>
                     Drop a pin
+                    <MapContainer eventLoc={states[group.state]}/>
                 </div>
                 }
                 <div>
