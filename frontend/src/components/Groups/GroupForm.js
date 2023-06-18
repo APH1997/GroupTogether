@@ -16,7 +16,6 @@ function GroupForm({ formType, group }) {
         history.push('/')
     }
 
-    console.log(Object.keys(states))
     const dispatch = useDispatch();
 
     const [name, setName] = useState(group?.name);
@@ -24,24 +23,23 @@ function GroupForm({ formType, group }) {
     const [type, setType] = useState(group?.type);
     const [isPrivate, setIsPrivate] = useState(group?.private);
     const [imgUrl, setImgUrl] = useState('');
-
-    const [cityState, setCityState] = useState(group?.city && group?.state ? `${group.city}, ${group.state}` : "")
     const [city, setCity] = useState(group?.city || '')
     const [state, setState] = useState(group?.state || '');
 
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    const setCityAndState = (e, city, state) => {
-        let trimmedState;
-        if (state){
-            trimmedState = state.trim();
-        } else trimmedState = state;
+    // const setCityAndState = (e, city, state) => {
+    //     let trimmedState;
+    //     if (state){
+    //         trimmedState = state.trim();
+    //     } else trimmedState = state;
 
-        setCityState(e.target.value);
-        setCity(city)
-        setState(trimmedState)
-    }
+    //     setCityState(e.target.value);
+    //     setCity(city)
+    //     setState(trimmedState)
+    // }
+
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
@@ -56,7 +54,7 @@ function GroupForm({ formType, group }) {
             setErrors(errObj);
         } else setErrors({})
 
-    }, [name, about, type, isPrivate, imgUrl, cityState])
+    }, [name, about, type, isPrivate, imgUrl, city, state])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -99,8 +97,7 @@ function GroupForm({ formType, group }) {
             }
         }
     }
-
-
+    
     return (
         <form onSubmit={handleSubmit}>
             <h1>{formType === 'Create' ? 'Start a New Group' : 'Update Your Group'}</h1>
@@ -110,10 +107,16 @@ function GroupForm({ formType, group }) {
                     in your area, and more can join you online.</p>
                     <input
                         type="text"
-                        placeholder="city, STATE"
-                        value={cityState}
-                        onChange={(e) => setCityAndState(e, e.target.value.split(',')[0], e.target.value.split(',')[1])}
+                        placeholder="city"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
                     />
+                    <select name='state'
+                    onChange={(e) => setState(e.target.value)}>
+                        {Object.keys(states).map((abbr) =>
+                            <option id={abbr} value={abbr}>{abbr}</option>
+                        )}
+                    </select>
                     {hasSubmitted && errors.location && <p className='errors'>{errors.location}</p>}
 
             </div>
