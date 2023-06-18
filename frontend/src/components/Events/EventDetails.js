@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import './EventDetails.css';
 import DeleteButton from "./DeleteEvent/DeleteEventButton";
 import MapContainer from "../Maps";
-import { Marker } from "@react-google-maps/api";
+
 
 function EventDetails() {
     const history = useHistory();

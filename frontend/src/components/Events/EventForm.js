@@ -31,6 +31,7 @@ function EventForm({ formType, event, group }) {
     const [startDate, setStartDate] = useState(event.startDate || "");
     const [endDate, setEndDate] = useState(event.endDate || "");
     const [imgUrl, setImgUrl] = useState("")
+    const [loc, setLoc] = useState({})
 
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg'];
@@ -120,6 +121,11 @@ function EventForm({ formType, event, group }) {
                     </select>
                 {hasSubmitted && errors.type && <p className='errors'>{errors.type}</p>}
                 </div>
+                {type === "In person" &&
+                <div>
+                    Drop a pin
+                </div>
+                }
                 <div>
                     <label htmlFor="priceInput">What is the price for your event?</label>
                         <div id="currency-symbol">$</div>
