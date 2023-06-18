@@ -31,7 +31,7 @@ function EventForm({ formType, event, group }) {
     const [startDate, setStartDate] = useState(event.startDate || "");
     const [endDate, setEndDate] = useState(event.endDate || "");
     const [imgUrl, setImgUrl] = useState("")
-    const [loc, setLoc] = useState({})
+    
 
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg'];

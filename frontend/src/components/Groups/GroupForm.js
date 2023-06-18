@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createGroupImageThunk, createGroupThunk, updateGroupThunk } from '../../store/groups';
 import './GroupForm.css';
+import states from '../Maps/states';
 
 function GroupForm({ formType, group }) {
     const history = useHistory();
@@ -15,6 +16,7 @@ function GroupForm({ formType, group }) {
         history.push('/')
     }
 
+    console.log(Object.keys(states))
     const dispatch = useDispatch();
 
     const [name, setName] = useState(group?.name);
