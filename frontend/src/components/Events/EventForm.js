@@ -33,11 +33,11 @@ function EventForm({ formType, event, group }) {
     const [type, setType] = useState(event.type || "");
     const [price, setPrice] = useState(event.price || "");
     const [description, setDescription] = useState(event.description || "");
-    const [startDate, setStartDate] = useState(event.startDate || "");
-    const [endDate, setEndDate] = useState(event.endDate || "");
+    const [startDate, setStartDate] = useState(event.startDate.split('T')[0] || "");
+    const [endDate, setEndDate] = useState(event.endDate.split('T')[0] || "");
     const [imgUrl, setImgUrl] = useState("")
-    const [startTime, setStartTime] = useState("")
-    const [endTime, setEndTime] = useState("")
+    const [startTime, setStartTime] = useState(event.startTime || "")
+    const [endTime, setEndTime] = useState(event.endTime || "")
 
     //want to set lat/lng context ONCE
     useEffect(() => {
