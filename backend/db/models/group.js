@@ -52,10 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     about: {
       type: DataTypes.STRING,
       validate: {
-        atLeast50(value){
-          if (value.length < 50){
-            throw new Error('About must be 50 characters or more')
-          }
+        len: [50, 300]
         }
       },
       allowNull: false

@@ -67,8 +67,16 @@ function GroupForm({ formType, group }) {
 
         if (formType === "Create"){
             const createdGroup = await dispatch(createGroupThunk(newGroup))
+            .catch(async (res) => {
+
+                const data = await res.json();
+                if (data && data.errors){
+                    console.log(data.errors)
+                    setErrors(data.errors)
+                }
+            })
             if (createdGroup.errors){
-                setErrors(createdGroup.errors)
+                return
             } else {
                 if (imgUrl){
                     const image = {url: imgUrl, preview: true}
@@ -95,6 +103,7 @@ function GroupForm({ formType, group }) {
         if (e.target.value.length > 2) return;
         setState(e.target.value)
     }
+
 
     return (
         <form onSubmit={handleSubmit}>
