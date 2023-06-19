@@ -232,7 +232,7 @@ router.put('/:eventId', async (req, res, next) => {
     const { lat, lng, name, type, capacity, price, description, startDate, endDate } = req.body;
 
     const errors = {};
-
+    // TODO: check the data validations
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
@@ -240,6 +240,8 @@ router.put('/:eventId', async (req, res, next) => {
     if (!description) errors.description = "Description is required";
     if (new Date(startDate) < new Date()) errors.startDate = 'Start date must be in the future';
     if (new Date(endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
+    if (lat < -90 || lat > 90) errors.lat = "Latitude must be between -90 and 90"
+    if (lng < -180 || lng > 180) errors.lat = "Longitude must be between -180 and 180"
 
     if (Object.keys(errors).length) {
         let err = {};
