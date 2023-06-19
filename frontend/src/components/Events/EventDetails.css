@@ -17,6 +17,10 @@
     display: flex;
 }
 
+#event-description-container{
+    word-break: break-all;
+}
+
 .gmap-container{
     padding-top: 20px;
     width: fit-content;

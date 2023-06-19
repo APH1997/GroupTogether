@@ -106,7 +106,7 @@ function EventDetails() {
                 <div className="content-container-bottom">
                     <div>
                         <h2>Details</h2>
-                        <div>
+                        <div id="event-description-container">
                             {event.description}
                         </div>
                     </div>
