@@ -36,9 +36,9 @@ function GroupForm({ formType, group }) {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
         if (!states[state.toUpperCase()]) errObj.location = "Please enter a valid state";
-        if (!city || !state) errObj.location = "City and state are required";
-        if (!name) errObj.name = "Name is required";
-        if (!about || about.length < 50) errObj.about = "Description must be at least 50 characters long";
+        if (!city || !state || !city.trim() || !state.trim()) errObj.location = "City and state are required";
+        if (!name || !name.trim()) errObj.name = "Name is required";
+        if (!about || !about.trim() || about.length < 50) errObj.about = "Description must be at least 50 characters long";
         if (!type) errObj.type = "Group Type is required";
         if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
