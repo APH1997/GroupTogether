@@ -389,7 +389,7 @@ router.post('/:groupId/events', async (req, res, next) => {
     const { lat, lng, name, type, capacity, price, description, startDate, endDate, startTime, endTime } = req.body;
     const errors = {};
 
-    // TODO: check date validations
+    
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
