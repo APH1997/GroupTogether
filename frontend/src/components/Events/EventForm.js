@@ -5,8 +5,11 @@ import { createEventImageThunk, createEventThunk, updateEventThunk } from '../..
 import './EventForm.css';
 import MapContainer from '../Maps';
 import states from '../Maps/states';
+import { useMarker } from '../../context/MarkerCoords';
 
 function EventForm({ formType, event, group }) {
+    const {lat, lng} = useMarker()
+
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -33,9 +36,8 @@ function EventForm({ formType, event, group }) {
     const [startDate, setStartDate] = useState(event.startDate || "");
     const [endDate, setEndDate] = useState(event.endDate || "");
     const [imgUrl, setImgUrl] = useState("")
-    const [lat, setLat] = useState(states[group.state.toUpperCase()].lat)
-    const [lng, setLng] = useState(states[group.state.toUpperCase()].lng)
-   
+
+
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg'];
         const errObj = {};
@@ -98,6 +100,7 @@ function EventForm({ formType, event, group }) {
             }
         }
     }
+
 
     return (
         <form id="event-form" onSubmit={handleSubmit}>

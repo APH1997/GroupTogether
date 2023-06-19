@@ -10,7 +10,6 @@ import EventsCard from './EventCard';
 function EventsPage(){
     const dispatch = useDispatch();
     const eventsObj = useSelector(state => state.events.allEvents);
-
     const eventsList = Object.values(eventsObj)
 
     useEffect(() => {

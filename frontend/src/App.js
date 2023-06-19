@@ -13,7 +13,7 @@ import EditGroupForm from "./components/Groups/EditGroupForm";
 import EventDetails from "./components/Events/EventDetails";
 import CreateEventForm from "./components/Events/CreateEventForm";
 import EditEventForm from "./components/Events/EditEventForm";
-import MapContainer from "./components/Maps";
+import { MarkerProvider } from "./context/MarkerCoords";
 
 function App() {
   const dispatch = useDispatch();
@@ -43,7 +43,9 @@ function App() {
             <EditGroupForm />
           </Route>
           <Route exact path="/groups/:groupId/events/new">
-            <CreateEventForm />
+            <MarkerProvider>
+              <CreateEventForm />
+            </MarkerProvider>
           </Route>
           <Route exact path="/groups/:groupId/events/:eventId/edit">
             <EditEventForm />
