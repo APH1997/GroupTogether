@@ -105,6 +105,9 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    startTime:{
+      type: DataTypes.STRING
+    },
     endDate: {
       type: DataTypes.DATE,
       validate: {
@@ -115,6 +118,9 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       }
+    },
+    endTime:{
+      type: DataTypes.STRING
     },
   }, {
     sequelize,

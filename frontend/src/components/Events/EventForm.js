@@ -113,7 +113,7 @@ function EventForm({ formType, event, group }) {
             }
         }
     }
-
+    
     return (
         <form id="event-form" onSubmit={handleSubmit}>
 

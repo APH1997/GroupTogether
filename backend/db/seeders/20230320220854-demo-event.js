@@ -23,6 +23,8 @@ module.exports = {
         price: 25.69,
         startDate: new Date('2025-01-01 19:24:00'),
         endDate: new Date('2025-01-01 20:24:00'),
+        startTime: '7:00 PM',
+        endTime: '9:30 PM',
       },
       {
         hostId: 1,
@@ -36,6 +38,8 @@ module.exports = {
         price: 5,
         startDate: new Date('2026-01-01 17:24:00'),
         endDate: new Date('2026-01-02 20:24:00'),
+        startTime: '10:00 AM',
+        endTime: '12:00 PM',
       },
       {
         hostId: 2,
@@ -49,6 +53,8 @@ module.exports = {
         price: 250.99,
         startDate: new Date('2050-01-01 9:30:00'),
         endDate: new Date('2050-01-01 10:30:00'),
+        startTime: '9:00 PM',
+        endTime: '9:45 PM',
       },
       {
         hostId: 1,
@@ -62,6 +68,8 @@ module.exports = {
         price: 0,
         startDate: new Date('2020-03-01 12:24:00'),
         endDate: new Date('2020-03-01 13:24:00'),
+        startTime: '2:00 PM',
+        endTime: '5:30 PM',
       },
       {
         hostId: 1,
@@ -75,6 +83,8 @@ module.exports = {
         price: 0,
         startDate: new Date('2020-01-01 18:30:00'),
         endDate: new Date('2020-01-01 19:30:00'),
+        startTime: '8:00 AM',
+        endTime: '10:00 AM',
       }
     ], {})
 
