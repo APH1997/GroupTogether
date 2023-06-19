@@ -1,9 +1,10 @@
 import React from 'react';
+import { useState } from 'react';
 import { GoogleMap,
         useJsApiLoader,
         Marker,
       } from '@react-google-maps/api';
-
+import states from './states';
 
 const containerStyle = {
   width: '400px',
@@ -16,12 +17,22 @@ const center = {
 };
 
 
-const Maps = ({ apiKey, eventLoc}) => {
+const Maps = ({ apiKey, eventLoc, editing}) => {
+
+  const [lat, setLat] = useState(states[eventLoc.lat])
+  const [lng, setLng] = useState(states[eventLoc.lng])
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: apiKey,
   });
 
+
+  function onMarkerDragEnd(e){
+    setLat(e.latLng.lat())
+    setLng(e.latLng.lng())
+    console.log(lat,lng)
+  }
 
   return (
     <>
@@ -32,7 +43,11 @@ const Maps = ({ apiKey, eventLoc}) => {
           zoom={11}
         >
           {eventLoc &&
-          <Marker position ={eventLoc}/>}
+          <Marker
+            position={eventLoc}
+            draggable={editing}
+            onDragEnd={(e) => onMarkerDragEnd(e)}
+          />}
         </GoogleMap>
 
 

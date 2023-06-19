@@ -54,9 +54,6 @@ function App() {
           <Route exact path="/events/:eventId">
             <EventDetails />
           </Route>
-          <Route exact path="/maps">
-            <MapContainer />
-          </Route>
           <Route>
             Page not found
           </Route>

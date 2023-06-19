@@ -33,8 +33,9 @@ function EventForm({ formType, event, group }) {
     const [startDate, setStartDate] = useState(event.startDate || "");
     const [endDate, setEndDate] = useState(event.endDate || "");
     const [imgUrl, setImgUrl] = useState("")
-
-
+    const [lat, setLat] = useState(states[group.state.toUpperCase()].lat)
+    const [lng, setLng] = useState(states[group.state.toUpperCase()].lng)
+   
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg'];
         const errObj = {};
@@ -59,7 +60,8 @@ function EventForm({ formType, event, group }) {
         if (Object.keys(errors).length) return;
 
         const newEvent = {
-            venueId: null,
+            lat,
+            lng,
             hostId,
             name,
             type,
@@ -126,7 +128,10 @@ function EventForm({ formType, event, group }) {
                 {type === "In person" &&
                 <div>
                     Drop a pin for attendees!
-                    <MapContainer eventLoc={states[group.state.toUpperCase()]}/>
+                    <MapContainer
+                        eventLoc={{lat, lng}}
+                        editing={true}
+                    />
                 </div>
                 }
                 <div>
