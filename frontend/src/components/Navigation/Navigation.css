@@ -1,4 +1,3 @@
-/* TODO: NAV CSS */
 .nav-bar{
     display: flex;
     flex-wrap: wrap;
@@ -8,6 +7,10 @@
     border-bottom: lightgray solid 1.5px;
     margin: 0;
     padding: 0;
+    position: fixed;
+    background-color: white;
+    width: 100vw;
+    z-index: 5;
 }
 
 .nav-bar h1{
@@ -132,4 +135,8 @@ ul.profile-dropdown a:hover {
 #profile-menu-container:hover{
     background-color: rgba(166, 166, 166, 0.257);
     box-shadow: .5px .5px 1px black;
+}
+
+.nav-bar + div, .nav-bar + main, .nav-bar + form {
+    padding-top:80px;
 }

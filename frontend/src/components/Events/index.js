@@ -87,7 +87,9 @@ function EventsPage(){
                     })
                 }
             </div>
-            <NavLink exact to="/">Home</NavLink>
+            <div className='home-bread-crumb'>
+                <NavLink exact to="/">Home</NavLink>
+            </div>
         </>
     )
 }
