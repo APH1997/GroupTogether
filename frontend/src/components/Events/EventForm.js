@@ -8,7 +8,7 @@ import states from '../Maps/states';
 import { useMarker } from '../../context/MarkerCoords';
 
 function EventForm({ formType, event, group }) {
-    const {lat, lng} = useMarker()
+    const {setLat, lat, setLng, lng} = useMarker()
 
     const history = useHistory();
     const dispatch = useDispatch();
@@ -37,6 +37,17 @@ function EventForm({ formType, event, group }) {
     const [endDate, setEndDate] = useState(event.endDate || "");
     const [imgUrl, setImgUrl] = useState("")
 
+
+    //want to set lat/lng context ONCE
+    useEffect(() => {
+        if (formType === "Update"){
+            setLat(event.lat)
+            setLng(event.lng)
+        } else {
+            setLat(states[group.state].lat)
+            setLng(states[group.state].lng)
+        }
+    }, [])
 
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg'];

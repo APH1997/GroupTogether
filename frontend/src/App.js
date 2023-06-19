@@ -43,9 +43,7 @@ function App() {
             <EditGroupForm />
           </Route>
           <Route exact path="/groups/:groupId/events/new">
-            <MarkerProvider>
-              <CreateEventForm />
-            </MarkerProvider>
+            <CreateEventForm />
           </Route>
           <Route exact path="/groups/:groupId/events/:eventId/edit">
             <EditEventForm />

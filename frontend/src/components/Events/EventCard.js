@@ -17,7 +17,7 @@ function EventsCard({event, group}){
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
                 <div className="cont-image">
-                    <img src={`${event?.previewImage || event?.EventImages[0]?.url}`}></img>
+                    <img src={`${event?.previewImage}`}></img>
                 </div>
                 <div className="cont-info">
                     <p>{startDate} · {startTime}</p>
