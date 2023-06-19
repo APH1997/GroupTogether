@@ -15,7 +15,8 @@ function GroupDetails() {
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
     const user = useSelector(state => state.session.user);
-
+    const events = useSelector(state => state.events.allEvents);
+    console.log(events)
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
 
@@ -24,7 +25,7 @@ function GroupDetails() {
     if (!Object.values(group).length) return <h1>loading...</h1>
 
 
-    const eventsArr = group.Events
+    const eventsArr = Object.values(events)
 
     const futureEvents = [];
     const orderedFutureEvents = [];
