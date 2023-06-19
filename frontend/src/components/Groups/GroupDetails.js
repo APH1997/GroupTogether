@@ -7,6 +7,7 @@ import DeleteButton from "./DeleteGroup/DeleteGroupButton";
 import { useModal } from "../../context/Modal";
 import DeleteConfirmModal from "./DeleteGroup";
 import ManageGroup from "./ManageGroupModal";
+import { getEventsThunk } from "../../store/events";
 
 function GroupDetails() {
     const {setModalContent} = useModal()
@@ -19,13 +20,15 @@ function GroupDetails() {
     console.log(events)
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
-
+        if (!Object.values(events).length){
+            dispatch(getEventsThunk())
+        }
     }, [dispatch])
 
     if (!Object.values(group).length) return <h1>loading...</h1>
+    
+    const eventsArr = Object.values(events).filter(ele => ele.groupId == groupId)
 
-
-    const eventsArr = Object.values(events)
 
     const futureEvents = [];
     const orderedFutureEvents = [];
