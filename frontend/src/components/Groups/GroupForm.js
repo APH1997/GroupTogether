@@ -42,6 +42,7 @@ function GroupForm({ formType, group }) {
         if (!type) errObj.type = "Group Type is required";
         if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
+        if (imgUrl && imgUrl.length > 255) errObj.img = "Image URL cannot exceed 255 characters"
 
         if (Object.keys(errObj).length){
             setErrors(errObj);
