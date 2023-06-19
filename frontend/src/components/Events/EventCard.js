@@ -17,6 +17,9 @@ function EventsCard({event, group}){
         if (Number(hours < 12)){
             return `${hours}:${minutes} AM`
         }
+        if (Number(hours == 12)){
+            return `${hours}:${minutes} PM`
+        }
         return `${hours - 12}:${minutes} PM`
     }
 

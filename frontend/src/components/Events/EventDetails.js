@@ -32,6 +32,21 @@ function EventDetails() {
         }
     }
 
+    function convertMilTime(time){
+        const [hours, minutes] = time.split(':')
+        if (Number(hours < 1)){
+            return `12:${minutes} AM`
+        }
+        if (Number(hours < 12)){
+            return `${hours}:${minutes} AM`
+        }
+        if (Number(hours == 12)){
+            return `${hours}:${minutes} PM`
+        }
+        return `${hours - 12}:${minutes} PM`
+    }
+
+    console.log(event.endTime)
     return (
         <>
             <main className="main-content-container">
@@ -72,8 +87,8 @@ function EventDetails() {
                                     <div> · </div>
                                 </div>
                                 <div className="start-end-time">
-                                    <div>{event.startTime}</div>
-                                    <div>{event.endTime}</div>
+                                    <div>{convertMilTime(event.startTime)}</div>
+                                    <div>{convertMilTime(event.endTime)}</div>
                                 </div>
                             </div>
                             <div className="event-price">
