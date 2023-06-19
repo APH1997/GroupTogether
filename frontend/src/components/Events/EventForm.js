@@ -125,7 +125,7 @@ function EventForm({ formType, event, group }) {
                 </div>
                 {type === "In person" &&
                 <div>
-                    Drop a pin
+                    Drop a pin for attendees!
                     <MapContainer eventLoc={states[group.state]}/>
                 </div>
                 }

@@ -29,7 +29,7 @@ const Maps = ({ apiKey, eventLoc}) => {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={eventLoc || center}
-          zoom={10}
+          zoom={11}
         >
           {eventLoc &&
           <Marker position ={eventLoc}/>}
