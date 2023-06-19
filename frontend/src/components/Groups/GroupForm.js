@@ -29,8 +29,6 @@ function GroupForm({ formType, group }) {
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    //useState for states dropdown
-    const [size, setSize] = useState(0)
 
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
@@ -38,7 +36,9 @@ function GroupForm({ formType, group }) {
         if (!states[state.toUpperCase()]) errObj.location = "Please enter a valid state";
         if (!city || !state || !city.trim() || !state.trim()) errObj.location = "City and state are required";
         if (!name || !name.trim()) errObj.name = "Name is required";
+        if (name && name.length > 60) errObj.name = "Group name must not exceed 60 characters"
         if (!about || !about.trim() || about.length < 50) errObj.about = "Description must be at least 50 characters long";
+        if (about && about.length > 300) errObj.about = "Description must not exceed 300 characters"
         if (!type) errObj.type = "Group Type is required";
         if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
@@ -68,11 +68,9 @@ function GroupForm({ formType, group }) {
         if (formType === "Create"){
             const createdGroup = await dispatch(createGroupThunk(newGroup))
             .catch(async (res) => {
-
                 const data = await res.json();
                 if (data && data.errors){
-                    console.log(data.errors)
-                    setErrors(data.errors)
+                    setErrors(...data.errors)
                 }
             })
             if (createdGroup.errors){
