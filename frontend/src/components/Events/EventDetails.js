@@ -22,18 +22,8 @@ function EventDetails() {
 
     if (!event || !Object.values(event).length) return <></>
 
-    const convertedStartDate = new Date(event.startDate).toLocaleString("en-US")
-    const convertedEndDate = new Date(event.endDate).toLocaleString("en-US");
-
-    const startTime = convertedStartDate.split(', ')[1]
-    const endTime = convertedEndDate.split(', ')[1]
-
-    const [noMsStart] = event.startDate.split('.')
-    const [noMsEnd] = event.endDate.split('.')
-
-    const [startDate, startMilTime] = noMsStart.split('T')
-    const [endDate, endMilTime] = noMsEnd.split('T')
-
+    const startDate = new Date(event.startDate).toLocaleString("en-US").split(',')[0]
+    const endDate = new Date(event.endDate).toLocaleString("en-US").split(',')[0]
 
     let previewImage;
     for (let image of event.EventImages) {
@@ -82,8 +72,8 @@ function EventDetails() {
                                     <div> · </div>
                                 </div>
                                 <div className="start-end-time">
-                                    <div>{startTime}</div>
-                                    <div>{endTime}</div>
+                                    <div>{event.startTime}</div>
+                                    <div>{event.endTime}</div>
                                 </div>
                             </div>
                             <div className="event-price">
