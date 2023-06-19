@@ -57,8 +57,17 @@ function EventForm({ formType, event, group }) {
         if (!type) errObj.type = 'Event Type is required';
         if (!price && price !== 0) errObj.price = 'Price is required';
         if (!description || !description.trim() || description.length < 30) errObj.description = 'Description must be at least 30 characters long'
-        if (!startDate) errObj.startDate = 'Event start is required';
-        if (!endDate) errObj.endDate = 'Event end is required';
+        if (!startDate) errObj.startDate = 'Event start date is required';
+        if (new Date(startDate) < Date.now()) {
+            errObj.startDate = "Events cannot start earlier than tomorrow"
+        }
+        if (!startTime) errObj.startTime = 'Event start time is required';
+        if (!endDate) errObj.endDate = 'Event end date is required';
+        if (new Date(endDate) < new Date(startDate)){
+            errObj.endDate = 'End date cannot be before start date'
+        }
+
+        if (!endTime) errObj.endTime = 'Event end time is required';
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
         if (imgUrl && !imgUrl.trim()) errObj.img = "That's just a bunch of spaces!"
 
@@ -66,7 +75,8 @@ function EventForm({ formType, event, group }) {
             setErrors(errObj);
         } else setErrors({})
 
-    }, [name, type, price, description, startDate, endDate, imgUrl])
+    }, [name, type, price, description, startDate, endDate, startTime, endTime, imgUrl])
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -84,6 +94,8 @@ function EventForm({ formType, event, group }) {
             description,
             startDate,
             endDate,
+            startTime,
+            endTime,
             capacity: 10
         }
 
@@ -113,7 +125,7 @@ function EventForm({ formType, event, group }) {
             }
         }
     }
-    
+
     return (
         <form id="event-form" onSubmit={handleSubmit}>
 
@@ -176,6 +188,7 @@ function EventForm({ formType, event, group }) {
                         <label>at</label>
                         <input
                             type='time'
+                            max={endTime}
                             value={startTime}
                             onChange={(e) => setStartTime(e.target.value)}
                         />
@@ -195,6 +208,7 @@ function EventForm({ formType, event, group }) {
                         <label>at</label>
                         <input
                             type='time'
+                            min={startTime}
                             value={endTime}
                             onChange={(e) => setEndTime(e.target.value)}
                         />

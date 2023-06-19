@@ -9,6 +9,17 @@ function EventsCard({event, group}){
 
     const startDate = new Date(event.startDate).toLocaleString("en-US").split(',')[0]
 
+    function convertMilTime(time){
+        const [hours, minutes] = time.split(':')
+        if (Number(hours < 1)){
+            return `12:${minutes} AM`
+        }
+        if (Number(hours < 12)){
+            return `${hours}:${minutes} AM`
+        }
+        return `${hours - 12}:${minutes} PM`
+    }
+
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
@@ -16,7 +27,7 @@ function EventsCard({event, group}){
                     <img src={`${event?.previewImage}`}></img>
                 </div>
                 <div className="cont-info">
-                    <p>{startDate} · {event.startTime}</p>
+                    <p>{startDate} · {convertMilTime(event.startTime)}</p>
                     <h2>{event.name}</h2>
                     <h3>{event.Group?.city || group?.city}, {event.Group?.state || group?.state}</h3>
                 </div>

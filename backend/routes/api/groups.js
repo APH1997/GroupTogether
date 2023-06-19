@@ -386,7 +386,7 @@ router.post('/:groupId/events', async (req, res, next) => {
         res.status(403);
         return res.json({ "message": "Forbidden" })
     }
-    const { lat, lng, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const { lat, lng, name, type, capacity, price, description, startDate, endDate, startTime, endTime } = req.body;
     const errors = {};
 
     // TODO: check date validations
@@ -422,7 +422,9 @@ router.post('/:groupId/events', async (req, res, next) => {
             price,
             description,
             startDate,
-            endDate
+            endDate,
+            startTime,
+            endTime
         })
         //When someone makes an event, they should be attending by default
         const hostAttends = await user.createAttendance({
