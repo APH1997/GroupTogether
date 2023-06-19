@@ -188,7 +188,7 @@ function EventForm({ formType, event, group }) {
                         <label>at</label>
                         <input
                             type='time'
-                            max={endTime}
+                            max={startDate === endDate ? endTime : ''}
                             value={startTime}
                             onChange={(e) => setStartTime(e.target.value)}
                         />
@@ -208,7 +208,7 @@ function EventForm({ formType, event, group }) {
                         <label>at</label>
                         <input
                             type='time'
-                            min={startTime}
+                            min={startDate === endDate ? startTime : ''}
                             value={endTime}
                             onChange={(e) => setEndTime(e.target.value)}
                         />
