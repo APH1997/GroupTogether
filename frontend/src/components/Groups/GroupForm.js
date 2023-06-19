@@ -35,7 +35,8 @@ function GroupForm({ formType, group }) {
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
-        if (!city || !state) errObj.location = "Location is required";
+        if (!states[state.toUpperCase()]) errObj.location = "Please enter a valid state";
+        if (!city || !state) errObj.location = "City and state are required";
         if (!name) errObj.name = "Name is required";
         if (!about || about.length < 50) errObj.about = "Description must be at least 50 characters long";
         if (!type) errObj.type = "Group Type is required";
@@ -90,6 +91,11 @@ function GroupForm({ formType, group }) {
         }
     }
 
+    const handleState = (e) => {
+        if (e.target.value.length > 2) return;
+        setState(e.target.value)
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <h1>{formType === 'Create' ? 'Start a New Group' : 'Update Your Group'}</h1>
@@ -99,16 +105,16 @@ function GroupForm({ formType, group }) {
                     in your area, and more can join you online.</p>
                     <input
                         type="text"
-                        placeholder="city"
+                        placeholder="City"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
                     />
-                    <select id="states-dropdown" name='state'
-                    onChange={(e) => setState(e.target.value)}>
-                        {Object.keys(states).map((abbr) =>
-                            <option id={abbr} value={abbr}>{abbr}</option>
-                        )}
-                    </select>
+                    <input
+                        type="text"
+                        placeholder="State"
+                        value={state}
+                        onChange={(e) => handleState(e)}
+                    />
                     {hasSubmitted && errors.location && <p className='errors'>{errors.location}</p>}
 
             </div>

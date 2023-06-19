@@ -126,7 +126,7 @@ function EventForm({ formType, event, group }) {
                 {type === "In person" &&
                 <div>
                     Drop a pin for attendees!
-                    <MapContainer eventLoc={states[group.state]}/>
+                    <MapContainer eventLoc={states[group.state.toUpperCase()]}/>
                 </div>
                 }
                 <div>
