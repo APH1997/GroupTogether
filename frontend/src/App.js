@@ -13,7 +13,8 @@ import EditGroupForm from "./components/Groups/EditGroupForm";
 import EventDetails from "./components/Events/EventDetails";
 import CreateEventForm from "./components/Events/CreateEventForm";
 import EditEventForm from "./components/Events/EditEventForm";
-import { MarkerProvider } from "./context/MarkerCoords";
+import ManageGroupsPage from "./components/Groups/ManageGroups";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +54,9 @@ function App() {
           </Route>
           <Route exact path="/events/:eventId">
             <EventDetails />
+          </Route>
+          <Route exact path="/users/:userId/groups">
+            <ManageGroupsPage />
           </Route>
           <Route>
             Page not found
