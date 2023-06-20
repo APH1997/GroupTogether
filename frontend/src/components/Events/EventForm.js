@@ -118,6 +118,11 @@ function EventForm({ formType, event, group }) {
         } else {
             try {
                 const editedEvent = await dispatch(updateEventThunk(newEvent, event.id));
+                if (imgUrl) {
+                    const image = { url: imgUrl, preview: true };
+                    await dispatch(createEventImageThunk(editedEvent.id, image))
+                }
+
                 history.push(`/events/${event.id}`);
             } catch (e) {
                 const body = await e.json();

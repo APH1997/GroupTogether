@@ -17,8 +17,12 @@
     display: flex;
 }
 
+.description-header-and-text{
+    width: 500px;
+}
 #event-description-container{
-    word-break: normal;
+    word-wrap:break-word;
+    width: 90%
 }
 
 .gmap-container{
