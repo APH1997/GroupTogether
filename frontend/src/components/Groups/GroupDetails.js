@@ -17,7 +17,7 @@ function GroupDetails() {
     const group = useSelector(state => state.groups.singleGroup);
     const user = useSelector(state => state.session.user);
     const events = useSelector(state => state.events.allEvents);
-    
+
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
         if (!Object.values(events).length){

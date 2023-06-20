@@ -1,17 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './GroupCard.css';
 import {useHistory} from  'react-router-dom';
+import { useModal } from '../../context/Modal';
+import DeleteConfirmModal from './DeleteGroup';
 
 function GroupsCard({group, manage}){
     const history = useHistory();
+    const {setModalContent} = useModal();
+    const dispatch = useDispatch()
+
     function navToGroupDetails(e){
         history.push(`/groups/${group.id}`)
+    }
+
+
+    function leaveGroup(e){
+        e.stopPropagation()
+        setModalContent(<DeleteConfirmModal groupId={group.id} membership={true}/>)
     }
 
     const user = useSelector(state => state.session.user)
 
     if (!user) return <h1>Loading...</h1>
-    console.log(group)
+
     return (
         <div key={group.id} className="card-container" onClick={navToGroupDetails} >
             <div className="cont-image">
@@ -24,7 +35,7 @@ function GroupsCard({group, manage}){
                 <div className='card-bottom'>
                     {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
                     {manage &&
-                        (group.organizerId !== user.id && <button>Leave Group</button>)
+                        (group.organizerId !== user.id && <button onClick={(e) => leaveGroup(e)}>Leave Group</button>)
                         || group.organizerId === user.id &&
                         <div>
                             <button>Update</button>

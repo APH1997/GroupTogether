@@ -32,10 +32,10 @@ export const requestMembershipThunk = (groupId) => async (dispatch) => {
 }
 
 // DELETE MEMBERSHIP
-const deleteMembershipAction = (userId) => {
+const deleteMembershipAction = (userId, groupId) => {
     return {
         type: DELETE_MEMBERSHIP,
-        payload: userId
+        payload: {userId, groupId}
     }
 }
 
@@ -47,7 +47,7 @@ export const deleteMembershipThunk = (groupId, userId) => async (dispatch) => {
     })
     const data = await response.json()
     if (response.ok){
-        dispatch(deleteMembershipAction(userId))
+        dispatch(deleteMembershipAction(userId, groupId))
         return data
     } else {
         return data
@@ -221,8 +221,12 @@ const groupsReducer = (state = initialState, action) => {
             return newState
         }
         case DELETE_MEMBERSHIP: {
+            const {userId, groupId} = action.payload
             const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
-            delete newState.singleGroup.Memberships[action.payload]
+            if (Object.values(newState.singleGroup).length){
+                delete newState.singleGroup.Memberships[userId]
+            }
+            delete newState.allGroups[groupId].Members[userId]
             return newState
         }
 
