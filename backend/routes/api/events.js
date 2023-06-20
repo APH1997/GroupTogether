@@ -426,6 +426,7 @@ router.post('/:eventId/attendance', async (req, res, next) => {
         }
     }
 
+    // TODO: just make the status attending
     //Create attendance for user with status "pending":
     const newAttendance = await Attendance.create({
         eventId: event.id,

@@ -46,7 +46,7 @@ function EventDetails() {
         return `${hours - 12}:${minutes} PM`
     }
 
-    console.log(event.endTime)
+
     return (
         <>
             <main className="main-content-container">

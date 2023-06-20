@@ -77,7 +77,8 @@ function EventForm({ formType, event, group }) {
 
     }, [name, type, price, description, startDate, endDate, startTime, endTime, imgUrl])
 
-
+    console.log('Start Time:', startTime, typeof startTime)
+    console.log('End Time:', endTime, typeof endTime)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setHasSubmitted(true);
