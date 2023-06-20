@@ -169,6 +169,9 @@ div.upper-left span>a{
     margin-bottom: 0;
     font-size: 24px;
 }
+.details-block>p{
+    word-wrap: break-word;
+}
 
 .upcoming-events .event-card-container{
     background-color: white;
