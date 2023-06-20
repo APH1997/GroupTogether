@@ -14,7 +14,7 @@ function GroupsCard({group}){
             <div className="cont-info">
                 <h2>{group.name}</h2>
                 <h3>{group.city}, {group.state}</h3>
-                <p>{group.about}</p>
+                <p className='group-about'>{group.about}</p>
                 {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
 
             </div>

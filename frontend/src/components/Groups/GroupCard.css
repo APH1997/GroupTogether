@@ -66,7 +66,6 @@ img{
 .card-container:hover{
     cursor: pointer;
     background-color: rgba(211, 211, 211, 0.203);
-
 }
 
 .upper-details{
@@ -246,4 +245,17 @@ div.upper-left span>a{
 
 .home-bread-crumb a:hover{
     color: rgb(251, 102, 21)
+}
+
+p.group-about{
+    height: 35px;
+    overflow-y: scroll;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    padding: 5px;
+    width: 90%;
+}
+
+.card-container:hover p.group-about{
+    background-color: white;
 }

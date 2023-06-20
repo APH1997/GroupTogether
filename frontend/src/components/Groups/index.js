@@ -24,10 +24,16 @@ function GroupsPage({manage, user}){
         <>
             <div className="all-groups-header">
                 <h2>
-                    <NavLink id="other-nav"to="/events/all">Events</NavLink>
-                    <NavLink id="curr-nav"to="/groups/all">Groups</NavLink>
+                    {!manage &&
+                        <div style={{display: "flex", gap: "10px"}}>
+                            <NavLink id="other-nav"to="/events/all">Events</NavLink>
+                            <NavLink id="curr-nav"to="/groups/all">Groups</NavLink>
+                        </div>
+
+                    }
+                    {manage && "Manage Groups"}
                 </h2>
-                <h3>Groups in Meetup</h3>
+                <h3>{manage ? "Your " : ""}Groups in Meetup</h3>
             </div>
             <div className="groups-card-display">
                 {groupsList.length > 0 &&
