@@ -7,10 +7,17 @@ import {useEffect} from 'react';
 import GroupsCard from './GroupCard';
 import "./GroupCard.css"
 
-function GroupsPage(){
+function GroupsPage({manage, user}){
     const dispatch = useDispatch();
     const groupsObj = useSelector(state => state.groups.allGroups);
-    const groupsList = Object.values(groupsObj)
+    const groupsList =
+    (
+        manage ? Object.values(groupsObj).filter()
+        :
+        Object.values(groupsObj))
+
+        console.log(groupsList)
+
 
 
     useEffect(() => {
