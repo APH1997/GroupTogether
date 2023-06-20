@@ -10,12 +10,11 @@ import "./GroupCard.css"
 function GroupsPage({manage, user}){
     const dispatch = useDispatch();
     const groupsObj = useSelector(state => state.groups.allGroups);
-    const groupsList = Object.values(groupsObj)
-  
-
-        console.log(groupsList)
-
-
+    const groupsList = (
+        manage ? Object.values(groupsObj)
+        .filter(group => !(!group.Members[user.id]))
+        : Object.values(groupsObj)
+    )
 
     useEffect(() => {
         dispatch(getGroupsThunk());
