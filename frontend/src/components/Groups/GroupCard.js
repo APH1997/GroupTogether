@@ -43,7 +43,7 @@ function GroupsCard({group, manage}){
                         (group.organizerId !== user.id && <button onClick={(e) => leaveGroup(e)}>Leave Group</button>)
                         || (manage && group.organizerId === user.id &&
                         <div>
-                            <button>Update</button>
+                            <button onClick={() => history.push(`/groups/${group.id}/edit`)}>Update</button>
                             <button onClick={(e) => deleteGroup(e)}>Delete</button>
                         </div>)
 
