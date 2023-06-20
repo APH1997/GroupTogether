@@ -50,6 +50,20 @@ function EventForm({ formType, event, group }) {
         }
     }, [])
 
+    function handleStartTimeErrors(){
+        const [startHour, startMinute] = startTime.split(':').map(ele => Number(ele))
+        const [endHour, endMinute] = endTime.split(':').map(ele => Number(ele))
+        if (startHour < endHour){
+            return true
+        }
+        if (startHour === endHour){
+            if (startMinute < endMinute){
+                return true
+            }
+        }
+        return false
+    }
+
     useEffect(() => {
         const imgSuffixes = ['png', 'jpeg', 'jpg'];
         const errObj = {};
@@ -67,6 +81,8 @@ function EventForm({ formType, event, group }) {
             errObj.endDate = 'End date cannot be before start date'
         }
 
+        if (!handleStartTimeErrors()) errObj.startTime = "Start time must be before end time"
+
         if (!endTime) errObj.endTime = 'Event end time is required';
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
         if (imgUrl && !imgUrl.trim()) errObj.img = "That's just a bunch of spaces!"
@@ -77,8 +93,6 @@ function EventForm({ formType, event, group }) {
 
     }, [name, type, price, description, startDate, endDate, startTime, endTime, imgUrl])
 
-    console.log('Start Time:', startTime, typeof startTime)
-    console.log('End Time:', endTime, typeof endTime)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setHasSubmitted(true);
@@ -132,9 +146,7 @@ function EventForm({ formType, event, group }) {
         }
     }
 
-    function handlePrice(e){
 
-    }
     return (
         <form id="event-form" onSubmit={handleSubmit}>
 
@@ -199,7 +211,6 @@ function EventForm({ formType, event, group }) {
                         <label>at</label>
                         <input
                             type='time'
-                            max={startDate === endDate ? endTime : ''}
                             value={startTime}
                             onChange={(e) => setStartTime(e.target.value)}
                         />
@@ -207,6 +218,7 @@ function EventForm({ formType, event, group }) {
 
                 </div>
                 {hasSubmitted && errors.startDate && <p className='errors'>{errors.startDate}</p>}
+                {hasSubmitted && errors.startTime && <p className='errors'>{errors.startTime}</p>}
                 <div>
                     <label htmlFor='endDateInput'>When does your event end?</label>
                     <div className='date-and-time-inputs'>
@@ -219,13 +231,13 @@ function EventForm({ formType, event, group }) {
                         <label>at</label>
                         <input
                             type='time'
-                            min={startDate === endDate ? startTime : ''}
                             value={endTime}
                             onChange={(e) => setEndTime(e.target.value)}
                         />
                     </div>
                 </div>
                 {hasSubmitted && errors.endDate && <p className='errors'>{errors.endDate}</p>}
+                {hasSubmitted && errors.endTime && <p className='errors'>{errors.endTime}</p>}
 
             </div>
             <div className='event-form-section-four'>
