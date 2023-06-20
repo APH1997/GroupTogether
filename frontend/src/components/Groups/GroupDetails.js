@@ -17,7 +17,7 @@ function GroupDetails() {
     const group = useSelector(state => state.groups.singleGroup);
     const user = useSelector(state => state.session.user);
     const events = useSelector(state => state.events.allEvents);
-    console.log(events)
+    
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
         if (!Object.values(events).length){
@@ -26,7 +26,7 @@ function GroupDetails() {
     }, [dispatch])
 
     if (!Object.values(group).length) return <h1>loading...</h1>
-    
+
     const eventsArr = Object.values(events).filter(ele => ele.groupId == groupId)
 
 

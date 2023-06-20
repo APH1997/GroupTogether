@@ -31,7 +31,7 @@ function EventForm({ formType, event, group }) {
     const hostId = sessionUser.id;
     const [name, setName] = useState(event.name || "");
     const [type, setType] = useState(event.type || "");
-    const [price, setPrice] = useState(event.price || "");
+    const [price, setPrice] = useState(event.price || 0);
     const [description, setDescription] = useState(event.description || "");
     const [startDate, setStartDate] = useState(event.startDate.split('T')[0] || "");
     const [endDate, setEndDate] = useState(event.endDate.split('T')[0] || "");
@@ -126,6 +126,9 @@ function EventForm({ formType, event, group }) {
         }
     }
 
+    function handlePrice(e){
+
+    }
     return (
         <form id="event-form" onSubmit={handleSubmit}>
 
@@ -166,10 +169,12 @@ function EventForm({ formType, event, group }) {
                     <div id="currency-symbol">$</div>
                     <input
                         type="number"
-                        step="1.00"
+                        step=".01"
                         placeholder="0.00"
-                        value={price}
-                        onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
+                        value={price === 0 ? "" : price}
+                        onChange={(e) => setPrice(Number(e.target.value))}
+                        min={0}
+                        max={999}
                     />
 
                 </div>
