@@ -36,8 +36,10 @@ router.get('/', async (req, res) => {
                 group.numMembers++
             }
         }
-
-        
+        group.Members = {}
+        group.Memberships.forEach(member =>
+            group.Members[member.userId] = member)
+        delete group.Memberships
         delete group.GroupImages;
     })
     return res.json({ Groups: groupsList });

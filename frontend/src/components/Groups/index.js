@@ -10,11 +10,8 @@ import "./GroupCard.css"
 function GroupsPage({manage, user}){
     const dispatch = useDispatch();
     const groupsObj = useSelector(state => state.groups.allGroups);
-    const groupsList =
-    (
-        manage ? Object.values(groupsObj).filter()
-        :
-        Object.values(groupsObj))
+    const groupsList = Object.values(groupsObj)
+  
 
         console.log(groupsList)
 
