@@ -6,7 +6,7 @@ import { getEventsThunk } from "../../../store/events";
 import './DeleteGroupModal.css';
 
 
-function DeleteConfirmModal ({groupId, membership}){
+function DeleteConfirmModal ({groupId, membership, manage}){
     const dispatch = useDispatch();
     const history = useHistory();
     const user = useSelector(state => state.session.user);
@@ -18,7 +18,7 @@ function DeleteConfirmModal ({groupId, membership}){
         if (deleted.message){
             await dispatch(getEventsThunk())
             .then(closeModal())
-            .then(history.push('/groups/all'))
+            .then(!manage ? history.push('/groups/all') : null)
         } else return deleted;
 
     }

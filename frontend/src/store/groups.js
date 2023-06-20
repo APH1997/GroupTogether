@@ -223,6 +223,7 @@ const groupsReducer = (state = initialState, action) => {
         case DELETE_MEMBERSHIP: {
             const {userId, groupId} = action.payload
             const newState = {...state, allGroups:{...state.allGroups}, singleGroup:{...state.singleGroup}}
+
             if (Object.values(newState.singleGroup).length){
                 delete newState.singleGroup.Memberships[userId]
             }

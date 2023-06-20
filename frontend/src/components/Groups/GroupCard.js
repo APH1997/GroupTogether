@@ -3,6 +3,7 @@ import './GroupCard.css';
 import {useHistory} from  'react-router-dom';
 import { useModal } from '../../context/Modal';
 import DeleteConfirmModal from './DeleteGroup';
+import DeleteButton from './DeleteGroup/DeleteGroupButton';
 
 function GroupsCard({group, manage}){
     const history = useHistory();
@@ -17,6 +18,10 @@ function GroupsCard({group, manage}){
     function leaveGroup(e){
         e.stopPropagation()
         setModalContent(<DeleteConfirmModal groupId={group.id} membership={true}/>)
+    }
+    function deleteGroup(e){
+        e.stopPropagation()
+        setModalContent(<DeleteConfirmModal groupId={group.id} manage={true}/>)
     }
 
     const user = useSelector(state => state.session.user)
@@ -36,11 +41,11 @@ function GroupsCard({group, manage}){
                     {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
                     {manage &&
                         (group.organizerId !== user.id && <button onClick={(e) => leaveGroup(e)}>Leave Group</button>)
-                        || group.organizerId === user.id &&
+                        || (manage && group.organizerId === user.id &&
                         <div>
                             <button>Update</button>
-                            <button>Delete</button>
-                        </div>
+                            <button onClick={(e) => deleteGroup(e)}>Delete</button>
+                        </div>)
 
                     }
                 </div>
