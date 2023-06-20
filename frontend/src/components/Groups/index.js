@@ -33,13 +33,13 @@ function GroupsPage({manage, user}){
                     }
                     {manage && "Manage Groups"}
                 </h2>
-                <h3>{manage ? "Your " : ""}Groups in Meetup</h3>
+                <h3>{manage ? "Your " : ""}Groups</h3>
             </div>
             <div className="groups-card-display">
                 {groupsList.length > 0 &&
                     groupsList.map(group => {
                         return (
-                            <GroupsCard id={group.id} group={group}/>
+                            <GroupsCard id={group.id} group={group} manage={manage}/>
                         )
                     })
                 }

@@ -259,3 +259,9 @@ p.group-about{
 .card-container:hover p.group-about{
     background-color: white;
 }
+
+.card-bottom{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

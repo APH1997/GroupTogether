@@ -69,7 +69,7 @@ function EventsPage(){
                     <NavLink id="curr-nav"to="/events/all">Events</NavLink>
                     <NavLink id="other-nav"to="/groups/all">Groups</NavLink>
                 </h2>
-                <h3>Events in Meetup</h3>
+                <h3>Events</h3>
             </div>
             <div className="groups-card-display">
                 {orderedFutureEvents.length > 0 &&
