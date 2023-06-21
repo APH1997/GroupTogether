@@ -7,6 +7,12 @@ const CREATE_EVENT_IMAGE = "events/createImage";
 const EDIT_EVENT = "events/editGroup";
 const DELETE_EVENT = "events/deleteGroup";
 
+//ATTENDANCES
+const CREATE_ATTENDANCE = "events/createAttendance"
+const DELETE_ATTENDANCE = "events/deleteAttendance"
+const UPDATE_ATTENDANCE = "events/deleteAttendance"
+
+
 
 
 export const getEventsAction = (events) => {

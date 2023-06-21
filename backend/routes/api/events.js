@@ -65,11 +65,13 @@ router.get('/', async (req, res, next) => {
         delete event.capacity;
         delete event.price;
 
+        event.attendances = {}
         event.numAttending = 0;
         for (let attendance of event.Attendances) {
             if (attendance.status === 'attending') {
                 event.numAttending++
             }
+            event.attendances[attendance.userId] = attendance
         }
         delete event.Attendances;
 
@@ -88,10 +90,12 @@ router.get('/:eventId', async (req, res, next) => {
     const event = await Event.findByPk(req.params.eventId, {
         include:
             [
-                { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
-                    include: [{model: GroupImage}, {model: User, as: 'Organizer'}]},
+                {
+                    model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
+                    include: [{ model: GroupImage }, { model: User, as: 'Organizer' }]
+                },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
-                { model: Attendance}
+                { model: Attendance }
             ],
     })
 
@@ -103,11 +107,15 @@ router.get('/:eventId', async (req, res, next) => {
 
     const resEvent = event.toJSON();
     resEvent.numAttending = resEvent.Attendances.length;
+    resEvent.attendances = {}
+    for (let attendance of resEvent.Attendances) {
+        resEvent.attendances[attendance.userId] = attendance
+    }
     delete resEvent.Attendances;
     delete resEvent.createdAt;
     delete resEvent.updatedAt;
     resEvent.Group.GroupImages.forEach(groupImage => {
-        if (groupImage && groupImage.preview){
+        if (groupImage && groupImage.preview) {
             resEvent.Group.imgUrl = groupImage.url
         }
     })
@@ -137,7 +145,7 @@ router.post('/:eventId/images', async (req, res, next) => {
     //Authorization
     let userStatus;
 
-    if (event.Group.organizerId === user.id){
+    if (event.Group.organizerId === user.id) {
         userStatus = 'organizer';
     } else {
         for (let member of event.Group.Memberships) {
@@ -217,7 +225,7 @@ router.put('/:eventId', async (req, res, next) => {
     if (event.Group.organizerId === user.id) {
         status = 'organizer'
     }
-    if (status !== 'organizer'){
+    if (status !== 'organizer') {
         for (let membership of event.Group.Memberships) {
             if (user.id === membership.userId) {
                 status = membership.status;
@@ -297,7 +305,7 @@ router.delete('/:eventId', async (req, res, next) => {
 
     let status;
     if (event.Group.organizerId === user.id) status = 'organizer';
-    if (status !== 'organizer'){
+    if (status !== 'organizer') {
         for (let membership of event.Group.Memberships) {
             if (user.id === membership.userId) {
                 status = membership.status;
@@ -334,8 +342,8 @@ router.get('/:eventId/attendees', async (req, res, next) => {
             ],
     })
 
-    if (attendances && !attendances.length){
-        return res.json({Attendees: attendances})
+    if (attendances && !attendances.length) {
+        return res.json({ Attendees: attendances })
     }
 
     //json the attendances for manipulation
@@ -386,8 +394,8 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 
 router.post('/:eventId/attendance', async (req, res, next) => {
     const { user } = req;
-    const event = await Event.findByPk(req.params.eventId,{
-        include: {model: Group, include: {model: Membership}}
+    const event = await Event.findByPk(req.params.eventId, {
+        include: { model: Group, include: { model: Membership } }
     });
     //Authenticate user and check if valid event
     if (!event) {
@@ -400,10 +408,10 @@ router.post('/:eventId/attendance', async (req, res, next) => {
     };
     //Check if user is in group
     let isMember;
-    for (let member of event.Group.Memberships){
+    for (let member of event.Group.Memberships) {
         if (member.userId === user.id) isMember = true;
     }
-    if (!isMember){
+    if (!isMember) {
         res.status(403);
         return res.json({ "message": "Forbidden" })
     }
@@ -543,7 +551,7 @@ router.delete('/:eventId/attendance', async (req, res, next) => {
     for (let attendee of event.Attendances) {
         if (attendee.userId === targetId) {
             const targetAttendance = await Attendance.findOne({
-                where: {userId: targetId, eventId: event.id}
+                where: { userId: targetId, eventId: event.id }
             })
             await targetAttendance.destroy();
             return res.json({
