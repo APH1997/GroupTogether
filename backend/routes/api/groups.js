@@ -549,11 +549,12 @@ router.post('/:groupId/membership', async (req, res, next) => {
     //     }
     // }
 
+    const status = (group.private ? "pending" : "member")
 
     const newMembership = await Membership.create({
         userId: user.id,
         groupId: group.id,
-        status: "pending"
+        status
     })
 
     const jsonNewMembership = newMembership.toJSON();
