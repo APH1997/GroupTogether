@@ -7,7 +7,7 @@ import SignupFormModal from '../SignupFormModal';
 function LandingPage(){
     const {setModalContent} = useModal()
     const user = useSelector(state => state.session.user)
-
+    
     return (
         <>
         <div className='landing-main'>
@@ -46,7 +46,9 @@ function LandingPage(){
                     <div id="start-group-caption">Forge your own destiny</div>
                 </div>
             </div>
-            <button onClick={() => setModalContent(<SignupFormModal/>)}className='landing-section-four'>Join GroupTogether</button>
+            {!user &&
+                <button onClick={() => setModalContent(<SignupFormModal/>)}className='landing-section-four'>Join GroupTogether</button>
+            }
         </div>
 
         </>
