@@ -1,9 +1,12 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import '../Groups/GroupCard.css';
 import { useHistory } from 'react-router-dom';
+import { deleteAttendanceThunk } from '../../store/events';
 
 function EventsCard({ event, group, manage }) {
     const history = useHistory();
+    const dispatch = useDispatch()
+
     function navToEventDetails(e) {
         history.push(`/events/${event.id}`)
     }
@@ -27,6 +30,11 @@ function EventsCard({ event, group, manage }) {
     const user = useSelector(state => state.session.user)
     if (!user) return null
 
+    function handleUnattend(e){
+        e.stopPropagation()
+        dispatch(deleteAttendanceThunk(event.id, user.id))
+
+    }
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
@@ -51,7 +59,7 @@ function EventsCard({ event, group, manage }) {
                 }
                 {manage && event.hostId !== user.id &&
                     <div className='host-action-btns'>
-                        <button>
+                        <button onClick={(e) => handleUnattend(e)}>
                             Unattend
                         </button>
                     </div>
