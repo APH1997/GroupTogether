@@ -5,13 +5,15 @@ import { useEffect } from "react";
 import './EventDetails.css';
 import DeleteButton from "./DeleteEvent/DeleteEventButton";
 import MapContainer from "../Maps";
+import { useModal } from "../../context/Modal";
+import ManageGroup from "../Groups/ManageGroupModal";
 
 
 function EventDetails() {
     const history = useHistory();
     const dispatch = useDispatch()
     const { eventId } = useParams();
-
+    const {setModalContent} = useModal()
     const user = useSelector(state => state.session.user);
     const event = useSelector(state => state.events.singleEvent);
 
@@ -55,7 +57,8 @@ function EventDetails() {
     }
 
     function manageEvent(){
-        
+        console.log(event)
+        setModalContent(<ManageGroup event={event}/>)
     }
 
     return (
@@ -112,6 +115,7 @@ function EventDetails() {
                                     <span id="event-organizer-buttons">
                                         <button onClick={() => history.push(`/groups/${event.Group.id}/events/${eventId}/edit`)}>Update</button>
                                         <DeleteButton eventId={eventId} groupId={event.Group.id} />
+                                        <button onClick={manageEvent} className="event-organizer-btn-manage">Manage</button>
                                     </span>}
                             </div>
                             {user && !event.attendances[user.id] && user.id !== event.hostId &&

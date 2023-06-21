@@ -61,7 +61,7 @@ function ManageGroup({ group, event }) {
         {event && (
              <div>
              <h1>{`${event.name} attendees`}</h1>
-             {Object.values(event.attendances).length > 1 ?
+             {Object.values(event.attendances).length > 0 ?
                  <table id="manage-attendees-table">
                      <thead>
                          <tr>
