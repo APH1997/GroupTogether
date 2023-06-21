@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import {useEffect} from 'react';
 import GroupsCard from './GroupCard';
 import "./GroupCard.css"
+import NoGroups from './NoUserGroups';
 
 function GroupsPage({manage, user}){
     const dispatch = useDispatch();
@@ -19,7 +20,10 @@ function GroupsPage({manage, user}){
     useEffect(() => {
         dispatch(getGroupsThunk());
     }, [])
-    if (!groupsList.length) return <h1>Loading...</h1>
+    if (!manage && !groupsList.length) return <h1>Loading...</h1>
+    if (manage && !groupsList.length){
+        return <NoGroups />
+    }
     return (
         <>
             <div className="all-groups-header">
