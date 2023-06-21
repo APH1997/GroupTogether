@@ -10,7 +10,7 @@ const DELETE_EVENT = "events/deleteGroup";
 //ATTENDANCES
 const CREATE_ATTENDANCE = "events/createAttendance"
 const DELETE_ATTENDANCE = "events/deleteAttendance"
-const UPDATE_ATTENDANCE = "events/deleteAttendance"
+const UPDATE_ATTENDANCE = "events/updateAttendance"
 
 const updateAttendanceAction = (attendance) => {
     return {
@@ -19,7 +19,7 @@ const updateAttendanceAction = (attendance) => {
     }
 }
 export const updateAttendanceThunk = (eventId, userAndStatus) => async (dispatch) => {
-    const response = await csrfFetch(`/api/events/${eventId}`, {
+    const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(userAndStatus)

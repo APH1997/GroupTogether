@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { deleteMembershipThunk, editMembershipThunk } from "../../store/groups"
+import { updateAttendanceThunk } from "../../store/events"
 
 function ManageGroup({ group, event }) {
     const dispatch = useDispatch()
@@ -12,8 +13,9 @@ function ManageGroup({ group, event }) {
         dispatch(deleteMembershipThunk(group.id, id))
     }
 
-    function handleChangeAttendeeStatus(){
-        
+    function handleChangeAttendeeStatus(userId, status){
+        const data = {userId, status}
+        dispatch(updateAttendanceThunk(event.id, data))
     }
     return (
     <>
@@ -77,7 +79,7 @@ function ManageGroup({ group, event }) {
                                          {attendee.User.firstName} {attendee.User.lastName}
                                      </td>
                                      <td>
-                                     <select >
+                                     <select onChange={(e) => handleChangeAttendeeStatus(attendee.userId, e.target.value)}>
                                             <option
                                                 value="waitlist"
                                                 selected={attendee.status === "waitlist"}
