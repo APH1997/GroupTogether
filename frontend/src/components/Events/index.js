@@ -72,10 +72,16 @@ function EventsPage({manage, user}){
         <>
             <div className="all-groups-header">
                 <h2>
-                    <NavLink id="curr-nav"to="/events/all">Events</NavLink>
-                    <NavLink id="other-nav"to="/groups/all">Groups</NavLink>
+                    {!manage &&
+                        <div>
+                            <NavLink id="curr-nav"to="/events/all">Events</NavLink>
+                            <NavLink id="other-nav"to="/groups/all">Groups</NavLink>
+                        </div>
+
+                    }
+                    {manage && "Manage Events"}
                 </h2>
-                <h3>Events</h3>
+                <h3>{manage ? "Your " : ""}Events</h3>
             </div>
             <div className="groups-card-display">
                 {orderedFutureEvents.length > 0 &&
