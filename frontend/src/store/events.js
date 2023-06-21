@@ -13,7 +13,25 @@ const DELETE_ATTENDANCE = "events/deleteAttendance"
 const UPDATE_ATTENDANCE = "events/deleteAttendance"
 
 
+const postAttendanceAction = (attendance) => {
+    return {
+        type: CREATE_ATTENDANCE,
+        payload: attendance
+    }
+}
 
+export const postAttendanceThunk = (eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
+        method: 'POST',
+    })
+    const data = await response.json()
+    if (response.ok){
+        dispatch(postAttendanceAction(data.newAttendance))
+        return data
+    } else {
+        return data
+    }
+}
 
 export const getEventsAction = (events) => {
     return {
@@ -155,6 +173,11 @@ const eventsReducer = (state = initialState, action) => {
         case DELETE_EVENT:{
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
             delete newState.allEvents[action.payload];
+            return newState;
+        }
+        case CREATE_ATTENDANCE:{
+            const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
+            newState.singleEvent.attendances[action.payload.userId] = action.payload
             return newState;
         }
         default:

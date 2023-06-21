@@ -1,4 +1,4 @@
-import { getOneEventThunk } from "../../store/events";
+import { getOneEventThunk, postAttendanceThunk } from "../../store/events";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
@@ -46,6 +46,9 @@ function EventDetails() {
         return `${hours - 12}:${minutes} PM`
     }
 
+    function postAttendance(){
+        dispatch(postAttendanceThunk(event.id))
+    }
 
     return (
         <>
@@ -103,7 +106,9 @@ function EventDetails() {
                                         <DeleteButton eventId={eventId} groupId={event.Group.id} />
                                     </span>}
                             </div>
-                            <button id="attend-event-btn">Attend</button>
+                            {user && !event.attendances[user.id] &&
+                                <button onClick={postAttendance} id="attend-event-btn">Attend</button>
+                            }
                         </div>
                     </div>
 

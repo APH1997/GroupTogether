@@ -406,15 +406,15 @@ router.post('/:eventId/attendance', async (req, res, next) => {
         res.status(401);
         return res.json({ "message": "Authentication required" })
     };
-    //Check if user is in group
-    let isMember;
-    for (let member of event.Group.Memberships) {
-        if (member.userId === user.id) isMember = true;
-    }
-    if (!isMember) {
-        res.status(403);
-        return res.json({ "message": "Forbidden" })
-    }
+    // //Check if user is in group
+    // let isMember;
+    // for (let member of event.Group.Memberships) {
+    //     if (member.userId === user.id) isMember = true;
+    // }
+    // if (!isMember) {
+    //     res.status(403);
+    //     return res.json({ "message": "Forbidden" })
+    // }
 
     //Check if user is already attendee or requested
     const attendance = await Attendance.findOne({
@@ -436,15 +436,16 @@ router.post('/:eventId/attendance', async (req, res, next) => {
 
     // TODO: just make the status attending
     //Create attendance for user with status "pending":
+
+
     const newAttendance = await Attendance.create({
         eventId: event.id,
         userId: user.id,
-        status: 'pending'
+        status: "attending"
     });
 
     return res.json({
-        userId: newAttendance.userId,
-        status: newAttendance.status
+        newAttendance
     })
 });
 
