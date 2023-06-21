@@ -498,6 +498,7 @@ router.put('/:eventId/attendance', async (req, res, next) => {
         if (userId === attendee.userId) {
             attendee.status = status;
             await attendee.save();
+            res.status(200)
             return res.json({
                 id: attendee.id,
                 eventId: attendee.eventId,

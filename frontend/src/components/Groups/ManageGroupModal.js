@@ -12,6 +12,9 @@ function ManageGroup({ group, event }) {
         dispatch(deleteMembershipThunk(group.id, id))
     }
 
+    function handleChangeAttendeeStatus(){
+        
+    }
     return (
     <>
         {!event && (
@@ -73,11 +76,19 @@ function ManageGroup({ group, event }) {
                                      <td>
                                          {attendee.User.firstName} {attendee.User.lastName}
                                      </td>
-                                     <td>{attendee.status}</td>
                                      <td>
-                                         {attendee.status === "pending" &&
-                                             <button onClick={1}>Accept</button>
-                                         }
+                                     <select >
+                                            <option
+                                                value="waitlist"
+                                                selected={attendee.status === "waitlist"}
+                                            > Waitlist </option>
+                                            <option
+                                                value="attending"
+                                                selected={attendee.status === "attending"}
+                                            > Attending</option>
+                                        </select>
+                                     </td>
+                                     <td>
                                          <button onClick={1}>Remove</button>
                                      </td>
                                  </tr>
