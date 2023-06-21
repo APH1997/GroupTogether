@@ -100,7 +100,10 @@ ul.profile-dropdown a:hover {
     padding-bottom: 5px;
 }
 
-#view-groups:hover, #view-events:hover{
+#view-groups:hover,
+#view-events:hover,
+#all-groups:hover,
+#all-events:hover{
     background-color: white;
     color: rgb(251, 102, 21);
 }

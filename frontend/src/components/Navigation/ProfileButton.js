@@ -54,6 +54,12 @@ function ProfileButton({ user }) {
           <>
             <li id="greeting">Hello, {user.firstName}</li>
             <li id="email">{user.email}</li>
+            <li onClick={closeMenu} id="all-groups">
+              <NavLink to='/groups/all'>All Groups</NavLink>
+            </li>
+            <li onClick={closeMenu} id="all-events">
+              <NavLink to='/events/all'>All Events</NavLink>
+            </li>
             <li onClick={closeMenu} id="view-groups">
               <NavLink to={`/users/${user.id}/groups`}>Your Groups</NavLink>
             </li>
