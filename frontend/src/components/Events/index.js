@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import {useEffect} from 'react';
 import "../Groups/GroupCard.css";
 import EventsCard from './EventCard';
+import NoEvents from './NoUserEvents';
 
 function EventsPage({manage, user}){
     const dispatch = useDispatch();
@@ -68,12 +69,15 @@ function EventsPage({manage, user}){
         }
     }
 
+    if (manage && !eventsList.length){
+        return <NoEvents user={user}/>
+    }
     return (
         <>
             <div className="all-groups-header">
                 <h2>
                     {!manage &&
-                        <div>
+                        <div style={{display: "flex", gap: "10px"}}>
                             <NavLink id="curr-nav"to="/events/all">Events</NavLink>
                             <NavLink id="other-nav"to="/groups/all">Groups</NavLink>
                         </div>

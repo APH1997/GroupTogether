@@ -39,7 +39,7 @@ function EventsCard({ event, group, manage }) {
     }
     function deleteEvent(e){
         e.stopPropagation()
-        setModalContent(<DeleteConfirmModal eventId={event.id} groupId={1} />)
+        setModalContent(<DeleteConfirmModal eventId={event.id} groupId={event.Group.id} manage={manage} />)
     }
     function handleUpdate(e){
         e.stopPropagation()
