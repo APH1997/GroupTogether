@@ -1,4 +1,4 @@
-import { getOneEventThunk, postAttendanceThunk } from "../../store/events";
+import { deleteAttendanceThunk, getOneEventThunk, postAttendanceThunk } from "../../store/events";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
@@ -48,6 +48,10 @@ function EventDetails() {
 
     function postAttendance(){
         dispatch(postAttendanceThunk(event.id))
+    }
+
+    function deleteAttendance(){
+        dispatch(deleteAttendanceThunk(event.id, user.id))
     }
 
     return (
@@ -108,6 +112,9 @@ function EventDetails() {
                             </div>
                             {user && !event.attendances[user.id] &&
                                 <button onClick={postAttendance} id="attend-event-btn">Attend</button>
+                            }
+                            {user && event.attendances[user.id] &&
+                                <button onClick={deleteAttendance} id="unatttend-event-btn">Unattend</button>
                             }
                         </div>
                     </div>

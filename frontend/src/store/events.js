@@ -33,6 +33,28 @@ export const postAttendanceThunk = (eventId) => async (dispatch) => {
     }
 }
 
+const deleteAttendanceAction = (userId) => {
+    return {
+        type: DELETE_ATTENDANCE,
+        payload: userId
+    }
+}
+
+export const deleteAttendanceThunk = (eventId, userId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({userId})
+    })
+    const data = await response.json()
+    if (response.ok){
+        dispatch(deleteAttendanceAction(userId))
+        return data
+    } else {
+        return data
+    }
+}
+
 export const getEventsAction = (events) => {
     return {
         type: LOAD_EVENTS,
@@ -179,6 +201,16 @@ const eventsReducer = (state = initialState, action) => {
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
             newState.singleEvent.attendances[action.payload.userId] = action.payload
             return newState;
+        }
+        case DELETE_ATTENDANCE:{
+            const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
+            if (Object.values(newState.allEvents).length){
+                delete newState.allEvents.attendances[action.payload]
+            }
+            if (Object.values(newState.singleEvent).length){
+                delete newState.singleEvent.attendances[action.payload]
+            }
+            return newState
         }
         default:
             return state;

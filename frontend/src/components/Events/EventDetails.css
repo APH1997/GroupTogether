@@ -172,7 +172,7 @@
     margin: 0;
 }
 
-#attend-event-btn{
+#attend-event-btn, #unatttend-event-btn{
     padding: 5px;
     height:auto;
     width: fit-content;
