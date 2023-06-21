@@ -14,6 +14,7 @@ import EventDetails from "./components/Events/EventDetails";
 import CreateEventForm from "./components/Events/CreateEventForm";
 import EditEventForm from "./components/Events/EditEventForm";
 import ManageGroupsPage from "./components/Groups/ManageGroups";
+import ManageEventsPage from "./components/Events/ManageEvents";
 
 
 function App() {
@@ -57,6 +58,9 @@ function App() {
           </Route>
           <Route exact path="/users/:userId/groups">
             <ManageGroupsPage />
+          </Route>
+          <Route exact path="/users/:userId/events">
+            <ManageEventsPage/>
           </Route>
           <Route>
             Page not found

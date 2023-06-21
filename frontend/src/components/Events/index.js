@@ -7,10 +7,16 @@ import {useEffect} from 'react';
 import "../Groups/GroupCard.css";
 import EventsCard from './EventCard';
 
-function EventsPage(){
+function EventsPage({manage, user}){
     const dispatch = useDispatch();
     const eventsObj = useSelector(state => state.events.allEvents);
-    const eventsList = Object.values(eventsObj)
+    const eventsList = (
+        manage ? Object.values(eventsObj)
+        .filter(eve => !(!eve.attendances[user.id]))
+        : Object.values(eventsObj)
+    )
+
+
 
     useEffect(() => {
         dispatch(getEventsThunk());

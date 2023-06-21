@@ -33,10 +33,10 @@ export const postAttendanceThunk = (eventId) => async (dispatch) => {
     }
 }
 
-const deleteAttendanceAction = (userId) => {
+const deleteAttendanceAction = (userId, eventId) => {
     return {
         type: DELETE_ATTENDANCE,
-        payload: userId
+        payload: {userId, eventId}
     }
 }
 
@@ -48,7 +48,7 @@ export const deleteAttendanceThunk = (eventId, userId) => async (dispatch) => {
     })
     const data = await response.json()
     if (response.ok){
-        dispatch(deleteAttendanceAction(userId))
+        dispatch(deleteAttendanceAction(userId, eventId))
         return data
     } else {
         return data
@@ -203,12 +203,13 @@ const eventsReducer = (state = initialState, action) => {
             return newState;
         }
         case DELETE_ATTENDANCE:{
+            const {userId, eventId} = action.payload
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
             if (Object.values(newState.allEvents).length){
-                delete newState.allEvents.attendances[action.payload]
+                delete newState.allEvents[eventId].attendances[userId]
             }
             if (Object.values(newState.singleEvent).length){
-                delete newState.singleEvent.attendances[action.payload]
+                delete newState.singleEvent.attendances[userId]
             }
             return newState
         }

@@ -64,7 +64,7 @@ function ProfileButton({ user }) {
               <NavLink to={`/users/${user.id}/groups`}>Your Groups</NavLink>
             </li>
             <li onClick={closeMenu} id="view-events">
-              <NavLink exact to="/events/all">Your Events</NavLink>
+              <NavLink exact to={`/users/${user.id}/events`}>Your Events</NavLink>
             </li>
             <li onClick={logout} id="logout">
               Log Out
