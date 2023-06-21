@@ -1,15 +1,19 @@
-import { getOneEventThunk } from "../../store/events";
+import { deleteAttendanceThunk, getOneEventThunk, postAttendanceThunk } from "../../store/events";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import './EventDetails.css';
 import DeleteButton from "./DeleteEvent/DeleteEventButton";
+import MapContainer from "../Maps";
+import { useModal } from "../../context/Modal";
+import ManageGroup from "../Groups/ManageGroupModal";
+
 
 function EventDetails() {
     const history = useHistory();
     const dispatch = useDispatch()
     const { eventId } = useParams();
-
+    const {setModalContent} = useModal()
     const user = useSelector(state => state.session.user);
     const event = useSelector(state => state.events.singleEvent);
 
@@ -20,24 +24,40 @@ function EventDetails() {
 
     if (!event || !Object.values(event).length) return <></>
 
-    const convertedStartDate = new Date(event.startDate).toLocaleString("en-US")
-    const convertedEndDate = new Date(event.endDate).toLocaleString("en-US");
-
-    const startTime = convertedStartDate.split(', ')[1]
-    const endTime = convertedEndDate.split(', ')[1]
-
-    const [noMsStart] = event.startDate.split('.')
-    const [noMsEnd] = event.endDate.split('.')
-
-    const [startDate, startMilTime] = noMsStart.split('T')
-    const [endDate, endMilTime] = noMsEnd.split('T')
-
+    const startDate = new Date(event.startDate).toLocaleString("en-US").split(',')[0]
+    const endDate = new Date(event.endDate).toLocaleString("en-US").split(',')[0]
 
     let previewImage;
     for (let image of event.EventImages) {
         if (image.preview) {
             previewImage = image.url
         }
+    }
+
+    function convertMilTime(time){
+        const [hours, minutes] = time.split(':')
+        if (Number(hours < 1)){
+            return `12:${minutes} AM`
+        }
+        if (Number(hours < 12)){
+            return `${hours}:${minutes} AM`
+        }
+        if (Number(hours == 12)){
+            return `${hours}:${minutes} PM`
+        }
+        return `${hours - 12}:${minutes} PM`
+    }
+
+    function postAttendance(){
+        dispatch(postAttendanceThunk(event.id))
+    }
+
+    function deleteAttendance(){
+        dispatch(deleteAttendanceThunk(event.id, user.id))
+    }
+
+    function manageEvent(){
+        setModalContent(<ManageGroup event={event}/>)
     }
 
     return (
@@ -60,7 +80,7 @@ function EventDetails() {
                                 <img src={event.Group.imgUrl}></img>
                             </div>
                             <div className="group-info">
-                                <h4 style={{paddingRight:'10px'}}>{event.Group.name}</h4>
+                                <h4 style={{ paddingRight: '10px' }}>{event.Group.name}</h4>
                                 <p>{event.Group.private ? "Private" : "Public"}</p>
                             </div>
                         </div>
@@ -80,8 +100,8 @@ function EventDetails() {
                                     <div> · </div>
                                 </div>
                                 <div className="start-end-time">
-                                    <div>{startTime}</div>
-                                    <div>{endTime}</div>
+                                    <div>{convertMilTime(event.startTime)}</div>
+                                    <div>{convertMilTime(event.endTime)}</div>
                                 </div>
                             </div>
                             <div className="event-price">
@@ -94,17 +114,32 @@ function EventDetails() {
                                     <span id="event-organizer-buttons">
                                         <button onClick={() => history.push(`/groups/${event.Group.id}/events/${eventId}/edit`)}>Update</button>
                                         <DeleteButton eventId={eventId} groupId={event.Group.id} />
+                                        <button onClick={manageEvent} className="event-organizer-btn-manage">Manage</button>
                                     </span>}
                             </div>
+                            {user && !event.attendances[user.id] && user.id !== event.hostId &&
+                                <button onClick={postAttendance} id="attend-event-btn">Attend</button>
+                            }
+                            {user && event.attendances[user.id] && user.id !== event.hostId &&
+                                <button onClick={deleteAttendance} id="unatttend-event-btn">Unattend</button>
+                            }
                         </div>
                     </div>
 
                 </div>
 
                 <div className="content-container-bottom">
-                    <h2>Details</h2>
-                    <div>
-                        {event.description}
+                    <div className="description-header-and-text">
+                        <h2>Details</h2>
+                        <div id="event-description-container">
+                            {event.description}
+                        </div>
+                    </div>
+                    <div className="gmap-container">
+                        <MapContainer eventLoc={{
+                            lat: event.lat,
+                            lng: event.lng
+                        }} />
                     </div>
                 </div>
             </main>

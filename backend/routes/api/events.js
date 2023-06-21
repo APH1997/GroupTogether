@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Attendance, EventImage, Event, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
+const { Attendance, EventImage, Event, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 
 router.get('/', async (req, res, next) => {
     let { page, size, name, type, startDate } = req.query;
@@ -44,8 +44,7 @@ router.get('/', async (req, res, next) => {
         where,
         include:
             [
-                { model: Venue, attributes: ['id', 'city', 'state'] },
-                { model: Attendance },
+                { model: Attendance , include: {model: User}},
                 { model: EventImage },
                 { model: Group, attributes: ['id', 'name', 'city', 'state'] }
             ],
@@ -66,11 +65,13 @@ router.get('/', async (req, res, next) => {
         delete event.capacity;
         delete event.price;
 
+        event.attendances = {}
         event.numAttending = 0;
         for (let attendance of event.Attendances) {
             if (attendance.status === 'attending') {
                 event.numAttending++
             }
+            event.attendances[attendance.userId] = attendance
         }
         delete event.Attendances;
 
@@ -89,11 +90,12 @@ router.get('/:eventId', async (req, res, next) => {
     const event = await Event.findByPk(req.params.eventId, {
         include:
             [
-                { model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
-                    include: [{model: GroupImage}, {model: User, as: 'Organizer'}]},
-                { model: Venue, attributes: ['id', 'address', 'city', 'state', 'lat', 'lng'] },
+                {
+                    model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
+                    include: [{ model: GroupImage }, { model: User, as: 'Organizer' }]
+                },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
-                { model: Attendance}
+                { model: Attendance, include: {model: User}}
             ],
     })
 
@@ -105,11 +107,15 @@ router.get('/:eventId', async (req, res, next) => {
 
     const resEvent = event.toJSON();
     resEvent.numAttending = resEvent.Attendances.length;
+    resEvent.attendances = {}
+    for (let attendance of resEvent.Attendances) {
+        resEvent.attendances[attendance.userId] = attendance
+    }
     delete resEvent.Attendances;
     delete resEvent.createdAt;
     delete resEvent.updatedAt;
     resEvent.Group.GroupImages.forEach(groupImage => {
-        if (groupImage && groupImage.preview){
+        if (groupImage && groupImage.preview) {
             resEvent.Group.imgUrl = groupImage.url
         }
     })
@@ -139,7 +145,7 @@ router.post('/:eventId/images', async (req, res, next) => {
     //Authorization
     let userStatus;
 
-    if (event.Group.organizerId === user.id){
+    if (event.Group.organizerId === user.id) {
         userStatus = 'organizer';
     } else {
         for (let member of event.Group.Memberships) {
@@ -219,7 +225,7 @@ router.put('/:eventId', async (req, res, next) => {
     if (event.Group.organizerId === user.id) {
         status = 'organizer'
     }
-    if (status !== 'organizer'){
+    if (status !== 'organizer') {
         for (let membership of event.Group.Memberships) {
             if (user.id === membership.userId) {
                 status = membership.status;
@@ -231,15 +237,10 @@ router.put('/:eventId', async (req, res, next) => {
         return res.json({ "message": "Forbidden" })
     }
 
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const { lat, lng, name, type, capacity, price, description, startDate, endDate } = req.body;
 
     const errors = {};
-    // THIS IS PART OF MY HOTFIX FOR CASCADE
-    // const venue = await Venue.findByPk(venueId)
-    // if (!venue) {
-    //     res.status(404);
-    //     return res.json({ "message": "Venue couldn't be found" })
-    // }
+    // TODO: check the data validations
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
@@ -247,6 +248,8 @@ router.put('/:eventId', async (req, res, next) => {
     if (!description) errors.description = "Description is required";
     if (new Date(startDate) < new Date()) errors.startDate = 'Start date must be in the future';
     if (new Date(endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
+    if (lat < -90 || lat > 90) errors.lat = "Latitude must be between -90 and 90"
+    if (lng < -180 || lng > 180) errors.lat = "Longitude must be between -180 and 180"
 
     if (Object.keys(errors).length) {
         let err = {};
@@ -258,7 +261,8 @@ router.put('/:eventId', async (req, res, next) => {
     }
 
     try {
-        event.venueId = venueId;
+        event.lat = lat;
+        event.lng = lng;
         event.name = name;
         event.type = type;
         event.capacity = capacity;
@@ -301,7 +305,7 @@ router.delete('/:eventId', async (req, res, next) => {
 
     let status;
     if (event.Group.organizerId === user.id) status = 'organizer';
-    if (status !== 'organizer'){
+    if (status !== 'organizer') {
         for (let membership of event.Group.Memberships) {
             if (user.id === membership.userId) {
                 status = membership.status;
@@ -338,8 +342,8 @@ router.get('/:eventId/attendees', async (req, res, next) => {
             ],
     })
 
-    if (attendances && !attendances.length){
-        return res.json({Attendees: attendances})
+    if (attendances && !attendances.length) {
+        return res.json({ Attendees: attendances })
     }
 
     //json the attendances for manipulation
@@ -390,8 +394,8 @@ router.get('/:eventId/attendees', async (req, res, next) => {
 
 router.post('/:eventId/attendance', async (req, res, next) => {
     const { user } = req;
-    const event = await Event.findByPk(req.params.eventId,{
-        include: {model: Group, include: {model: Membership}}
+    const event = await Event.findByPk(req.params.eventId, {
+        include: { model: Group, include: { model: Membership } }
     });
     //Authenticate user and check if valid event
     if (!event) {
@@ -402,15 +406,15 @@ router.post('/:eventId/attendance', async (req, res, next) => {
         res.status(401);
         return res.json({ "message": "Authentication required" })
     };
-    //Check if user is in group
-    let isMember;
-    for (let member of event.Group.Memberships){
-        if (member.userId === user.id) isMember = true;
-    }
-    if (!isMember){
-        res.status(403);
-        return res.json({ "message": "Forbidden" })
-    }
+    // //Check if user is in group
+    // let isMember;
+    // for (let member of event.Group.Memberships) {
+    //     if (member.userId === user.id) isMember = true;
+    // }
+    // if (!isMember) {
+    //     res.status(403);
+    //     return res.json({ "message": "Forbidden" })
+    // }
 
     //Check if user is already attendee or requested
     const attendance = await Attendance.findOne({
@@ -430,16 +434,18 @@ router.post('/:eventId/attendance', async (req, res, next) => {
         }
     }
 
+    // TODO: just make the status attending
     //Create attendance for user with status "pending":
+
+
     const newAttendance = await Attendance.create({
         eventId: event.id,
         userId: user.id,
-        status: 'pending'
+        status: "attending"
     });
 
     return res.json({
-        userId: newAttendance.userId,
-        status: newAttendance.status
+        newAttendance
     })
 });
 
@@ -492,6 +498,7 @@ router.put('/:eventId/attendance', async (req, res, next) => {
         if (userId === attendee.userId) {
             attendee.status = status;
             await attendee.save();
+            res.status(200)
             return res.json({
                 id: attendee.id,
                 eventId: attendee.eventId,
@@ -546,7 +553,7 @@ router.delete('/:eventId/attendance', async (req, res, next) => {
     for (let attendee of event.Attendances) {
         if (attendee.userId === targetId) {
             const targetAttendance = await Attendance.findOne({
-                where: {userId: targetId, eventId: event.id}
+                where: { userId: targetId, eventId: event.id }
             })
             await targetAttendance.destroy();
             return res.json({

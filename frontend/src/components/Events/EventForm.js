@@ -3,8 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createEventImageThunk, createEventThunk, updateEventThunk } from '../../store/events';
 import './EventForm.css';
+import MapContainer from '../Maps';
+import states from '../Maps/states';
+import { useMarker } from '../../context/MarkerCoords';
 
 function EventForm({ formType, event, group }) {
+    const { setLat, lat, setLng, lng } = useMarker()
+
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -26,37 +31,77 @@ function EventForm({ formType, event, group }) {
     const hostId = sessionUser.id;
     const [name, setName] = useState(event.name || "");
     const [type, setType] = useState(event.type || "");
-    const [price, setPrice] = useState(event.price || "");
+    const [price, setPrice] = useState(event.price || 0);
     const [description, setDescription] = useState(event.description || "");
-    const [startDate, setStartDate] = useState(event.startDate || "");
-    const [endDate, setEndDate] = useState(event.endDate || "");
+    const [startDate, setStartDate] = useState(event.startDate.split('T')[0] || "");
+    const [endDate, setEndDate] = useState(event.endDate.split('T')[0] || "");
     const [imgUrl, setImgUrl] = useState("")
+    const [startTime, setStartTime] = useState(event.startTime || "")
+    const [endTime, setEndTime] = useState(event.endTime || "")
+
+    //want to set lat/lng context ONCE
+    useEffect(() => {
+        if (formType === "Update") {
+            setLat(event.lat)
+            setLng(event.lng)
+        } else {
+            setLat(states[group.state].lat)
+            setLng(states[group.state].lng)
+        }
+    }, [])
+
+    function handleStartTimeErrors(){
+        const [startHour, startMinute] = startTime.split(':').map(ele => Number(ele))
+        const [endHour, endMinute] = endTime.split(':').map(ele => Number(ele))
+        if (startHour < endHour){
+            return true
+        }
+        if (startHour === endHour){
+            if (startMinute < endMinute){
+                return true
+            }
+        }
+        return false
+    }
 
     useEffect(() => {
-        const imgSuffixes = ['png','jpeg','jpg'];
+        const imgSuffixes = ['png', 'jpeg', 'jpg'];
         const errObj = {};
-        if (!name) errObj.name = 'Name is required';
+        if (!name || !name.trim()) errObj.name = 'Name is required';
         if (!type) errObj.type = 'Event Type is required';
         if (!price && price !== 0) errObj.price = 'Price is required';
-        if (!description || description.length < 30) errObj.description = 'Description must be at least 30 characters long'
-        if (!startDate) errObj.startDate = 'Event start is required';
-        if (!endDate) errObj.endDate = 'Event end is required';
-        if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
+        if (!description || !description.trim() || description.length < 30) errObj.description = 'Description must be at least 30 characters long'
+        if (!startDate) errObj.startDate = 'Event start date is required';
+        if (new Date(startDate) < Date.now()) {
+            errObj.startDate = "Events cannot start earlier than tomorrow"
+        }
+        if (!startTime) errObj.startTime = 'Event start time is required';
+        if (!endDate) errObj.endDate = 'Event end date is required';
+        if (new Date(endDate) < new Date(startDate)){
+            errObj.endDate = 'End date cannot be before start date'
+        }
 
-        if (Object.keys(errObj).length){
+        if (!handleStartTimeErrors()) errObj.startTime = "Start time must be before end time"
+
+        if (!endTime) errObj.endTime = 'Event end time is required';
+        if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
+        if (imgUrl && !imgUrl.trim()) errObj.img = "That's just a bunch of spaces!"
+
+        if (Object.keys(errObj).length) {
             setErrors(errObj);
         } else setErrors({})
 
-    },[name, type, price, description, startDate, endDate, imgUrl])
+    }, [name, type, price, description, startDate, endDate, startTime, endTime, imgUrl])
 
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setHasSubmitted(true);
 
         if (Object.keys(errors).length) return;
 
         const newEvent = {
-            venueId: null,
+            lat,
+            lng,
             hostId,
             name,
             type,
@@ -64,35 +109,43 @@ function EventForm({ formType, event, group }) {
             description,
             startDate,
             endDate,
+            startTime,
+            endTime,
             capacity: 10
         }
 
         setHasSubmitted(false);
 
-        if (formType === "Create"){
+        if (formType === "Create") {
             try {
                 const createdEvent = await dispatch(createEventThunk(newEvent, group.id))
                 //Check if image was given
-                if (imgUrl){
-                    const image = {url: imgUrl, preview: true};
+                if (imgUrl) {
+                    const image = { url: imgUrl, preview: true };
                     await dispatch(createEventImageThunk(createdEvent.id, image))
                 }
 
                 history.push(`/events/${createdEvent.id}`)
-            } catch(e){
+            } catch (e) {
                 const body = await e.json()
                 return setErrors(body.errors);
             }
         } else {
-            try{
+            try {
                 const editedEvent = await dispatch(updateEventThunk(newEvent, event.id));
+                if (imgUrl) {
+                    const image = { url: imgUrl, preview: true };
+                    await dispatch(createEventImageThunk(editedEvent.id, image))
+                }
+
                 history.push(`/events/${event.id}`);
-            } catch (e){
+            } catch (e) {
                 const body = await e.json();
                 return setErrors(body.errors)
             }
         }
     }
+
 
     return (
         <form id="event-form" onSubmit={handleSubmit}>
@@ -118,18 +171,29 @@ function EventForm({ formType, event, group }) {
                         <option value="In person" >In person</option>
                         <option value="Online">Online</option>
                     </select>
-                {hasSubmitted && errors.type && <p className='errors'>{errors.type}</p>}
+                    {hasSubmitted && errors.type && <p className='errors'>{errors.type}</p>}
                 </div>
+                {type === "In person" &&
+                    <div>
+                        Drop a pin for attendees!
+                        <MapContainer
+                            eventLoc={{ lat, lng }}
+                            editing={true}
+                        />
+                    </div>
+                }
                 <div>
                     <label htmlFor="priceInput">What is the price for your event?</label>
-                        <div id="currency-symbol">$</div>
-                        <input
-                            type="number"
-                            step="1.00"
-                            placeholder="0.00"
-                            value={price}
-                            onChange={(e) => setPrice(Number(e.target.value) >= 0 ? Number(e.target.value) : 0)}
-                        />
+                    <div id="currency-symbol">$</div>
+                    <input
+                        type="number"
+                        step=".01"
+                        placeholder="0.00"
+                        value={price === 0 ? "" : price}
+                        onChange={(e) => setPrice(Number(e.target.value))}
+                        min={0}
+                        max={999}
+                    />
 
                 </div>
                 {hasSubmitted && errors.price && <p className='errors'>{errors.price}</p>}
@@ -137,26 +201,43 @@ function EventForm({ formType, event, group }) {
             <div className='event-form-section-three'>
                 <div>
                     <label htmlFor='startDateInput'>When does your event start?</label>
-                    <input
-                        type="text"
-                        name='startDateInput'
-                        value={startDate}
-                        placeholder='MM/DD/YYYY, HH:mm AM'
-                        onChange={(e) => setStartDate(e.target.value)}
-                    />
+                    <div className='date-and-time-inputs'>
+                        <input
+                            type="date"
+                            name='startDateInput'
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                        <label>at</label>
+                        <input
+                            type='time'
+                            value={startTime}
+                            onChange={(e) => setStartTime(e.target.value)}
+                        />
+                    </div>
+
                 </div>
                 {hasSubmitted && errors.startDate && <p className='errors'>{errors.startDate}</p>}
+                {hasSubmitted && errors.startTime && <p className='errors'>{errors.startTime}</p>}
                 <div>
                     <label htmlFor='endDateInput'>When does your event end?</label>
-                    <input
-                        type="text"
-                        name='endDateInput'
-                        value={endDate}
-                        placeholder='MM/DD/YYYY, HH:mm PM'
-                        onChange={(e) => setEndDate(e.target.value)}
-                    />
+                    <div className='date-and-time-inputs'>
+                        <input
+                            type="date"
+                            name='endDateInput'
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
+                        <label>at</label>
+                        <input
+                            type='time'
+                            value={endTime}
+                            onChange={(e) => setEndTime(e.target.value)}
+                        />
+                    </div>
                 </div>
                 {hasSubmitted && errors.endDate && <p className='errors'>{errors.endDate}</p>}
+                {hasSubmitted && errors.endTime && <p className='errors'>{errors.endTime}</p>}
 
             </div>
             <div className='event-form-section-four'>

@@ -6,12 +6,18 @@ import { useDispatch } from "react-redux";
 import {useEffect} from 'react';
 import "../Groups/GroupCard.css";
 import EventsCard from './EventCard';
+import NoEvents from './NoUserEvents';
 
-function EventsPage(){
+function EventsPage({manage, user}){
     const dispatch = useDispatch();
     const eventsObj = useSelector(state => state.events.allEvents);
+    const eventsList = (
+        manage ? Object.values(eventsObj)
+        .filter(eve => !(!eve.attendances[user.id]) || eve.hostId === user.id)
+        : Object.values(eventsObj)
+    )
 
-    const eventsList = Object.values(eventsObj)
+
 
     useEffect(() => {
         dispatch(getEventsThunk());
@@ -63,32 +69,43 @@ function EventsPage(){
         }
     }
 
+    if (manage && !eventsList.length){
+        return <NoEvents user={user}/>
+    }
     return (
         <>
             <div className="all-groups-header">
                 <h2>
-                    <NavLink id="curr-nav"to="/events/all">Events</NavLink>
-                    <NavLink id="other-nav"to="/groups/all">Groups</NavLink>
+                    {!manage &&
+                        <div style={{display: "flex", gap: "10px"}}>
+                            <NavLink id="curr-nav"to="/events/all">Events</NavLink>
+                            <NavLink id="other-nav"to="/groups/all">Groups</NavLink>
+                        </div>
+
+                    }
+                    {manage && "Manage Events"}
                 </h2>
-                <h3>Events in Meetup</h3>
+                <h3>{manage ? "Your " : ""}Events</h3>
             </div>
             <div className="groups-card-display">
                 {orderedFutureEvents.length > 0 &&
                     orderedFutureEvents.map(event => {
                         return (
-                            <EventsCard id={event.id} event={event}/>
+                            <EventsCard id={event.id} event={event} manage={manage}/>
                         )
                     })
                 }
                 {orderedPastEvents.length > 0 &&
                     orderedPastEvents.map(event => {
                         return (
-                            <EventsCard id={event.id} event={event}/>
+                            <EventsCard id={event.id} event={event} manage={false} user={user}/>
                         )
                     })
                 }
             </div>
-            <NavLink exact to="/">Home</NavLink>
+            <div className='home-bread-crumb'>
+                <NavLink exact to="/">Home</NavLink>
+            </div>
         </>
     )
 }

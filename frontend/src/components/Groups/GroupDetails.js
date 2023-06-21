@@ -1,26 +1,34 @@
-import { getGroupDetailsThunk } from "../../store/groups";
+import { deleteMembershipThunk, getGroupDetailsThunk, requestMembershipThunk } from "../../store/groups";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, NavLink, useHistory } from "react-router-dom";
 import { useEffect } from "react";
 import EventsCard from "../Events/EventCard";
 import DeleteButton from "./DeleteGroup/DeleteGroupButton";
+import { useModal } from "../../context/Modal";
+import DeleteConfirmModal from "./DeleteGroup";
+import ManageGroup from "./ManageGroupModal";
+import { getEventsThunk } from "../../store/events";
 
 function GroupDetails() {
+    const {setModalContent} = useModal()
     const history = useHistory();
     const dispatch = useDispatch();
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
     const user = useSelector(state => state.session.user);
+    const events = useSelector(state => state.events.allEvents);
 
     useEffect(() => {
         dispatch(getGroupDetailsThunk(groupId));
-
+        if (!Object.values(events).length){
+            dispatch(getEventsThunk())
+        }
     }, [dispatch])
 
     if (!Object.values(group).length) return <h1>loading...</h1>
 
+    const eventsArr = Object.values(events).filter(ele => ele.groupId == groupId)
 
-    const eventsArr = group.Events
 
     const futureEvents = [];
     const orderedFutureEvents = [];
@@ -69,6 +77,19 @@ function GroupDetails() {
         }
     }
 
+    function requestMembership(){
+        dispatch(requestMembershipThunk(group.id))
+    }
+    function deleteOwnMembership(){
+        dispatch(deleteMembershipThunk(group.id, user.id))
+    }
+    function leaveGroup(){
+        setModalContent(<DeleteConfirmModal groupId={groupId} membership={true}/>)
+    }
+    function manageGroup(){
+        setModalContent(<ManageGroup group={group}/>)
+    }
+
     if (!group) return <h1>Loading...</h1>
 
     return (
@@ -86,12 +107,22 @@ function GroupDetails() {
                         <p>Organized by: {group.Organizer.firstName} {group.Organizer.lastName}</p>
                     </div>
                     {user && user.id !== group.organizerId &&
-                        <button id="join-group-btn" onClick={() => alert('Feature coming soon')}>Join this group</button>}
+                    (!group.Memberships[user.id] && <button id="join-group-btn" onClick={requestMembership}>Join this group</button>)
+                    || (group.Memberships[user.id].status
+                        === "pending" ?
+                        <div className="pending-btns">
+                            <button disabled={true} id="pending-btn">Pending...</button>
+                            <button id="cancel-pending-btn" onClick={deleteOwnMembership}>Cancel</button>
+                        </div>
+                        : user.id !== group.organizerId && <button id="leave-group-btn" onClick={leaveGroup}>Leave Group</button>)
+                        }
                     {user && user.id === group.organizerId &&
                         <div className="organizer-buttons-container">
                             <button onClick={() => history.push(`/groups/${groupId}/events/new`)} id="organizer-btn-create">Create Event</button>
                             <button onClick={() => history.push(`/groups/${groupId}/edit`)} id="organizer-btn-update">Update</button>
                             <DeleteButton groupId={groupId} />
+                            <button onClick={manageGroup} className="organizer-btn-manage">Manage</button>
+
                         </div>
                     }
                 </div>

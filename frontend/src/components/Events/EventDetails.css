@@ -14,7 +14,23 @@
 .content-container-bottom{
     width: 925px;
     margin: auto;
+    display: flex;
 }
+
+.description-header-and-text{
+    width: 500px;
+}
+#event-description-container{
+    word-wrap:break-word;
+    width: 90%
+}
+
+.gmap-container{
+    padding-top: 20px;
+    width: fit-content;
+    margin: 0 auto;
+}
+
 
 .group-and-event-info{
     display: flex;
@@ -68,8 +84,9 @@
 
 .event-type{
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
     display: flex;
+    gap: 25px;
 }
 
 .event-type .fas{
@@ -98,6 +115,7 @@
     display: flex;
     justify-content: space-between;
     width: 140px;
+    gap: 5px;
 }
 
 #event-organizer-buttons button{
@@ -154,4 +172,30 @@
 
 .event-details-header h2, p{
     margin: 0;
+}
+
+#attend-event-btn, #unatttend-event-btn{
+    padding: 5px;
+    height:auto;
+    width: fit-content;
+    align-self: center;
+    font-family: 'Lexend', sans-serif;
+    background-color: rgb(216, 51, 29);
+    color: white;
+    font-size: 16px;
+    box-shadow: 2px 2px 1px grey;
+    border-radius: 5px;
+}
+.event-organizer-btn-manage{
+    background-color: darkgray;
+    align-self: center;
+    height: max-content;
+    border-radius: 3px;
+    background-color: darkgray;
+    color: whitesmoke;
+    box-shadow: 1px 1px 2px rgb(89, 2, 38);
+    text-align: center;
+    width: -moz-fit-content;
+    width: fit-content;
+    font-family: 'Lexend', sans-serif;
 }

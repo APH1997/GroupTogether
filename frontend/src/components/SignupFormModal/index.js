@@ -15,9 +15,9 @@ function SignupFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
-  const disableBtn = (email.length < 1 ||username.length < 4 ||
+  const disableBtn = (email.length < 1 ||username.length < 1 ||
                         firstName.length < 1||lastName.length < 1 ||
-                        password.length < 6 ||confirmPassword.length < 1)
+                        password.length < 1 ||confirmPassword.length < 1)
 
   const handleSubmit = (e) => {
     e.preventDefault();

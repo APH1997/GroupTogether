@@ -11,6 +11,7 @@
     align-content: center;
     line-height: 8px;
     margin-left: 95px;
+
 }
 .all-groups-header>h2{
     margin-top: 100px;
@@ -65,13 +66,11 @@ img{
 .card-container:hover{
     cursor: pointer;
     background-color: rgba(211, 211, 211, 0.203);
-
 }
 
 .upper-details{
     display: flex;
     justify-content: center;
-    margin-top: 75px;
 }
 .upper-right h2{
     line-height: 27px;
@@ -103,7 +102,7 @@ div.upper-left span>a{
 }
 
 
-#organizer-btn-update, #organizer-btn-delete, #organizer-btn-create{
+#organizer-btn-update, #organizer-btn-delete, #organizer-btn-create, .organizer-btn-manage{
     background-color: darkgray;
     align-self: baseline;
     padding: 10px;
@@ -169,6 +168,9 @@ div.upper-left span>a{
     margin-bottom: 0;
     font-size: 24px;
 }
+.details-block>p{
+    word-wrap: break-word;
+}
 
 .upcoming-events .event-card-container{
     background-color: white;
@@ -193,7 +195,19 @@ div.upper-left span>a{
     padding-top: 10px;
 }
 
-#join-group-btn{
+.pending-btns{
+    display: flex;
+    gap: 5px;
+}
+
+#pending-btn:hover{
+    cursor: pointer;
+}
+
+#join-group-btn,
+#pending-btn,
+#leave-group-btn,
+#cancel-pending-btn{
     width: fit-content;
     height:50px;
     font-family: 'Lexend', sans-serif;
@@ -208,4 +222,58 @@ div.upper-left span>a{
 
 #join-group-btn:hover{
     box-shadow: .5px .5px 1px black;
+}
+
+#manage-members-table, #manage-attendees-table{
+    width: 100%;
+    margin: 0 auto;
+}
+#manage-members-table thead{
+    text-align: left;
+    font-weight: bolder;
+    border-bottom: 1px solid black;
+}
+#manage-attendees-table thead{
+    text-align: left;
+    font-weight: bolder;
+    border-bottom: 1px solid black;
+}
+
+.member-card-container:hover{
+    background-color: whitesmoke;
+}
+
+.home-bread-crumb{
+    text-align: center;
+    padding: 15px;
+}
+
+.home-bread-crumb a:hover{
+    color: rgb(251, 102, 21)
+}
+
+p.group-about{
+    height: 35px;
+    overflow-y: scroll;
+    background-color: whitesmoke;
+    border-radius: 10px;
+    padding: 5px;
+    width: 90%;
+}
+
+.card-container:hover p.group-about{
+    background-color: white;
+}
+
+.card-bottom{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.host-action-btns{
+    display: flex;
+    align-self: flex-end;
+    gap: 10px;
+    margin: 0 auto;
 }

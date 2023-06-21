@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Attendance, Event, EventImage, Venue, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
+const { Attendance, Event, EventImage, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
 const { Op } = require("sequelize");
 
 router.get('/', async (req, res) => {
@@ -36,8 +36,10 @@ router.get('/', async (req, res) => {
                 group.numMembers++
             }
         }
-
-        delete group.Memberships;
+        group.Members = {}
+        group.Memberships.forEach(member =>
+            group.Members[member.userId] = member)
+        delete group.Memberships
         delete group.GroupImages;
     })
     return res.json({ Groups: groupsList });
@@ -103,11 +105,13 @@ router.get('/:groupId', async (req, res, next) => {
                         attributes: ['id', 'firstName', 'lastName']
                     },
                     {
-                        model: Venue,
-                        as: 'Venue',
-                        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
+                        model: Event,
+                        include: {model: EventImage}
                     },
-                    {model: Event, include: {model: EventImage}}
+                    {
+                        model: Membership,
+                        include: {model: User}
+                    }
                 ]
         });
         group.dataValues.numMembers = (await Membership.findAll({
@@ -115,12 +119,14 @@ router.get('/:groupId', async (req, res, next) => {
         })).length;
 
         jsonGroup = group.toJSON();
-        jsonGroup.Venues = jsonGroup.Venue;
-       
-        delete jsonGroup.Venue;
+
         if (jsonGroup.numMembers === 0){
             jsonGroup.numMembers = 1;
         }
+        members = [...jsonGroup.Memberships]
+        jsonGroup.Memberships = {}
+        members.forEach(member => jsonGroup.Memberships[member.userId] = member)
+
 
         return res.json(jsonGroup)
 
@@ -309,115 +315,6 @@ router.delete('/:groupId', async (req, res, next) => {
     res.json({ "message": "Successfully deleted" })
 })
 
-router.get('/:groupId/venues', async (req, res, next) => {
-    const { user } = req;
-    const group = await Group.findByPk(req.params.groupId, {
-        include: {
-            model: Venue,
-            as: 'Venue'
-        }
-    })
-    if (!user) {
-        res.status(401);
-        return res.json({ "message": "Authentication required" })
-    }
-    if (!group) {
-        res.status(404);
-        return res.json({ "message": "Group couldn't be found" })
-    }
-    const membership = await user.getMemberships({
-        where: { groupId: group.id }
-    })
-    let userStatus;
-    if (membership.length){
-        userStatus = membership[0].status;
-    }
-
-    if (user.id === group.organizerId) userStatus = 'organizer'
-
-    if (userStatus !== 'organizer' && userStatus !== 'co-host') {
-        res.status(403);
-        return res.json({ "message": "Forbidden" })
-    }
-
-    const venueList = [];
-    group.Venue.forEach(venue => {
-        venueList.push(venue.toJSON())
-    })
-
-    for (let venue of venueList) {
-        delete venue.createdAt;
-        delete venue.updatedAt;
-    }
-    return res.json({ Venues: venueList });
-})
-
-router.post('/:groupId/venues', async (req, res, next) => {
-    const { user } = req;
-    const group = await Group.findByPk(req.params.groupId)
-    if (!user) {
-        res.status(401);
-        return res.json({ "message": "Authentication required" })
-    }
-    if (!group) {
-        res.status(404);
-        return res.json({ "message": "Group couldn't be found" })
-    }
-    const membership = await user.getMemberships({
-        where: { groupId: group.id }
-    })
-
-    let userStatus;
-    for (let member of membership){
-        if (member.userId === user.id){
-            userStatus = member.status
-        }
-    }
-    // if (membership.length){
-    //     userStatus = membership[0].status;
-    // }
-    if (user.id === group.organizerId) userStatus = 'organizer'
-
-    if (userStatus !== 'organizer' && userStatus !== 'co-host') {
-        res.status(403);
-        return res.json({ "message": "Forbidden" })
-    }
-
-    const { address, city, state, lat, lng } = req.body;
-    const errors = {};
-    if (!address) errors.address = "Street address is required";
-    if (!city) errors.city = "City is required";
-    if (!state) errors.state = "State is required";
-    if (lat < -90 || lat > 90) errors.lat = "Latitude is not valid";
-    if (lng < -180 || lng > 180) errors.lng = "Longitude is not valid";
-    if (Object.keys(errors).length) {
-        let err = {};
-        err.message = "Bad Request"
-        err.errors = { ...errors }
-        err.status = 400;
-        err.title = 'Validation Error'
-        next(err);
-    }
-    try {
-
-        const newVenue = await group.createVenue({
-            address,
-            city,
-            state,
-            lat,
-            lng
-        });
-
-        const jsonVenue = newVenue.toJSON()
-        delete jsonVenue.updatedAt;
-        delete jsonVenue.createdAt;
-
-        return res.json(jsonVenue)
-
-    } catch (e) {
-        next(e);
-    }
-})
 
 router.get('/:groupId/events', async (req, res, next) => {
     const group = await Group.findByPk(req.params.groupId)
@@ -431,7 +328,6 @@ router.get('/:groupId/events', async (req, res, next) => {
             [
                 { model: Group, attributes: ['id', 'name', 'city', 'state'] },
                 { model: Attendance },
-                { model: Venue, attributes: ['id', 'city', 'state'] },
                 { model: EventImage }
             ]
     })
@@ -492,11 +388,10 @@ router.post('/:groupId/events', async (req, res, next) => {
         res.status(403);
         return res.json({ "message": "Forbidden" })
     }
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const { lat, lng, name, type, capacity, price, description, startDate, endDate, startTime, endTime } = req.body;
     const errors = {};
-    // THIS IS A SHORT FIX FOR MY CASCADE ISSUES
-    // const venue = await Venue.findByPk(venueId);
-    // if (!venue) errors.venueId = "Venue does not exist";
+
+
     if (!name || name.length < 5) errors.name = "Name must be at least 5 characters";
     if (type !== 'Online' && type !== 'In person') errors.type = 'Type must be Online or In person';
     if (capacity % 1 !== 0) errors.capacity = "Capacity must be an integer";
@@ -504,6 +399,9 @@ router.post('/:groupId/events', async (req, res, next) => {
     if (!description) errors.description = "Description is required";
     if (new Date(startDate) < new Date()) errors.startDate = 'Start date must be in the future';
     if (new Date (endDate) < new Date(startDate)) errors.endDate = 'End date is less than start date';
+    if (lat < -90 || lat > 90) errors.lat = "Latitude must be between -90 and 90"
+    if (lng < -180 || lng > 180) errors.lat = "Longitude must be between -180 and 180"
+
 
     if (Object.keys(errors).length) {
         let err = {};
@@ -518,14 +416,17 @@ router.post('/:groupId/events', async (req, res, next) => {
 
         const newEvent = await group.createEvent({
             hostId: user.Id,
-            venueId,
+            lat,
+            lng,
             name,
             type,
             capacity,
             price,
             description,
             startDate,
-            endDate
+            endDate,
+            startTime,
+            endTime
         })
         //When someone makes an event, they should be attending by default
         const hostAttends = await user.createAttendance({
@@ -648,20 +549,17 @@ router.post('/:groupId/membership', async (req, res, next) => {
     //     }
     // }
 
+    const status = (group.private ? "pending" : "member")
 
     const newMembership = await Membership.create({
         userId: user.id,
         groupId: group.id,
-        status: "pending"
+        status
     })
 
     const jsonNewMembership = newMembership.toJSON();
     delete jsonNewMembership.updatedAt;
     delete jsonNewMembership.createdAt;
-    delete jsonNewMembership.userId;
-    delete jsonNewMembership.groupId;
-    jsonNewMembership.memberId = user.id;
-    delete jsonNewMembership.id;
 
     return res.json(jsonNewMembership);
 })
@@ -731,7 +629,9 @@ router.put('/:groupId/membership', async (req, res, next) => {
     if (group.organizerId === user.id) {
         userStatus = 'organizer'
     }
-    const targetMembership = await Membership.findByPk(targetMembershipId);
+    const targetMembership = await Membership.findByPk(targetMembershipId, {
+        include: {model: User}
+    });
 
     if (userStatus === 'organizer' || userStatus === 'co-host') {
 
@@ -741,6 +641,7 @@ router.put('/:groupId/membership', async (req, res, next) => {
         const resTargetMembership = targetMembership.toJSON();
         delete resTargetMembership.updatedAt;
         delete resTargetMembership.createdAt;
+
 
         return res.json(resTargetMembership)
     } else {

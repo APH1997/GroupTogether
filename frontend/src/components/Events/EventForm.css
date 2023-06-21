@@ -101,3 +101,8 @@ transform: translate(-5px, 37px);
     box-shadow: 1px 1px 1px black;
     scale: .99;
 }
+
+.date-and-time-inputs{
+    display: flex;
+    gap: 10px;
+}

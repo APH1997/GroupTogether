@@ -17,7 +17,7 @@ module.exports = {
         about: 'On every Monday that falls upon a full moon, we gather in congregation to don silly hats, and, upon the clock striking midnight, we must doth our silly hats.',
         type: 'In person',
         private: false,
-        city: 'Townsville',
+        city: 'Springfield',
         state: 'PA'
       },
       {
@@ -26,7 +26,7 @@ module.exports = {
         about: 'On every Tuesday that falls upon a full moon, we gather in congregation to don haughty hats, and, upon the clock striking midnight, we must doth our haughty hats.',
         type: 'In person',
         private: true,
-        city: 'Funky Town',
+        city: 'Greenwich',
         state: 'CT'
       },
       {
@@ -35,29 +35,14 @@ module.exports = {
         about: 'On every Wednesday that falls upon a full moon, we gather in congregation to don impractical hats, and, upon the clock striking midnight, we must doth our impractical hats.',
         type: 'In person',
         private: false,
-        city: 'Shivermetimbersville',
+        city: 'New York City',
         state: 'NY'
       },
 
     ], {})
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('People', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-    */
   },
 
   async down (queryInterface, Sequelize) {
-    /**
-     * Add commands to revert seed here.
-     *
-     * Example:
-     * await queryInterface.bulkDelete('People', null, {});
-     */
     options.tableName = 'Groups';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {

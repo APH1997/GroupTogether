@@ -31,6 +31,7 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
+
 router.use('/api', apiRouter);
 
 router.get("/api/csrf/restore", (req, res) => {

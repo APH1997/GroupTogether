@@ -7,7 +7,72 @@ const CREATE_EVENT_IMAGE = "events/createImage";
 const EDIT_EVENT = "events/editGroup";
 const DELETE_EVENT = "events/deleteGroup";
 
+//ATTENDANCES
+const CREATE_ATTENDANCE = "events/createAttendance"
+const DELETE_ATTENDANCE = "events/deleteAttendance"
+const UPDATE_ATTENDANCE = "events/updateAttendance"
 
+const updateAttendanceAction = (attendance) => {
+    return {
+        type: UPDATE_ATTENDANCE,
+        payload: attendance
+    }
+}
+export const updateAttendanceThunk = (eventId, userAndStatus) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(userAndStatus)
+    })
+    const data = await response.json()
+    if (response.ok){
+        dispatch(updateAttendanceAction(data))
+        return data
+    } else {
+        return data
+    }
+}
+const postAttendanceAction = (attendance) => {
+    return {
+        type: CREATE_ATTENDANCE,
+        payload: attendance
+    }
+}
+
+export const postAttendanceThunk = (eventId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
+        method: 'POST',
+    })
+    const data = await response.json()
+    if (response.ok){
+        dispatch(postAttendanceAction(data.newAttendance))
+        return data
+    } else {
+        return data
+    }
+}
+
+const deleteAttendanceAction = (userId, eventId) => {
+    return {
+        type: DELETE_ATTENDANCE,
+        payload: {userId, eventId}
+    }
+}
+
+export const deleteAttendanceThunk = (eventId, userId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/events/${eventId}/attendance`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({userId})
+    })
+    const data = await response.json()
+    if (response.ok){
+        dispatch(deleteAttendanceAction(userId, eventId))
+        return data
+    } else {
+        return data
+    }
+}
 
 export const getEventsAction = (events) => {
     return {
@@ -18,7 +83,7 @@ export const getEventsAction = (events) => {
 export const getEventsThunk = () => async (dispatch) => {
     const response = await csrfFetch('/api/events');
     const data = await response.json();
-    
+
     if (response.ok){
         dispatch(getEventsAction(data));
         return response;
@@ -45,9 +110,10 @@ export const getOneEventThunk = (eventId) => async (dispatch) => {
     }
 }
 
-export const createEventAction = () => {
+export const createEventAction = (newEvent) => {
     return {
         type: CREATE_EVENT,
+        payload: newEvent
     }
 }
 export const createEventThunk = (event, groupId) => async (dispatch) => {
@@ -58,7 +124,7 @@ export const createEventThunk = (event, groupId) => async (dispatch) => {
     })
     const data = await response.json();
     if (response.ok){
-        await dispatch(createEventAction());
+        await dispatch(createEventAction(data));
         return data;
     } else return data;
 }
@@ -139,6 +205,7 @@ const eventsReducer = (state = initialState, action) => {
         }
         case CREATE_EVENT:{
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}}
+            newState.allEvents[action.payload.id] = action.payload
             return newState;
         }
         case EDIT_EVENT:{
@@ -148,6 +215,33 @@ const eventsReducer = (state = initialState, action) => {
             const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
             delete newState.allEvents[action.payload];
             return newState;
+        }
+        case CREATE_ATTENDANCE:{
+            const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
+            newState.singleEvent.attendances[action.payload.userId] = action.payload
+            return newState;
+        }
+        case DELETE_ATTENDANCE:{
+            const {userId, eventId} = action.payload
+            const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
+            if (Object.values(newState.allEvents).length){
+                delete newState.allEvents[eventId].attendances[userId]
+            }
+            if (Object.values(newState.singleEvent).length){
+                delete newState.singleEvent.attendances[userId]
+            }
+            return newState
+        }
+        case UPDATE_ATTENDANCE:{
+            const {userId, eventId, status} = action.payload
+            const newState = {...state, allEvents:{...state.allEvents}, singleEvent:{...state.singleEvent}};
+            if (Object.values(newState.allEvents).length){
+                newState.allEvents[eventId].attendances[userId].status = status
+            }
+            if (Object.values(newState.singleEvent).length){
+                newState.singleEvent.attendances[userId].status = status
+            }
+            return newState
         }
         default:
             return state;

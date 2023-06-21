@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createGroupImageThunk, createGroupThunk, updateGroupThunk } from '../../store/groups';
 import './GroupForm.css';
+import states from '../Maps/states';
 
 function GroupForm({ formType, group }) {
     const history = useHistory();
@@ -22,39 +23,32 @@ function GroupForm({ formType, group }) {
     const [type, setType] = useState(group?.type);
     const [isPrivate, setIsPrivate] = useState(group?.private);
     const [imgUrl, setImgUrl] = useState('');
-
-    const [cityState, setCityState] = useState(group?.city && group?.state ? `${group.city}, ${group.state}` : "")
     const [city, setCity] = useState(group?.city || '')
     const [state, setState] = useState(group?.state || '');
 
     const [errors, setErrors] = useState({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
 
-    const setCityAndState = (e, city, state) => {
-        let trimmedState;
-        if (state){
-            trimmedState = state.trim();
-        } else trimmedState = state;
 
-        setCityState(e.target.value);
-        setCity(city)
-        setState(trimmedState)
-    }
     useEffect(() => {
         const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
-        if (!city || !state) errObj.location = "Location is required";
-        if (!name) errObj.name = "Name is required";
-        if (!about || about.length < 50) errObj.about = "Description must be at least 50 characters long";
+        if (!states[state.toUpperCase()]) errObj.location = "Please enter a valid state";
+        if (!city || !state || !city.trim() || !state.trim()) errObj.location = "City and state are required";
+        if (!name || !name.trim()) errObj.name = "Name is required";
+        if (name && name.length > 60) errObj.name = "Group name must not exceed 60 characters"
+        if (!about || !about.trim() || about.length < 50) errObj.about = "Description must be at least 50 characters long";
+        if (about && about.length > 300) errObj.about = "Description must not exceed 300 characters"
         if (!type) errObj.type = "Group Type is required";
         if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
         if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
+        if (imgUrl && imgUrl.length > 255) errObj.img = "Image URL cannot exceed 255 characters"
 
         if (Object.keys(errObj).length){
             setErrors(errObj);
         } else setErrors({})
 
-    }, [name, about, type, isPrivate, imgUrl, cityState])
+    }, [name, about, type, isPrivate, imgUrl, city, state])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -74,8 +68,14 @@ function GroupForm({ formType, group }) {
 
         if (formType === "Create"){
             const createdGroup = await dispatch(createGroupThunk(newGroup))
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors){
+                    setErrors(...data.errors)
+                }
+            })
             if (createdGroup.errors){
-                setErrors(createdGroup.errors)
+                return
             } else {
                 if (imgUrl){
                     const image = {url: imgUrl, preview: true}
@@ -98,6 +98,11 @@ function GroupForm({ formType, group }) {
         }
     }
 
+    const handleState = (e) => {
+        if (e.target.value.length > 2) return;
+        setState(e.target.value)
+    }
+
 
     return (
         <form onSubmit={handleSubmit}>
@@ -108,9 +113,15 @@ function GroupForm({ formType, group }) {
                     in your area, and more can join you online.</p>
                     <input
                         type="text"
-                        placeholder="city, STATE"
-                        value={cityState}
-                        onChange={(e) => setCityAndState(e, e.target.value.split(',')[0], e.target.value.split(',')[1])}
+                        placeholder="City"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="State"
+                        value={state}
+                        onChange={(e) => handleState(e)}
                     />
                     {hasSubmitted && errors.location && <p className='errors'>{errors.location}</p>}
 
