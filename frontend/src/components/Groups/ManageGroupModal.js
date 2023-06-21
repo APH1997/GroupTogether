@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { deleteMembershipThunk, editMembershipThunk } from "../../store/groups"
 
-function ManageGroup({ group }) {
+function ManageGroup({ group, event}) {
     const dispatch = useDispatch()
     const currGroup = useSelector(state => state.groups.singleGroup)
 
@@ -11,11 +11,11 @@ function ManageGroup({ group }) {
     function removeMember(id){
         dispatch(deleteMembershipThunk(group.id, id))
     }
-    console.log(Object.values(group.Memberships))
+
     return (
         <div>
-            <h1>{group.name} members</h1>
-            {Object.values(group.Memberships).length > 1 ?
+            <h1>{!event ? `${group.name} members` : `${event.name} attendees`}</h1>
+            {!event && Object.values(group.Memberships).length > 1 ?
             <table id="manage-members-table">
                 <thead>
                     <tr>
@@ -46,7 +46,7 @@ function ManageGroup({ group }) {
             :
             <>
                 <h2>Any minute now...</h2>
-                <p>Someone's bound to join your awesome group!</p>
+                <p>{`Someone's bound to ${!event ? 'join' : 'RSVP for'} your awesome ${!event ? 'group' : 'event'}!`}</p>
             </>
 
             }

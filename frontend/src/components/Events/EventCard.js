@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { deleteAttendanceThunk } from '../../store/events';
 import { useModal } from '../../context/Modal';
 import DeleteConfirmModal from './DeleteEvent';
+import ManageGroup from '../Groups/ManageGroupModal';
 
 function EventsCard({ event, group, manage }) {
     const {setModalContent} = useModal()
@@ -45,6 +46,10 @@ function EventsCard({ event, group, manage }) {
         e.stopPropagation()
         history.push(`/groups/${event.Group.id}/events/${event.id}/edit`)
     }
+    function handleManageAttendance(e){
+        e.stopPropagation()
+        setModalContent(<ManageGroup event={event}/>)
+    }
 
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
@@ -60,6 +65,9 @@ function EventsCard({ event, group, manage }) {
 
                 {manage && event.hostId === user.id &&
                     <div className='host-action-btns'>
+                        <button onClick={(e) => handleManageAttendance(e)}>
+                            Manage Attendance
+                        </button>
                         <button onClick={(e) => handleUpdate(e)}>
                             Update
                         </button>
