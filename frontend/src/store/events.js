@@ -241,6 +241,7 @@ const eventsReducer = (state = initialState, action) => {
             if (Object.values(newState.singleEvent).length){
                 newState.singleEvent.attendances[userId].status = status
             }
+            return newState
         }
         default:
             return state;

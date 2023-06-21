@@ -57,7 +57,6 @@ function EventDetails() {
     }
 
     function manageEvent(){
-        console.log(event)
         setModalContent(<ManageGroup event={event}/>)
     }
 

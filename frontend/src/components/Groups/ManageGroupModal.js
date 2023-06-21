@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 import { deleteMembershipThunk, editMembershipThunk } from "../../store/groups"
-import { updateAttendanceThunk } from "../../store/events"
+import { deleteAttendanceThunk, updateAttendanceThunk } from "../../store/events"
 
 function ManageGroup({ group, event }) {
     const dispatch = useDispatch()
     const currGroup = useSelector(state => state.groups.singleGroup)
-
+    const currEve = useSelector(state => state.events.singleEvent)
     function addMember(id) {
         dispatch(editMembershipThunk(group.id, id))
     }
@@ -17,6 +17,11 @@ function ManageGroup({ group, event }) {
         const data = {userId, status}
         dispatch(updateAttendanceThunk(event.id, data))
     }
+
+    function removeAttendee(userId){
+        dispatch(deleteAttendanceThunk(event.id, userId))
+    }
+
     return (
     <>
         {!event && (
@@ -91,7 +96,7 @@ function ManageGroup({ group, event }) {
                                         </select>
                                      </td>
                                      <td>
-                                         <button onClick={1}>Remove</button>
+                                         <button onClick={() => removeAttendee(attendee.userId)}>Remove</button>
                                      </td>
                                  </tr>
                              )}
