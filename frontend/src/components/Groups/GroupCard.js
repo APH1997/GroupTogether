@@ -24,8 +24,12 @@ function GroupsCard({group, manage}){
         setModalContent(<DeleteConfirmModal groupId={group.id} manage={true}/>)
     }
 
-    const user = useSelector(state => state.session.user)
+    function handleUpdate(e){
+        e.stopPropagation()
+        history.push(`/groups/${group.id}/edit`)
+    }
 
+    const user = useSelector(state => state.session.user)
     if (!user) return <h1>Loading...</h1>
 
     return (
@@ -43,7 +47,7 @@ function GroupsCard({group, manage}){
                         (group.organizerId !== user.id && <button onClick={(e) => leaveGroup(e)}>Leave Group</button>)
                         || (manage && group.organizerId === user.id &&
                         <div>
-                            <button onClick={() => history.push(`/groups/${group.id}/edit`)}>Update</button>
+                            <button onClick={(e) => handleUpdate(e)}>Update</button>
                             <button onClick={(e) => deleteGroup(e)}>Delete</button>
                         </div>)
 
