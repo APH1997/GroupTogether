@@ -54,6 +54,10 @@ function EventDetails() {
         dispatch(deleteAttendanceThunk(event.id, user.id))
     }
 
+    function manageEvent(){
+        
+    }
+
     return (
         <>
             <main className="main-content-container">

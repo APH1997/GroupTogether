@@ -13,7 +13,7 @@ function EventsPage({manage, user}){
     const eventsObj = useSelector(state => state.events.allEvents);
     const eventsList = (
         manage ? Object.values(eventsObj)
-        .filter(eve => !(!eve.attendances[user.id]))
+        .filter(eve => !(!eve.attendances[user.id]) || eve.hostId === user.id)
         : Object.values(eventsObj)
     )
 
@@ -98,7 +98,7 @@ function EventsPage({manage, user}){
                 {orderedPastEvents.length > 0 &&
                     orderedPastEvents.map(event => {
                         return (
-                            <EventsCard id={event.id} event={event} manage={manage} user={user}/>
+                            <EventsCard id={event.id} event={event} manage={false} user={user}/>
                         )
                     })
                 }
