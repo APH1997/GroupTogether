@@ -44,7 +44,7 @@ router.get('/', async (req, res, next) => {
         where,
         include:
             [
-                { model: Attendance },
+                { model: Attendance , include: {model: User}},
                 { model: EventImage },
                 { model: Group, attributes: ['id', 'name', 'city', 'state'] }
             ],

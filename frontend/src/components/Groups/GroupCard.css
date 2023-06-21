@@ -224,11 +224,16 @@ div.upper-left span>a{
     box-shadow: .5px .5px 1px black;
 }
 
-#manage-members-table{
+#manage-members-table, #manage-attendees-table{
     width: 100%;
     margin: 0 auto;
 }
 #manage-members-table thead{
+    text-align: left;
+    font-weight: bolder;
+    border-bottom: 1px solid black;
+}
+#manage-attendees-table thead{
     text-align: left;
     font-weight: bolder;
     border-bottom: 1px solid black;
