@@ -2,8 +2,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../Groups/GroupCard.css';
 import { useHistory } from 'react-router-dom';
 import { deleteAttendanceThunk } from '../../store/events';
+import { useModal } from '../../context/Modal';
+import DeleteConfirmModal from './DeleteEvent';
 
 function EventsCard({ event, group, manage }) {
+    const {setModalContent} = useModal()
     const history = useHistory();
     const dispatch = useDispatch()
 
@@ -33,8 +36,16 @@ function EventsCard({ event, group, manage }) {
     function handleUnattend(e){
         e.stopPropagation()
         dispatch(deleteAttendanceThunk(event.id, user.id))
-
     }
+    function deleteEvent(e){
+        e.stopPropagation()
+        setModalContent(<DeleteConfirmModal eventId={event.id} groupId={1} />)
+    }
+    function handleUpdate(e){
+        e.stopPropagation()
+        history.push(`/groups/${event.Group.id}/events/${event.id}/edit`)
+    }
+
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
@@ -49,10 +60,10 @@ function EventsCard({ event, group, manage }) {
 
                 {manage && event.hostId === user.id &&
                     <div className='host-action-btns'>
-                        <button>
+                        <button onClick={(e) => handleUpdate(e)}>
                             Update
                         </button>
-                        <button>
+                        <button onClick={(e) => deleteEvent(e)}>
                             Delete
                         </button>
                     </div>
