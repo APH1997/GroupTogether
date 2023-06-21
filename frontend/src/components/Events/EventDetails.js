@@ -103,6 +103,7 @@ function EventDetails() {
                                         <DeleteButton eventId={eventId} groupId={event.Group.id} />
                                     </span>}
                             </div>
+                            <button id="attend-event-btn">Attend</button>
                         </div>
                     </div>
 
