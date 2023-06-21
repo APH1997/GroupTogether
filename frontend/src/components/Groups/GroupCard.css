@@ -265,3 +265,10 @@ p.group-about{
     align-items: center;
     justify-content: space-between;
 }
+
+.host-action-btns{
+    display: flex;
+    align-self: flex-end;
+    gap: 10px;
+    margin: 0 auto;
+}

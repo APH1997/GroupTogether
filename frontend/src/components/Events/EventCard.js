@@ -1,27 +1,31 @@
+import { useSelector } from 'react-redux';
 import '../Groups/GroupCard.css';
-import {useHistory} from  'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-function EventsCard({event, group}){
+function EventsCard({ event, group, manage }) {
     const history = useHistory();
-    function navToEventDetails(e){
+    function navToEventDetails(e) {
         history.push(`/events/${event.id}`)
     }
 
     const startDate = new Date(event.startDate).toLocaleString("en-US").split(',')[0]
 
-    function convertMilTime(time){
+    function convertMilTime(time) {
         const [hours, minutes] = time.split(':')
-        if (Number(hours < 1)){
+        if (Number(hours < 1)) {
             return `12:${minutes} AM`
         }
-        if (Number(hours < 12)){
+        if (Number(hours < 12)) {
             return `${hours}:${minutes} AM`
         }
-        if (Number(hours == 12)){
+        if (Number(hours == 12)) {
             return `${hours}:${minutes} PM`
         }
         return `${hours - 12}:${minutes} PM`
     }
+
+    const user = useSelector(state => state.session.user)
+    if (!user) return null
 
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
@@ -34,8 +38,27 @@ function EventsCard({event, group}){
                     <h2>{event.name}</h2>
                     <h3>{event.Group?.city || group?.city}, {event.Group?.state || group?.state}</h3>
                 </div>
+
+                {manage && event.hostId === user.id &&
+                    <div className='host-action-btns'>
+                        <button>
+                            Update
+                        </button>
+                        <button>
+                            Delete
+                        </button>
+                    </div>
+                }
+                {manage && event.hostId !== user.id &&
+                    <div className='host-action-btns'>
+                        <button>
+                            Unattend
+                        </button>
+                    </div>
+                }
+
             </div>
-                <p>{event.description}</p>
+            <p>{event.description}</p>
         </div>
     )
 }

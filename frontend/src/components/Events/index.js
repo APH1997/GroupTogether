@@ -87,14 +87,14 @@ function EventsPage({manage, user}){
                 {orderedFutureEvents.length > 0 &&
                     orderedFutureEvents.map(event => {
                         return (
-                            <EventsCard id={event.id} event={event}/>
+                            <EventsCard id={event.id} event={event} manage={manage}/>
                         )
                     })
                 }
                 {orderedPastEvents.length > 0 &&
                     orderedPastEvents.map(event => {
                         return (
-                            <EventsCard id={event.id} event={event}/>
+                            <EventsCard id={event.id} event={event} manage={manage} user={user}/>
                         )
                     })
                 }
