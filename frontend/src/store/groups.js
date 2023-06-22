@@ -173,10 +173,13 @@ export const createGroupImageAction = (image) => {
     }
 }
 export const createGroupImageThunk = (groupId, image) => async (dispatch) => {
+    const formData = new FormData()
+    formData.append("image", image)
+
     const response = await csrfFetch(`/api/groups/${groupId}/images`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(image)
+        headers: {'Content-Type': 'multipart/form-data'},
+        body: formData
     });
     const data = await response.json();
     if (response.ok){

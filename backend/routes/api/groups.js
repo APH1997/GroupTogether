@@ -192,9 +192,10 @@ router.post('/', async (req, res, next) => {
 router.post(
     '/:groupId/images',
     singleMulterUpload("image"),
-    asyncHandler(async (req, res) => {
+    async (req, res, next) => {
         const { user } = req;
         const imageUrl = await singlePublicFileUpload(req.file);
+
         const groupId = req.params.groupId;
         const group = await Group.findByPk(groupId);
 
@@ -213,7 +214,7 @@ router.post(
 
         try {
             const newGroupImage = await group.createGroupImage({
-                imageUrl,
+                url: imageUrl,
                 preview: true
             });
             const newId = newGroupImage.id;
@@ -224,7 +225,7 @@ router.post(
         } catch (e) {
             next(e);
         }
-    }))
+    })
 
 router.put('/:groupId', async (req, res, next) => {
         const { user } = req;
