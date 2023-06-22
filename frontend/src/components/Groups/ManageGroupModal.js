@@ -6,8 +6,9 @@ function ManageGroup({ group, event }) {
     const dispatch = useDispatch()
     const currGroup = useSelector(state => state.groups.singleGroup)
     const currEve = useSelector(state => state.events.singleEvent)
-    function addMember(id) {
-        dispatch(editMembershipThunk(group.id, id))
+
+    function handleMembershipChange(userId, status) {
+        dispatch(editMembershipThunk(group.id, userId, status))
     }
     function removeMember(id) {
         dispatch(deleteMembershipThunk(group.id, id))
@@ -44,11 +45,20 @@ function ManageGroup({ group, event }) {
                                         <td>
                                             {membership.User.firstName} {membership.User.lastName}
                                         </td>
-                                        <td>{membership.status}</td>
                                         <td>
-                                            {membership.status === "pending" &&
-                                                <button onClick={() => addMember(membership.userId)}>Accept</button>
-                                            }
+                                            <select onChange={(e) => handleMembershipChange(membership.User.id, e.target.value)}>
+                                                <option
+                                                    value="pending"
+                                                    disabled={true}
+                                                    selected={membership.status === "pending"}
+                                                > Pending </option>
+                                                <option
+                                                    value="member"
+                                                    selected={membership.status === "member"}
+                                                > Member</option>
+                                            </select>
+                                        </td>
+                                        <td>
                                             <button onClick={() => removeMember(membership.userId)}>Remove</button>
                                         </td>
                                     </tr>
@@ -84,7 +94,7 @@ function ManageGroup({ group, event }) {
                                          {attendee.User.firstName} {attendee.User.lastName}
                                      </td>
                                      <td>
-                                     <select onChange={(e) => handleChangeAttendeeStatus(attendee.userId, e.target.value)}>
+                                        <select onChange={(e) => handleChangeAttendeeStatus(attendee.userId, e.target.value)}>
                                             <option
                                                 value="waitlist"
                                                 selected={attendee.status === "waitlist"}

@@ -62,11 +62,11 @@ const editMembershipAction = (membership) => {
     }
 }
 
-export const editMembershipThunk = (groupId, userId) => async (dispatch) => {
+export const editMembershipThunk = (groupId, userId, status) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({memberId: userId, status: "member"})
+        body: JSON.stringify({memberId: userId, status})
     })
     const data = await response.json()
     if (response.ok){
