@@ -27,13 +27,6 @@ function EventDetails() {
     const startDate = new Date(event.startDate).toLocaleString("en-US").split(',')[0]
     const endDate = new Date(event.endDate).toLocaleString("en-US").split(',')[0]
 
-    let previewImage;
-    for (let image of event.EventImages) {
-        if (image.preview) {
-            previewImage = image.url
-        }
-    }
-
     function convertMilTime(time){
         const [hours, minutes] = time.split(':')
         if (Number(hours < 1)){
@@ -72,7 +65,7 @@ function EventDetails() {
                 </div>
                 <div className="content-container-top">
                     <div className="event-image-container">
-                        <img src={previewImage}></img>
+                        <img src={event.previewImgUrl}></img>
                     </div>
                     <div className="group-and-event-info">
                         <div onClick={() => history.push(`/groups/${event.Group.id}`)} className="group-info-container">

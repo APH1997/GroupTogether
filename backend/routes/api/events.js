@@ -75,12 +75,12 @@ router.get('/', async (req, res, next) => {
             event.attendances[attendance.userId] = attendance
         }
         delete event.Attendances;
-
+        event.images = {}
         for (let image of event.EventImages) {
-            if (image.preview === true) {
-                event.previewImage = image.url
-            }
+            event.images[image.id] = image.url
         }
+
+        event.previewImgUrl = event.images[Math.max(...Object.keys(event.images).map(k => Number(k)))]
         delete event.EventImages;
     }
 
@@ -112,6 +112,7 @@ router.get('/:eventId', async (req, res, next) => {
     for (let attendance of resEvent.Attendances) {
         resEvent.attendances[attendance.userId] = attendance
     }
+
     delete resEvent.Attendances;
     delete resEvent.createdAt;
     delete resEvent.updatedAt;
@@ -120,6 +121,12 @@ router.get('/:eventId', async (req, res, next) => {
             resEvent.Group.imgUrl = groupImage.url
         }
     })
+    resEvent.images = {}
+    resEvent.EventImages.forEach(image =>
+        resEvent.images[image.id] = image.url
+    )
+
+    resEvent.previewImgUrl = resEvent.images[Math.max(...Object.keys(resEvent.images).map(k => Number(k)))]
     delete resEvent.Group.GroupImages;
 
     return res.json(resEvent)
