@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     })
 
     groupsList.forEach(group => {
-        
+
         group.images = {}
 
         group.GroupImages.forEach(img =>
@@ -200,8 +200,6 @@ router.post(
     singleMulterUpload("image"),
     async (req, res, next) => {
         const { user } = req;
-        const imageUrl = await singlePublicFileUpload(req.file);
-
         const groupId = req.params.groupId;
         const group = await Group.findByPk(groupId);
 
@@ -217,7 +215,7 @@ router.post(
             res.status(403);
             return res.json({ "message": "Forbidden" })
         }
-
+        const imageUrl = await singlePublicFileUpload(req.file);
         try {
             const newGroupImage = await group.createGroupImage({
                 url: imageUrl,

@@ -173,16 +173,18 @@ export const createEventImageAction = (image) => {
     }
 }
 export const createEventImageThunk = (eventId, image) => async (dispatch) => {
+    const formData = new FormData()
+    formData.append("image", image)
     const response = await csrfFetch(`/api/events/${eventId}/images`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(image)
+        headers: {'Content-Type': 'multipart/form-data'},
+        body: formData
     });
     const data = await response.json();
     if (response.ok){
-        await dispatch(createEventImageAction(image));
+        await dispatch(createEventImageAction(data));
         return data;
-    } else return response;
+    } else return data;
 }
 
 

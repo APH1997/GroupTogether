@@ -45,7 +45,7 @@ router.get('/', async (req, res, next) => {
         where,
         include:
             [
-                { model: Attendance , include: {model: User}},
+                { model: Attendance, include: { model: User } },
                 { model: EventImage },
                 { model: Group, attributes: ['id', 'name', 'city', 'state'] }
             ],
@@ -96,7 +96,7 @@ router.get('/:eventId', async (req, res, next) => {
                     include: [{ model: GroupImage }, { model: User, as: 'Organizer' }]
                 },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
-                { model: Attendance, include: {model: User}}
+                { model: Attendance, include: { model: User } }
             ],
     })
 
@@ -125,85 +125,82 @@ router.get('/:eventId', async (req, res, next) => {
     return res.json(resEvent)
 });
 
-router.post('/:eventId/images', async (req, res, next) => {
-    const { user } = req;
-    const event = await Event.findByPk(req.params.eventId, {
-        include:
+router.post(
+    '/:eventId/images',
+    singleMulterUpload("image"),
+    async (req, res, next) => {
+        const { user } = req;
+
+        const event = await Event.findByPk(req.params.eventId, {
+            include:
             [
                 { model: Group, include: { model: Membership } },
                 { model: Attendance }
             ]
-    });
-    if (!user) {
-        res.status(401);
-        return res.json({ "message": "Authentication required" })
-    }
-    if (!event) {
-        res.status(404);
-        return res.json({ "message": "Event couldn't be found" })
-    }
+        });
 
-    //Authorization
-    let userStatus;
+        if (!user) {
+            res.status(401);
+            return res.json({ "message": "Authentication required" })
+        }
+        if (!event) {
+            res.status(404);
+            return res.json({ "message": "Event couldn't be found" })
+        }
 
-    if (event.Group.organizerId === user.id) {
-        userStatus = 'organizer';
-    } else {
-        for (let member of event.Group.Memberships) {
-            if (member.dataValues.userId === user.id) {
-                userStatus = member.dataValues.status;
+        //Authorization
+        let userStatus;
+
+        if (event.Group.organizerId === user.id) {
+            userStatus = 'organizer';
+        } else {
+            for (let member of event.Group.Memberships) {
+                if (member.dataValues.userId === user.id) {
+                    userStatus = member.dataValues.status;
+                };
             };
         };
-    };
 
 
-    if (userStatus !== 'organizer' && userStatus !== 'co-host') {
-        userStatus = 'check'
-        for (let attendance of event.Attendances) {
-            if (attendance.userId === user.id) {
-                userStatus = attendance.status;
-                if (userStatus !== 'attending') {
-                    res.status(403);
-                    return res.json({
-                        "message": "Forbidden",
-                    })
+        if (userStatus !== 'organizer' && userStatus !== 'co-host') {
+            userStatus = 'check'
+            for (let attendance of event.Attendances) {
+                if (attendance.userId === user.id) {
+                    userStatus = attendance.status;
+                    if (userStatus !== 'attending') {
+                        res.status(403);
+                        return res.json({
+                            "message": "Forbidden",
+                        })
+                    }
                 }
             }
+            if (userStatus === 'check') {
+                res.status(403);
+                return res.json({
+                    "message": "Forbidden",
+                })
+            }
         }
-        if (userStatus === 'check') {
-            res.status(403);
-            return res.json({
-                "message": "Forbidden",
+
+        try {
+            const imageUrl = await singlePublicFileUpload(req.file);
+            const image = await event.createEventImage({
+                url: imageUrl,
+                preview: true
             })
+
+            const resImage = image.toJSON();
+
+            delete resImage.eventId
+            delete resImage.updatedAt
+            delete resImage.createdAt
+            return res.json(resImage)
+
+        } catch (e) {
+            next(e)
         }
-    }
-
-    const { url, preview } = req.body;
-    //validation erros
-    const errors = {};
-    if (!url) errors.url = "Image URL is required";
-    if (typeof preview !== 'boolean') errors.preview = "Image preview is required and must be true or false"
-    if (Object.keys(errors).length) {
-        let err = {};
-        err.message = "Bad Request"
-        err.errors = { ...errors }
-        err.status = 400;
-        err.title = 'Validation Error'
-        next(err);
-    }
-    const image = await event.createEventImage({
-        url,
-        preview
     })
-
-    const resImage = image.toJSON();
-
-    delete resImage.eventId
-    delete resImage.updatedAt
-    delete resImage.createdAt
-
-    return res.json(resImage)
-})
 
 router.put('/:eventId', async (req, res, next) => {
     const { user } = req;

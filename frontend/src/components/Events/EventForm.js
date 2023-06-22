@@ -35,7 +35,7 @@ function EventForm({ formType, event, group }) {
     const [description, setDescription] = useState(event.description || "");
     const [startDate, setStartDate] = useState(event.startDate.split('T')[0] || "");
     const [endDate, setEndDate] = useState(event.endDate.split('T')[0] || "");
-    const [imgUrl, setImgUrl] = useState("")
+    const [image, setImage] = useState(null)
     const [startTime, setStartTime] = useState(event.startTime || "")
     const [endTime, setEndTime] = useState(event.endTime || "")
 
@@ -65,7 +65,6 @@ function EventForm({ formType, event, group }) {
     }
 
     useEffect(() => {
-        const imgSuffixes = ['png', 'jpeg', 'jpg'];
         const errObj = {};
         if (!name || !name.trim()) errObj.name = 'Name is required';
         if (!type) errObj.type = 'Event Type is required';
@@ -84,14 +83,13 @@ function EventForm({ formType, event, group }) {
         if (!handleStartTimeErrors()) errObj.startTime = "Start time must be before end time"
 
         if (!endTime) errObj.endTime = 'Event end time is required';
-        if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
-        if (imgUrl && !imgUrl.trim()) errObj.img = "That's just a bunch of spaces!"
+
 
         if (Object.keys(errObj).length) {
             setErrors(errObj);
         } else setErrors({})
 
-    }, [name, type, price, description, startDate, endDate, startTime, endTime, imgUrl])
+    }, [name, type, price, description, startDate, endDate, startTime, endTime])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -120,8 +118,7 @@ function EventForm({ formType, event, group }) {
             try {
                 const createdEvent = await dispatch(createEventThunk(newEvent, group.id))
                 //Check if image was given
-                if (imgUrl) {
-                    const image = { url: imgUrl, preview: true };
+                if (image) {
                     await dispatch(createEventImageThunk(createdEvent.id, image))
                 }
 
@@ -133,8 +130,7 @@ function EventForm({ formType, event, group }) {
         } else {
             try {
                 const editedEvent = await dispatch(updateEventThunk(newEvent, event.id));
-                if (imgUrl) {
-                    const image = { url: imgUrl, preview: true };
+                if (image) {
                     await dispatch(createEventImageThunk(editedEvent.id, image))
                 }
 
@@ -146,7 +142,10 @@ function EventForm({ formType, event, group }) {
         }
     }
 
-
+    const updateFile = (e) => {
+        const file = e.target.files[0];
+        if (file) setImage(file);
+    };
     return (
         <form id="event-form" onSubmit={handleSubmit}>
 
@@ -241,16 +240,16 @@ function EventForm({ formType, event, group }) {
 
             </div>
             <div className='event-form-section-four'>
-                <label htmlFor='imageInput'> (Optional) Please add an image url for your event below:</label>
+                <label htmlFor='imageInput'> (Optional) Please upload an image for your event below:</label>
                 <input
-                    type='text'
+                    style={{border: "none"}}
+                    type='file'
                     name='imageInput'
-                    value={imgUrl}
-                    placeholder='Image URL'
-                    onChange={(e) => setImgUrl(e.target.value)}
+                    accept='image/*'
+                    onChange={(e) => updateFile(e)}
                 />
             </div>
-            {hasSubmitted && errors.img && <p className='errors'>{errors.img}</p>}
+
             <div className='event-form-section-five'>
                 <label htmlFor='describeInput'>Please describe your event:</label>
                 <textarea

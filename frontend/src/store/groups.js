@@ -183,7 +183,7 @@ export const createGroupImageThunk = (groupId, image) => async (dispatch) => {
     });
     const data = await response.json();
     if (response.ok){
-        await dispatch(createGroupImageAction(image));
+        await dispatch(createGroupImageAction(data));
         return data;
     } else return response;
 }

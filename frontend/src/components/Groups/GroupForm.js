@@ -31,7 +31,6 @@ function GroupForm({ formType, group }) {
 
 
     useEffect(() => {
-        const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
         if (!states[state.toUpperCase()]) errObj.location = "Please enter a valid state";
         if (!city || !state || !city.trim() || !state.trim()) errObj.location = "City and state are required";
@@ -103,7 +102,7 @@ function GroupForm({ formType, group }) {
     const updateFile = (e) => {
         const file = e.target.files[0];
         if (file) setImage(file);
-      };
+    };
 
     return (
         <form onSubmit={handleSubmit}>
