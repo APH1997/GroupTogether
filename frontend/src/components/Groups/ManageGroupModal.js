@@ -2,12 +2,15 @@ import { useDispatch, useSelector } from "react-redux"
 import { deleteMembershipThunk, editMembershipThunk } from "../../store/groups"
 import { deleteAttendanceThunk, updateAttendanceThunk } from "../../store/events"
 
+
 function ManageGroup({ group, event }) {
     const dispatch = useDispatch()
     const currGroup = useSelector(state => state.groups.singleGroup)
     const currEve = useSelector(state => state.events.singleEvent)
 
+
     function handleMembershipChange(userId, status) {
+        if (status === "pending") return
         dispatch(editMembershipThunk(group.id, userId, status))
     }
     function removeMember(id) {
