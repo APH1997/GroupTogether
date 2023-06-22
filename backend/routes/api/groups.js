@@ -22,18 +22,7 @@ router.get('/', async (req, res) => {
     })
 
     groupsList.forEach(group => {
-        // //default; if not images this message will display
-        // group.previewImage = 'No image preview available'
-        // group.previewImage = group.GroupImages[group.GroupImages.length - 1].url
-
-        // // group.GroupImages.forEach(groupImage => {
-        // //     if (groupImage && groupImage.preview === true) {
-        // //         group.previewImage = groupImage.url
-
-        // //     } else {
-        // //         group.previewImage = 'No image preview available'
-        // //     }
-        // // });
+        
         group.images = {}
 
         group.GroupImages.forEach(img =>
@@ -52,7 +41,7 @@ router.get('/', async (req, res) => {
         group.Memberships.forEach(member =>
             group.Members[member.userId] = member)
         delete group.Memberships
-        
+
     })
     return res.json({ Groups: groupsList });
 });
