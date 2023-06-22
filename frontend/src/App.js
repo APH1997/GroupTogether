@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Switch, Route, NavLink} from "react-router-dom";
+import { Switch, Route, NavLink } from "react-router-dom";
 import * as sessionActions from "./store/session";
 
 import Navigation from "./components/Navigation";
@@ -15,6 +15,7 @@ import CreateEventForm from "./components/Events/CreateEventForm";
 import EditEventForm from "./components/Events/EditEventForm";
 import ManageGroupsPage from "./components/Groups/ManageGroups";
 import ManageEventsPage from "./components/Events/ManageEvents";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 
 function App() {
@@ -32,36 +33,67 @@ function App() {
           <Route exact path="/">
             <LandingPage />
           </Route>
+
           <Route exact path="/groups/all">
-            <GroupsPage />
+            <ProtectedRoute>
+              <GroupsPage />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/groups/new">
-            <CreateGroupForm/>
+            <ProtectedRoute>
+              <CreateGroupForm />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/groups/:groupId">
-            <GroupDetails />
+            <ProtectedRoute>
+              <GroupDetails />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/groups/:groupId/edit">
-            <EditGroupForm />
+            <ProtectedRoute>
+              <EditGroupForm />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/groups/:groupId/events/new">
-            <CreateEventForm />
+            <ProtectedRoute>
+              <CreateEventForm />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/groups/:groupId/events/:eventId/edit">
-            <EditEventForm />
+            <ProtectedRoute>
+              <EditEventForm />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/events/all">
-            <EventsPage />
+            <ProtectedRoute>
+              <EventsPage />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/events/:eventId">
-            <EventDetails />
+            <ProtectedRoute>
+              <EventDetails />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/users/:userId/groups">
-            <ManageGroupsPage />
+            <ProtectedRoute>
+              <ManageGroupsPage />
+            </ProtectedRoute>
           </Route>
+
           <Route exact path="/users/:userId/events">
-            <ManageEventsPage/>
+            <ProtectedRoute>
+              <ManageEventsPage />
+            </ProtectedRoute>
           </Route>
+
           <Route>
             Page not found
           </Route>
