@@ -22,16 +22,25 @@ router.get('/', async (req, res) => {
     })
 
     groupsList.forEach(group => {
-        //default; if not images this message will display
-        group.previewImage = 'No image preview available'
-        group.GroupImages.forEach(groupImage => {
-            if (groupImage && groupImage.preview === true) {
-                group.previewImage = groupImage.url
-                
-            } else {
-                group.previewImage = 'No image preview available'
-            }
-        });
+        // //default; if not images this message will display
+        // group.previewImage = 'No image preview available'
+        // group.previewImage = group.GroupImages[group.GroupImages.length - 1].url
+
+        // // group.GroupImages.forEach(groupImage => {
+        // //     if (groupImage && groupImage.preview === true) {
+        // //         group.previewImage = groupImage.url
+
+        // //     } else {
+        // //         group.previewImage = 'No image preview available'
+        // //     }
+        // // });
+        group.images = {}
+
+        group.GroupImages.forEach(img =>
+            group.images[img.id] = img.url
+        )
+
+        group.previewImgUrl = group.images[Math.max(...Object.keys(group.images).map(k => Number(k)))]
 
         group.numMembers = 0;
         for (let member of group.Memberships) {
@@ -43,7 +52,7 @@ router.get('/', async (req, res) => {
         group.Memberships.forEach(member =>
             group.Members[member.userId] = member)
         delete group.Memberships
-        delete group.GroupImages;
+        
     })
     return res.json({ Groups: groupsList });
 });
@@ -123,6 +132,7 @@ router.get('/:groupId', async (req, res, next) => {
 
         jsonGroup = group.toJSON();
 
+
         if (jsonGroup.numMembers === 0) {
             jsonGroup.numMembers = 1;
         }
@@ -130,7 +140,13 @@ router.get('/:groupId', async (req, res, next) => {
         jsonGroup.Memberships = {}
         members.forEach(member => jsonGroup.Memberships[member.userId] = member)
 
+        jsonGroup.images = {}
 
+        jsonGroup.GroupImages.forEach(img =>
+            jsonGroup.images[img.id] = img.url
+        )
+
+        jsonGroup.previewImgUrl = jsonGroup.images[Math.max(...Object.keys(jsonGroup.images).map(k => Number(k)))]
         return res.json(jsonGroup)
 
     } catch (e) {
