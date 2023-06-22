@@ -35,7 +35,7 @@ function GroupsCard({group, manage}){
     return (
         <div key={group.id} className="card-container" onClick={navToGroupDetails} >
             <div className="cont-image">
-                <img src={`${group.previewImage}`}></img>
+                <img src={`${group.previewImgUrl}`}></img>
             </div>
             <div className="cont-info">
                 <h2>{group.name}</h2>

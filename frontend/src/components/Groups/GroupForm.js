@@ -22,7 +22,7 @@ function GroupForm({ formType, group }) {
     const [about, setAbout] = useState(group?.about);
     const [type, setType] = useState(group?.type);
     const [isPrivate, setIsPrivate] = useState(group?.private);
-    const [imgUrl, setImgUrl] = useState('');
+    const [image, setImage] = useState(null)
     const [city, setCity] = useState(group?.city || '')
     const [state, setState] = useState(group?.state || '');
 
@@ -31,7 +31,6 @@ function GroupForm({ formType, group }) {
 
 
     useEffect(() => {
-        const imgSuffixes = ['png','jpeg','jpg']
         const errObj = {};
         if (!states[state.toUpperCase()]) errObj.location = "Please enter a valid state";
         if (!city || !state || !city.trim() || !state.trim()) errObj.location = "City and state are required";
@@ -41,14 +40,13 @@ function GroupForm({ formType, group }) {
         if (about && about.length > 300) errObj.about = "Description must not exceed 300 characters"
         if (!type) errObj.type = "Group Type is required";
         if (typeof isPrivate !== 'boolean') errObj.private = "Visibility type is required";
-        if (imgUrl && !imgSuffixes.includes(imgUrl.split('.')[imgUrl.split('.').length - 1])) errObj.img = "Image URL must end in .png, .jpg, or .jpeg";
-        if (imgUrl && imgUrl.length > 255) errObj.img = "Image URL cannot exceed 255 characters"
+
 
         if (Object.keys(errObj).length){
             setErrors(errObj);
         } else setErrors({})
 
-    }, [name, about, type, isPrivate, imgUrl, city, state])
+    }, [name, about, type, isPrivate, city, state])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -77,8 +75,7 @@ function GroupForm({ formType, group }) {
             if (createdGroup.errors){
                 return
             } else {
-                if (imgUrl){
-                    const image = {url: imgUrl, preview: true}
+                if (image){
                     await dispatch(createGroupImageThunk(createdGroup.id, image))
                 }
                 history.push(`/groups/${createdGroup.id}`)
@@ -89,8 +86,7 @@ function GroupForm({ formType, group }) {
             if (update.errors){
                 setErrors(update.errors)
             } else {
-                if (imgUrl){
-                    const image = {url: imgUrl, preview: true}
+                if (image){
                     await dispatch(createGroupImageThunk(update.id, image))
                 }
                 history.push(`/groups/${update.id}`)
@@ -103,6 +99,10 @@ function GroupForm({ formType, group }) {
         setState(e.target.value)
     }
 
+    const updateFile = (e) => {
+        const file = e.target.files[0];
+        if (file) setImage(file);
+    };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -174,12 +174,11 @@ function GroupForm({ formType, group }) {
                 </select>
                 {hasSubmitted && errors.private && <p className='errors'>{errors.private}</p>}
 
-                <label>(Optional) Please add an image url for your group below:</label>
+                <label>(Optional) Please upload an image for your group below:</label>
                     <input
-                        type="text"
-                        value={imgUrl}
-                        placeholder="Image Url"
-                        onChange={(e) => setImgUrl(e.target.value)}
+                        type="file"
+                        accept='image/*'
+                        onChange={(e) => updateFile(e)}
                     />
 
                 {hasSubmitted && errors.img && <p className='errors'>{errors.img}</p>}

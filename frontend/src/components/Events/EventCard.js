@@ -55,7 +55,7 @@ function EventsCard({ event, group, manage }) {
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
                 <div className="cont-image">
-                    <img src={`${event?.previewImage}`}></img>
+                    <img src={`${event?.previewImgUrl}`}></img>
                 </div>
                 <div className="cont-info">
                     <p>{startDate} · {convertMilTime(event.startTime)}</p>

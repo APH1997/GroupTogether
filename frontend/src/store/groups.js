@@ -62,11 +62,11 @@ const editMembershipAction = (membership) => {
     }
 }
 
-export const editMembershipThunk = (groupId, userId) => async (dispatch) => {
+export const editMembershipThunk = (groupId, userId, status) => async (dispatch) => {
     const response = await csrfFetch(`/api/groups/${groupId}/membership`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({memberId: userId, status: "member"})
+        body: JSON.stringify({memberId: userId, status})
     })
     const data = await response.json()
     if (response.ok){
@@ -173,14 +173,17 @@ export const createGroupImageAction = (image) => {
     }
 }
 export const createGroupImageThunk = (groupId, image) => async (dispatch) => {
+    const formData = new FormData()
+    formData.append("image", image)
+
     const response = await csrfFetch(`/api/groups/${groupId}/images`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(image)
+        headers: {'Content-Type': 'multipart/form-data'},
+        body: formData
     });
     const data = await response.json();
     if (response.ok){
-        await dispatch(createGroupImageAction(image));
+        await dispatch(createGroupImageAction(data));
         return data;
     } else return response;
 }
