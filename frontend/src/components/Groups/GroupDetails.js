@@ -97,7 +97,7 @@ function GroupDetails() {
             <div className="upper-details">
                 <div className="upper-left">
                     <span><NavLink to="/groups/all">Back to Groups</NavLink></span>
-                    <img src={group.GroupImages?.length ? group.GroupImages[0]?.url : ''}></img>
+                    <img src={group.GroupImages?.length ? group.GroupImages[group.GroupImages.length - 1]?.url : ''}></img>
                 </div>
                 <div className="upper-right">
                     <div>

@@ -27,6 +27,7 @@ router.get('/', async (req, res) => {
         group.GroupImages.forEach(groupImage => {
             if (groupImage && groupImage.preview === true) {
                 group.previewImage = groupImage.url
+                
             } else {
                 group.previewImage = 'No image preview available'
             }
