@@ -43,6 +43,7 @@ router.get('/', async (req, res) => {
         delete group.Memberships
 
     })
+    res.status(200);
     return res.json({ Groups: groupsList });
 });
 
@@ -136,6 +137,7 @@ router.get('/:groupId', async (req, res, next) => {
         )
 
         jsonGroup.previewImgUrl = jsonGroup.images[Math.max(...Object.keys(jsonGroup.images).map(k => Number(k)))]
+        res.status(200)
         return res.json(jsonGroup)
 
     } catch (e) {
