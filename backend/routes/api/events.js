@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Attendance, EventImage, Event, GroupImage, User, Group, Membership, sequelize } = require('../../db/models');
+const { singlePublicFileUpload, singleMulterUpload } = require('../../awsS3');
 
 router.get('/', async (req, res, next) => {
     let { page, size, name, type, startDate } = req.query;
