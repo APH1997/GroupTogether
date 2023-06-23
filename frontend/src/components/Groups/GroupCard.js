@@ -47,7 +47,7 @@ function GroupsCard({group, manage}){
                         (group.organizerId !== user.id &&
                             <button className="organizer-btn-manage" style={{alignSelf: "center"}} onClick={(e) => leaveGroup(e)}>Leave Group</button>)
                         || (manage && group.organizerId === user.id &&
-                        <div style={{display: "flex"}}>
+                        <div style={{display: "flex", justifyContent: "flex-end", width: "50%"}}>
                             <button className="organizer-btn-manage" onClick={(e) => handleUpdate(e)}>Update</button>
                             <button className="organizer-btn-manage" onClick={(e) => deleteGroup(e)}>Delete</button>
                         </div>)

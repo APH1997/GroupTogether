@@ -67,6 +67,7 @@ img{
 }
 .event-card-top{
     display: flex;
+    justify-content: space-between;
 }
 .card-container:hover{
     cursor: pointer;
@@ -135,6 +136,7 @@ div.upper-left span>a{
     box-shadow: 1px 1px 2px rgb(89, 2, 38);
     font-family: 'Lexend', sans-serif;
     width: fit-content;
+    min-width: fit-content;
 }
 
 #organizer-btn-update:hover, #organizer-btn-delete:hover, #organizer-btn-create:hover {
@@ -290,5 +292,5 @@ p.group-about{
     display: flex;
     align-self: flex-end;
     gap: 10px;
-    margin: 0 auto;
+
 }
