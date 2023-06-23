@@ -86,7 +86,7 @@ function EventsPage({ manage, user }) {
                         }
                         {manage && "Manage Events"}
                     </h2>
-                    <h3>{manage ? "Your " : ""}Events</h3>
+                    <h3>{manage ? "Your Events" : "Events in GroupTogether"}</h3>
                 </div>
             </div>
             <div className="groups-card-display">

@@ -20,6 +20,7 @@
 .header-content-container{
     width: 50%;
     padding-top: 50px;
+    line-height: 20px;
 }
 
 .cont-image{
@@ -80,6 +81,7 @@ img{
 }
 
 div.upper-left{
+    padding-top: 20px;
     display: flex;
     flex-flow: column wrap;
 }
@@ -101,7 +103,8 @@ div.upper-left span>a{
     flex-flow: column;
     justify-content: space-between;
     line-height: 15px;
-    width: 30%
+    width: 30%;
+    padding-top: 20px;
 }
 
 

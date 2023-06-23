@@ -38,7 +38,7 @@ function GroupsPage({ manage, user }) {
                         }
                         {manage && "Manage Groups"}
                     </h2>
-                    <h3>{manage ? "Your " : ""}Groups</h3>
+                    <h3>{manage ? "Your Groups" : "Groups in GroupTogether"}</h3>
                 </div>
             </div>
             <div className="groups-card-display">
