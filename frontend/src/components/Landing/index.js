@@ -7,7 +7,7 @@ import SignupFormModal from '../SignupFormModal';
 function LandingPage(){
     const {setModalContent} = useModal()
     const user = useSelector(state => state.session.user)
-    
+
     return (
         <>
         <div className='landing-main'>
@@ -27,12 +27,22 @@ function LandingPage(){
             <div className='landing-section-three'>
                 <div className='allGroupsBlurb'>
                     <img src="https://us.123rf.com/450wm/frikota/frikota1803/frikota180300112/98083069-fist-bump-icon-flat-design-illustration.jpg?ver=6" />
-                    <NavLink to="/groups/all">See All Groups</NavLink>
+                    {
+                    (user && Object.values(user).length > 0 &&
+                        <NavLink to="/groups/all">See All Groups</NavLink>) ||
+                        <div className='noAuth'>See All Groups</div>
+                    }
+
                     <div id="group-blurb-caption">Find some new friends and GroupTogether!</div>
                 </div>
                 <div className='allEventsBlurb'>
                     <img src='https://images.template.net/87772/free-cartoon-ticket-vector-bwdmf.jpg'/>
-                    <NavLink to="/events/all">Find an Event</NavLink>
+                    {
+                    (user && Object.values(user).length > 0 &&
+                        <NavLink to="/events/all">Find an Event</NavLink>) ||
+                        <div className='noAuth'>Find an Event</div>
+                    }
+
                     <div id="event-blurb-caption">Check out what events our Groups have planned!</div>
                 </div>
                 <div className='createGroupBlurb'>
