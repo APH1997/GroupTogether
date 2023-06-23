@@ -1,24 +1,26 @@
 .main-content-container{
     display: flex;
-    flex-flow: column wrap;
-    align-content: center;
+    flex-flow: row wrap;
     background-color: rgb(231, 226, 226);
     padding-bottom: 100%;
-}
-.content-container-top{
-    display: flex;
     justify-content: center;
+}
+.content-container-left{
+    display: flex;
     padding-top: 23px;
+    flex-flow: column;
+    width: 40%;
 }
 
-.content-container-bottom{
-    width: 925px;
-    margin: auto;
+.content-container-right{
+    padding-top:23px;
+    width: 40%;
     display: flex;
+    flex-flow: column-reverse;
 }
 
 .description-header-and-text{
-    width: 500px;
+    width: 100%;
 }
 #event-description-container{
     word-wrap:break-word;
@@ -28,7 +30,6 @@
 .gmap-container{
     padding-top: 20px;
     width: fit-content;
-    margin: 0 auto;
 }
 
 
@@ -62,6 +63,7 @@
     scale:75%;
 }
 .event-info{
+    width: 400px;
     background-color: white;
     border-radius: 25px;
     box-shadow: 1px 1px 1px grey;
@@ -98,9 +100,13 @@
 .event-times div{
     padding-left: 10px;
 }
+
+.event-image-container{
+    width: 90%;
+}
 .event-image-container>img{
     height: 325px;
-    width: 500px;
+    width: 100%;
     object-fit: cover;
 }
 
