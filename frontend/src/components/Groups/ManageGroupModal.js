@@ -62,7 +62,7 @@ function ManageGroup({ group, event }) {
                                             </select>
                                         </td>
                                         <td>
-                                            <button onClick={() => removeMember(membership.userId)}>Remove</button>
+                                            <button className="organizer-btn-manage" onClick={() => removeMember(membership.userId)}>Remove</button>
                                         </td>
                                     </tr>
                                 )}
