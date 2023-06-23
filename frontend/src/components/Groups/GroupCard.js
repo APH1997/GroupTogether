@@ -3,7 +3,6 @@ import {useHistory} from  'react-router-dom';
 import { useModal } from '../../context/Modal';
 import DeleteConfirmModal from './DeleteGroup';
 import './GroupCard.css';
-import ManageGroup from './ManageGroupModal';
 
 function GroupsCard({group, manage}){
     const history = useHistory();
@@ -30,10 +29,7 @@ function GroupsCard({group, manage}){
         history.push(`/groups/${group.id}/edit`)
     }
 
-    function manageGroup(e){
-        e.stopPropagation()
-        setModalContent(<ManageGroup group={group}/>)
-    }
+
 
     if (!user) return <h1>Loading...</h1>
 

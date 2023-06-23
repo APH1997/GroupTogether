@@ -46,10 +46,12 @@ function EventsCard({ event, group, manage }) {
         e.stopPropagation()
         history.push(`/groups/${event.Group.id}/events/${event.id}/edit`)
     }
-    function handleManageAttendance(e) {
-        e.stopPropagation()
-        setModalContent(<ManageGroup event={event} />)
-    }
+    // TODO: figure out manage members on groups side so we can implememnt
+    //this logic works fine for events/attendances
+    // function handleManageAttendance(e) {
+    //     e.stopPropagation()
+    //     setModalContent(<ManageGroup event={event} />)
+    // }
 
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
