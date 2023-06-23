@@ -7,16 +7,19 @@
 .all-groups-header{
     display: flex;
     flex-flow: column wrap;
-    width: 50%;
+    width: 100vw;
     align-content: center;
     line-height: 8px;
-    margin-left: 95px;
-
 }
 .all-groups-header>h2{
     margin-top: 100px;
     display: flex;
     column-gap: 20px;
+}
+
+.header-content-container{
+    width: 50%;
+    padding-top: 50px;
 }
 
 .cont-image{
@@ -48,7 +51,7 @@ img{
     flex-direction: column;
     border-top: lightgray 2px solid;
     border-bottom: lightgray 1px solid;
-    width: 50%;
+    min-width: 50vw;
     padding-top: 20px;
     overflow-wrap: anywhere;
 }
@@ -102,7 +105,10 @@ div.upper-left span>a{
 }
 
 
-#organizer-btn-update, #organizer-btn-delete, #organizer-btn-create, .organizer-btn-manage{
+#organizer-btn-update,
+#organizer-btn-delete,
+#organizer-btn-create,
+.organizer-btn-manage{
     background-color: rgb(216, 51, 29);
     align-self: baseline;
     padding: 10px;
@@ -118,7 +124,13 @@ div.upper-left span>a{
     margin-left: 1%;
     margin-right: 1%;
     font-family: 'Lexend', sans-serif;
-
+}
+.host-action-btns button{
+    background-color: rgb(216, 51, 29);
+    color: whitesmoke;
+    box-shadow: 1px 1px 2px rgb(89, 2, 38);
+    font-family: 'Lexend', sans-serif;
+    width: fit-content;
 }
 
 #organizer-btn-update:hover, #organizer-btn-delete:hover, #organizer-btn-create:hover {

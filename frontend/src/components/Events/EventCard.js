@@ -66,7 +66,7 @@ function EventsCard({ event, group, manage }) {
                 {manage && event.hostId === user.id &&
                     <div className='host-action-btns'>
                         <button onClick={(e) => handleManageAttendance(e)}>
-                            Manage Attendance
+                            Manage
                         </button>
                         <button onClick={(e) => handleUpdate(e)}>
                             Update
