@@ -19,18 +19,19 @@ function ManageGroup({ group, event }) {
 
     function handleChangeAttendeeStatus(userId, status){
         const data = {userId, status}
-        dispatch(updateAttendanceThunk(event.id, data))
+        dispatch(updateAttendanceThunk(event?.id, data))
     }
 
     function removeAttendee(userId){
-        dispatch(deleteAttendanceThunk(event.id, userId))
+        dispatch(deleteAttendanceThunk(event?.id, userId))
     }
 
+    if (!group && !event) return
     return (
     <>
         {!event && (
             <div>
-                <h1>{`${group.name} members`}</h1>
+                <h1>{group.name} members</h1>
                 {Object.values(group.Memberships).length > 1 ?
                     <table id="manage-members-table">
                         <thead>

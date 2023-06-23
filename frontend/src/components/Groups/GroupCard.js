@@ -1,14 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
-import './GroupCard.css';
+import { useSelector } from 'react-redux';
 import {useHistory} from  'react-router-dom';
 import { useModal } from '../../context/Modal';
 import DeleteConfirmModal from './DeleteGroup';
+import './GroupCard.css';
 import ManageGroup from './ManageGroupModal';
 
 function GroupsCard({group, manage}){
     const history = useHistory();
     const {setModalContent} = useModal();
-    const dispatch = useDispatch()
+    const user = useSelector(state => state.session.user)
+
 
     function navToGroupDetails(e){
         history.push(`/groups/${group.id}`)
@@ -29,7 +30,11 @@ function GroupsCard({group, manage}){
         history.push(`/groups/${group.id}/edit`)
     }
 
-    const user = useSelector(state => state.session.user)
+    function manageGroup(e){
+        e.stopPropagation()
+        setModalContent(<ManageGroup group={group}/>)
+    }
+
     if (!user) return <h1>Loading...</h1>
 
     return (
