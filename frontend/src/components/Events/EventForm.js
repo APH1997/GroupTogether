@@ -72,15 +72,16 @@ function EventForm({ formType, event, group }) {
         if (!description || !description.trim() || description.length < 30) errObj.description = 'Description must be at least 30 characters long'
         if (!startDate) errObj.startDate = 'Event start date is required';
         if (new Date(startDate) < Date.now()) {
-            errObj.startDate = "Events cannot start earlier than tomorrow"
+            console.log(startDate)
+            errObj.startDate = "Events must begin tomorrow or later"
         }
-        if (!startTime) errObj.startTime = 'Event start time is required';
+        if (!startTime) errObj.startTimeReq = 'Event start time is required';
         if (!endDate) errObj.endDate = 'Event end date is required';
         if (new Date(endDate) < new Date(startDate)){
             errObj.endDate = 'End date cannot be before start date'
         }
 
-        if (!handleStartTimeErrors()) errObj.startTime = "Start time must be before end time"
+        if (startTime && !handleStartTimeErrors()) errObj.startTime = "Start time must be before end time"
 
         if (!endTime) errObj.endTime = 'Event end time is required';
 
@@ -88,6 +89,7 @@ function EventForm({ formType, event, group }) {
         if (Object.keys(errObj).length) {
             setErrors(errObj);
         } else setErrors({})
+
 
     }, [name, type, price, description, startDate, endDate, startTime, endTime])
 
@@ -217,7 +219,8 @@ function EventForm({ formType, event, group }) {
 
                 </div>
                 {hasSubmitted && errors.startDate && <p className='errors'>{errors.startDate}</p>}
-                {hasSubmitted && errors.startTime && <p className='errors'>{errors.startTime}</p>}
+                {hasSubmitted && errors.startTimeReq && <p className='errors'>{errors.startTimeReq}</p>}
+                {errors.startTime && <p className='errors'>{errors.startTime}</p>}
                 <div>
                     <label htmlFor='endDateInput'>When does your event end?</label>
                     <div className='date-and-time-inputs'>

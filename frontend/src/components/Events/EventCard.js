@@ -7,7 +7,7 @@ import DeleteConfirmModal from './DeleteEvent';
 import ManageGroup from '../Groups/ManageGroupModal';
 
 function EventsCard({ event, group, manage }) {
-    const {setModalContent} = useModal()
+    const { setModalContent } = useModal()
     const history = useHistory();
     const dispatch = useDispatch()
 
@@ -34,40 +34,42 @@ function EventsCard({ event, group, manage }) {
     const user = useSelector(state => state.session.user)
     if (!user) return null
 
-    function handleUnattend(e){
+    function handleUnattend(e) {
         e.stopPropagation()
         dispatch(deleteAttendanceThunk(event.id, user.id))
     }
-    function deleteEvent(e){
+    function deleteEvent(e) {
         e.stopPropagation()
         setModalContent(<DeleteConfirmModal eventId={event.id} groupId={event.Group.id} manage={manage} />)
     }
-    function handleUpdate(e){
+    function handleUpdate(e) {
         e.stopPropagation()
         history.push(`/groups/${event.Group.id}/events/${event.id}/edit`)
     }
-    function handleManageAttendance(e){
-        e.stopPropagation()
-        setModalContent(<ManageGroup event={event}/>)
-    }
+    // TODO: figure out manage members on groups side so we can implememnt
+    //this logic works fine for events/attendances
+    // function handleManageAttendance(e) {
+    //     e.stopPropagation()
+    //     setModalContent(<ManageGroup event={event} />)
+    // }
 
     return (
         <div key={event.id} className="event-card-container" onClick={navToEventDetails} >
             <div className="event-card-top">
-                <div className="cont-image">
-                    <img src={`${event?.previewImgUrl}`}></img>
-                </div>
-                <div className="cont-info">
-                    <p>{startDate} · {convertMilTime(event.startTime)}</p>
-                    <h2>{event.name}</h2>
-                    <h3>{event.Group?.city || group?.city}, {event.Group?.state || group?.state}</h3>
+                <div style={{ display: "flex" }}>
+
+                    <div className="cont-image">
+                        <img src={`${event?.previewImgUrl}`}></img>
+                    </div>
+                    <div className="cont-info">
+                        <p>{startDate} · {convertMilTime(event.startTime)}</p>
+                        <h2>{event.name}</h2>
+                        <h3>{event.Group?.city || group?.city}, {event.Group?.state || group?.state}</h3>
+                    </div>
                 </div>
 
                 {manage && event.hostId === user.id &&
                     <div className='host-action-btns'>
-                        <button onClick={(e) => handleManageAttendance(e)}>
-                            Manage Attendance
-                        </button>
                         <button onClick={(e) => handleUpdate(e)}>
                             Update
                         </button>

@@ -13,7 +13,7 @@ function EventDetails() {
     const history = useHistory();
     const dispatch = useDispatch()
     const { eventId } = useParams();
-    const {setModalContent} = useModal()
+    const { setModalContent } = useModal()
     const user = useSelector(state => state.session.user);
     const event = useSelector(state => state.events.singleEvent);
 
@@ -27,30 +27,30 @@ function EventDetails() {
     const startDate = new Date(event.startDate).toLocaleString("en-US").split(',')[0]
     const endDate = new Date(event.endDate).toLocaleString("en-US").split(',')[0]
 
-    function convertMilTime(time){
+    function convertMilTime(time) {
         const [hours, minutes] = time.split(':')
-        if (Number(hours < 1)){
+        if (Number(hours < 1)) {
             return `12:${minutes} AM`
         }
-        if (Number(hours < 12)){
+        if (Number(hours < 12)) {
             return `${hours}:${minutes} AM`
         }
-        if (Number(hours == 12)){
+        if (Number(hours == 12)) {
             return `${hours}:${minutes} PM`
         }
         return `${hours - 12}:${minutes} PM`
     }
 
-    function postAttendance(){
+    function postAttendance() {
         dispatch(postAttendanceThunk(event.id))
     }
 
-    function deleteAttendance(){
+    function deleteAttendance() {
         dispatch(deleteAttendanceThunk(event.id, user.id))
     }
 
-    function manageEvent(){
-        setModalContent(<ManageGroup event={event}/>)
+    function manageEvent() {
+        setModalContent(<ManageGroup event={event} />)
     }
 
     return (
@@ -63,9 +63,24 @@ function EventDetails() {
                         <p>Hosted by {event.Group.Organizer.firstName} {event.Group.Organizer.lastName}</p>
                     </div>
                 </div>
-                <div className="content-container-top">
+                <div className="content-container-left">
                     <div className="event-image-container">
                         <img src={event.previewImgUrl}></img>
+                    </div>
+                    <div className="description-header-and-text">
+                        <h2>Details</h2>
+                        <div id="event-description-container">
+                            {event.description}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="content-container-right">
+                    <div className="gmap-container">
+                        <MapContainer eventLoc={{
+                            lat: event.lat,
+                            lng: event.lng
+                        }} />
                     </div>
                     <div className="group-and-event-info">
                         <div onClick={() => history.push(`/groups/${event.Group.id}`)} className="group-info-container">
@@ -113,26 +128,11 @@ function EventDetails() {
                             {user && !event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={postAttendance} id="attend-event-btn">Attend</button>
                             }
+                            
                             {user && event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={deleteAttendance} id="unatttend-event-btn">Unattend</button>
                             }
                         </div>
-                    </div>
-
-                </div>
-
-                <div className="content-container-bottom">
-                    <div className="description-header-and-text">
-                        <h2>Details</h2>
-                        <div id="event-description-container">
-                            {event.description}
-                        </div>
-                    </div>
-                    <div className="gmap-container">
-                        <MapContainer eventLoc={{
-                            lat: event.lat,
-                            lng: event.lng
-                        }} />
                     </div>
                 </div>
             </main>

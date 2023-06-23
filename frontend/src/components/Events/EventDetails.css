@@ -1,24 +1,26 @@
 .main-content-container{
     display: flex;
-    flex-flow: column wrap;
-    align-content: center;
+    flex-flow: row wrap;
     background-color: rgb(231, 226, 226);
     padding-bottom: 100%;
-}
-.content-container-top{
-    display: flex;
     justify-content: center;
+}
+.content-container-left{
+    display: flex;
     padding-top: 23px;
+    flex-flow: column;
+    width: 40%;
 }
 
-.content-container-bottom{
-    width: 925px;
-    margin: auto;
+.content-container-right{
+    padding-top:23px;
+    width: 40%;
     display: flex;
+    flex-flow: column-reverse;
 }
 
 .description-header-and-text{
-    width: 500px;
+    width: 100%;
 }
 #event-description-container{
     word-wrap:break-word;
@@ -28,7 +30,6 @@
 .gmap-container{
     padding-top: 20px;
     width: fit-content;
-    margin: 0 auto;
 }
 
 
@@ -62,6 +63,7 @@
     scale:75%;
 }
 .event-info{
+    width: 400px;
     background-color: white;
     border-radius: 25px;
     box-shadow: 1px 1px 1px grey;
@@ -98,9 +100,14 @@
 .event-times div{
     padding-left: 10px;
 }
+
+.event-image-container{
+    width: 90%;
+}
 .event-image-container>img{
-    height: 100%;
-    width: 500px;
+    height: 325px;
+    width: 100%;
+    object-fit: cover;
 }
 
 #event-type{
@@ -118,12 +125,12 @@
     gap: 5px;
 }
 
+
 #event-organizer-buttons button{
-    background-color: darkgray;
+    background-color: rgb(216, 51, 29);
     align-self: center;
     height: max-content;
     border-radius: 3px;
-    background-color:darkgray;
     color: whitesmoke;
     box-shadow: 1px 1px 2px rgb(89, 2, 38);
     text-align: center;
@@ -149,7 +156,7 @@
 }
 
 .event-details-header{
-    width: 925px;
+    width: 80%;
     background-color: white;
     padding-top: 60px;
     padding-bottom: 30px;

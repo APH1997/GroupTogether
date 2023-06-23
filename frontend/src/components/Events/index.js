@@ -3,18 +3,18 @@ import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { getEventsThunk } from '../../store/events';
 import { useDispatch } from "react-redux";
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import "../Groups/GroupCard.css";
 import EventsCard from './EventCard';
 import NoEvents from './NoUserEvents';
 
-function EventsPage({manage, user}){
+function EventsPage({ manage, user }) {
     const dispatch = useDispatch();
     const eventsObj = useSelector(state => state.events.allEvents);
     const eventsList = (
         manage ? Object.values(eventsObj)
-        .filter(eve => !(!eve.attendances[user.id]) || eve.hostId === user.id)
-        : Object.values(eventsObj)
+            .filter(eve => !(!eve.attendances[user.id]) || eve.hostId === user.id)
+            : Object.values(eventsObj)
     )
 
 
@@ -56,9 +56,9 @@ function EventsPage({manage, user}){
             let currMax = -Infinity;
             let currEvent;
             let currMaxIndex;
-            for (let i = 0; i < pastEvents.length; i++){
+            for (let i = 0; i < pastEvents.length; i++) {
                 const event = pastEvents[i];
-                if (new Date(event.startDate) > currMax){
+                if (new Date(event.startDate) > currMax) {
                     currMax = new Date(event.startDate);
                     currEvent = event;
                     currMaxIndex = i;
@@ -69,36 +69,38 @@ function EventsPage({manage, user}){
         }
     }
 
-    if (manage && !eventsList.length){
-        return <NoEvents user={user}/>
+    if (manage && !eventsList.length) {
+        return <NoEvents user={user} />
     }
     return (
         <>
             <div className="all-groups-header">
-                <h2>
-                    {!manage &&
-                        <div style={{display: "flex", gap: "10px"}}>
-                            <NavLink id="curr-nav"to="/events/all">Events</NavLink>
-                            <NavLink id="other-nav"to="/groups/all">Groups</NavLink>
-                        </div>
+                <div className='header-content-container'>
+                    <h2>
+                        {!manage &&
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <NavLink id="curr-nav" to="/events/all">Events</NavLink>
+                                <NavLink id="other-nav" to="/groups/all">Groups</NavLink>
+                            </div>
 
-                    }
-                    {manage && "Manage Events"}
-                </h2>
-                <h3>{manage ? "Your " : ""}Events</h3>
+                        }
+                        {manage && "Manage Events"}
+                    </h2>
+                    <h3>{manage ? "Your Events" : "Events in GroupTogether"}</h3>
+                </div>
             </div>
             <div className="groups-card-display">
                 {orderedFutureEvents.length > 0 &&
                     orderedFutureEvents.map(event => {
                         return (
-                            <EventsCard id={event.id} event={event} manage={manage}/>
+                            <EventsCard id={event.id} event={event} manage={manage} />
                         )
                     })
                 }
                 {orderedPastEvents.length > 0 &&
                     orderedPastEvents.map(event => {
                         return (
-                            <EventsCard id={event.id} event={event} manage={false} user={user}/>
+                            <EventsCard id={event.id} event={event} manage={false} user={user} />
                         )
                     })
                 }

@@ -130,6 +130,9 @@ ul.profile-dropdown a:hover {
     width: 40px;
     box-shadow: 1px 1px 1px grey;
 }
+#profile-menu-container:hover{
+    cursor: pointer;
+}
 
 #profile-menu-container.modal-is-open{
     background-color: rgba(166, 166, 166, 0.257);
@@ -141,5 +144,5 @@ ul.profile-dropdown a:hover {
 }
 
 .nav-bar + div, .nav-bar + main, .nav-bar + form {
-    padding-top:80px;
+    padding-top:60px;
 }
