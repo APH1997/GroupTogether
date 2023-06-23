@@ -3,7 +3,7 @@ import './GroupCard.css';
 import {useHistory} from  'react-router-dom';
 import { useModal } from '../../context/Modal';
 import DeleteConfirmModal from './DeleteGroup';
-import DeleteButton from './DeleteGroup/DeleteGroupButton';
+import ManageGroup from './ManageGroupModal';
 
 function GroupsCard({group, manage}){
     const history = useHistory();
@@ -44,11 +44,12 @@ function GroupsCard({group, manage}){
                 <div className='card-bottom'>
                     {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
                     {manage &&
-                        (group.organizerId !== user.id && <button onClick={(e) => leaveGroup(e)}>Leave Group</button>)
+                        (group.organizerId !== user.id &&
+                            <button className="organizer-btn-manage" style={{alignSelf: "center"}} onClick={(e) => leaveGroup(e)}>Leave Group</button>)
                         || (manage && group.organizerId === user.id &&
-                        <div>
-                            <button onClick={(e) => handleUpdate(e)}>Update</button>
-                            <button onClick={(e) => deleteGroup(e)}>Delete</button>
+                        <div style={{display: "flex"}}>
+                            <button className="organizer-btn-manage" onClick={(e) => handleUpdate(e)}>Update</button>
+                            <button className="organizer-btn-manage" onClick={(e) => deleteGroup(e)}>Delete</button>
                         </div>)
 
                     }

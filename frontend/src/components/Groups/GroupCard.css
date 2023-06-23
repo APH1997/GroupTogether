@@ -53,6 +53,7 @@ img{
     border-top: lightgray 2px solid;
     border-bottom: lightgray 1px solid;
     min-width: 50vw;
+    width: 50vw;
     padding-top: 20px;
     overflow-wrap: anywhere;
 }
@@ -103,7 +104,7 @@ div.upper-left span>a{
     flex-flow: column;
     justify-content: space-between;
     line-height: 15px;
-    width: 30%;
+    min-width: 30vw;
     padding-top: 20px;
 }
 
@@ -115,12 +116,12 @@ div.upper-left span>a{
     background-color: rgb(216, 51, 29);
     align-self: baseline;
     padding: 10px;
-    height: 15%;
+    height: 25px;
     border-radius: 3px;
     color: whitesmoke;
     box-shadow: 1px 1px 2px rgb(89, 2, 38);
     text-align: center;
-    width:fit-content;
+    min-width: fit-content;
     display: flex;
     align-content: center;
     flex-flow: wrap;
