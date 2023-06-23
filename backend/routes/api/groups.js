@@ -415,7 +415,7 @@ router.post('/:groupId/events', async (req, res, next) => {
         try {
 
             const newEvent = await group.createEvent({
-                hostId: user.Id,
+                hostId: group.organizerId,
                 lat,
                 lng,
                 name,
@@ -431,7 +431,7 @@ router.post('/:groupId/events', async (req, res, next) => {
             //When someone makes an event, they should be attending by default
             const hostAttends = await user.createAttendance({
                 eventId: newEvent.id,
-                userId: user.id,
+                userId: group.organizerId,
                 status: "attending"
             })
 

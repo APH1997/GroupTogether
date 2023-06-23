@@ -128,6 +128,7 @@ function EventDetails() {
                             {user && !event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={postAttendance} id="attend-event-btn">Attend</button>
                             }
+                            
                             {user && event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={deleteAttendance} id="unatttend-event-btn">Unattend</button>
                             }
