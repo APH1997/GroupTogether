@@ -13,11 +13,6 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         userId: 1,
-        groupId: 1,
-        status: 'organizer',
-      },
-      {
-        userId: 1,
         groupId: 2,
         status: 'member',
       },
@@ -32,11 +27,7 @@ module.exports = {
         groupId: 1,
         status: 'member',
       },
-      {
-        userId: 2,
-        groupId: 2,
-        status: 'organizer',
-      },
+
       {
         userId: 2,
         groupId: 3,
@@ -53,11 +44,7 @@ module.exports = {
         groupId: 2,
         status: 'pending',
       },
-      {
-        userId: 3,
-        groupId: 3,
-        status: 'organizer',
-      },
+
       // chatGPT organizer membership records
       {
         userId: 1,
