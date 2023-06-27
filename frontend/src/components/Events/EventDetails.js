@@ -65,7 +65,7 @@ function EventDetails() {
                 </div>
                 <div className="content-container-left">
                     <div className="event-image-container">
-                        <img src={event.previewImgUrl}></img>
+                        <img src={event.previewImgUrl || "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultEvent.png"}></img>
                     </div>
                     <div className="description-header-and-text">
                         <h2>Details</h2>
@@ -85,7 +85,7 @@ function EventDetails() {
                     <div className="group-and-event-info">
                         <div onClick={() => history.push(`/groups/${event.Group.id}`)} className="group-info-container">
                             <div className="group-info-image">
-                                <img src={event.Group.imgUrl}></img>
+                                <img src={event.Group.imgUrl || "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultGroup.jpeg"}></img>
                             </div>
                             <div className="group-info">
                                 <h4 style={{ paddingRight: '10px' }}>{event.Group.name}</h4>
@@ -125,13 +125,23 @@ function EventDetails() {
                                         <button onClick={manageEvent} className="event-organizer-btn-manage">Manage</button>
                                     </span>}
                             </div>
-                            {user && !event.attendances[user.id] && user.id !== event.hostId &&
+                            {user &&
+                            !event.attendances[user.id] &&
+                            user.id !== event.hostId &&
+                            !!event.members[user.id] &&
+                            event.members[user.id].status !== 'pending' &&
                                 <button onClick={postAttendance} id="attend-event-btn">Attend</button>
                             }
-                            
                             {user && event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={deleteAttendance} id="unatttend-event-btn">Unattend</button>
                             }
+                            {!event.members[user.id] &&
+                                <p className="errors" style={{marginLeft: "15px"}}>You must be a member of {event.Group.name} to attend this event</p>
+                            }
+                            {event.members[user.id] && event.members[user.id].status === 'pending' &&
+                                <p className="errors" style={{marginLeft: "15px"}}>Your membership to {event.Group.name} is still pending</p>
+                            }
+
                         </div>
                     </div>
                 </div>

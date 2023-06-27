@@ -36,14 +36,14 @@ function GroupsCard({group, manage}){
     return (
         <div key={group.id} className="card-container" onClick={navToGroupDetails} >
             <div className="cont-image">
-                <img src={`${group.previewImgUrl}`}></img>
+                <img src={`${group.previewImgUrl || "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultGroup.jpeg"}`}></img>
             </div>
             <div className="cont-info">
                 <h2>{group.name}</h2>
                 <h3>{group.city}, {group.state}</h3>
                 <p className='group-about'>{group.about}</p>
                 <div className='card-bottom'>
-                    {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
+                    {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) === 1 ? '' : 's'} · {group.private ? "Private" : "Public"}</h4>}
                     {manage &&
                         (group.organizerId !== user.id &&
                             <button className="organizer-btn-manage" style={{alignSelf: "center"}} onClick={(e) => leaveGroup(e)}>Leave Group</button>)

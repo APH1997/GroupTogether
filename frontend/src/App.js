@@ -16,6 +16,7 @@ import EditEventForm from "./components/Events/EditEventForm";
 import ManageGroupsPage from "./components/Groups/ManageGroups";
 import ManageEventsPage from "./components/Events/ManageEvents";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import NotFound from "./components/404";
 
 
 function App() {
@@ -95,7 +96,7 @@ function App() {
           </Route>
 
           <Route>
-            Page not found
+            <NotFound />
           </Route>
         </Switch>}
     </>
