@@ -125,12 +125,17 @@ function EventDetails() {
                                         <button onClick={manageEvent} className="event-organizer-btn-manage">Manage</button>
                                     </span>}
                             </div>
-                            {user && !event.attendances[user.id] && user.id !== event.hostId &&
+                            {user &&
+                            !event.attendances[user.id] &&
+                            user.id !== event.hostId &&
+                            !!event.members[user.id] &&
                                 <button onClick={postAttendance} id="attend-event-btn">Attend</button>
                             }
-
                             {user && event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={deleteAttendance} id="unatttend-event-btn">Unattend</button>
+                            }
+                            {!event.members[user.id] &&
+                                <p className="errors" style={{marginLeft: "15px"}}>You must be a member of {event.Group.name} to attend this event</p>
                             }
                         </div>
                     </div>
