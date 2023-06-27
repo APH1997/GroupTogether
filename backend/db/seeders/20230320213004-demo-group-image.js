@@ -13,19 +13,69 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         groupId: 1,
-        url: 'https://images.metroparent.com/wp-content/uploads/2020/12/FU-P-ClassicClown.jpg',
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G1.jpeg',
         preview: true,
       },
       {
         groupId: 2,
-        url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUwyL2wRMF_ZMLz5WwHyr8SUWfBfzgqaTt7Z64E7x-CuKQud__54g5Rq44XH4RfV1YNKU&usqp=CAU',
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G2.jpeg',
         preview: true,
       },
       {
         groupId: 3,
-        url: 'https://m.media-amazon.com/images/I/811AFmizQaL._AC_UL1500_.jpg',
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G3.jpg',
         preview: true,
-      }
+      },
+      {
+        groupId: 4,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G4.jpeg',
+        preview: true,
+      },
+      {
+        groupId: 5,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G5.webp',
+        preview: true,
+      },
+      {
+        groupId: 6,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G6.jpeg',
+        preview: true,
+      },
+      {
+        groupId: 7,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G7.webp',
+        preview: true,
+      },
+      {
+        groupId: 8,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G8.jpeg',
+        preview: true,
+      },
+      {
+        groupId: 9,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G9.jpeg',
+        preview: true,
+      },
+      {
+        groupId: 10,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G10.jpeg',
+        preview: true,
+      },
+      {
+        groupId: 11,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G11.jpeg',
+        preview: true,
+      },
+      {
+        groupId: 12,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G12.jpeg',
+        preview: true,
+      },
+      {
+        groupId: 13,
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/G13.png',
+        preview: true,
+      },
     ], {})
   },
 
