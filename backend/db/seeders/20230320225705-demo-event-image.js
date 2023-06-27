@@ -13,29 +13,119 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         eventId: 1,
-        url: 'https://i.imgur.com/XKlm5OZ.jpg',
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/1.jpeg',
         preview: true,
       },
       {
         eventId: 2,
-        url: 'https://i.imgur.com/GRisYUw.jpg',
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/2.jpeg',
         preview: true,
       },
       {
         eventId: 3,
-        url: 'https://i.imgur.com/IxMu8iM.jpg',
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/3.jpeg',
         preview: true,
       },
       {
         eventId: 4,
-        url: 'https://i.imgur.com/UFuo9bG.jpg',
+        url: 'https://group-together-pics.s3.us-east-2.amazonaws.com/4.jpeg',
         preview: true
       },
       {
         eventId: 5,
-        url: "https://i.imgur.com/SsJpxQN.jpg",
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/5.jpeg",
         preview: true
-      }
+      },
+      {
+        eventId: 6,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/6.jpeg",
+        preview: true
+      },
+      {
+        eventId: 7,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/7.jpeg",
+        preview: true
+      },
+      {
+        eventId: 8,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/8.jpeg",
+        preview: true
+      },
+      {
+        eventId: 9,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/9.jpeg",
+        preview: true
+      },
+      {
+        eventId: 10,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/10.png",
+        preview: true
+      },
+      {
+        eventId: 11,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/11.jpeg",
+        preview: true
+      },
+      {
+        eventId: 12,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/12.jpeg",
+        preview: true
+      },
+      {
+        eventId: 13,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/13.jpeg",
+        preview: true
+      },
+      {
+        eventId: 14,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/14.jpg",
+        preview: true
+      },
+      {
+        eventId: 15,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/15.jpeg",
+        preview: true
+      },
+      {
+        eventId: 16,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/16.jpeg",
+        preview: true
+      },
+      {
+        eventId: 17,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/17.jpeg",
+        preview: true
+      },
+      {
+        eventId: 18,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/18.webp",
+        preview: true
+      },
+      {
+        eventId: 19,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/19.jpeg",
+        preview: true
+      },
+      {
+        eventId: 20,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/20.jpeg",
+        preview: true
+      },
+      {
+        eventId: 21,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/21.jpeg",
+        preview: true
+      },
+      {
+        eventId: 22,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/22.webp",
+        preview: true
+      },
+      {
+        eventId: 23,
+        url: "https://group-together-pics.s3.us-east-2.amazonaws.com/23.avif",
+        preview: true
+      },
     ], {})
   },
 
