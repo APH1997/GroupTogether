@@ -43,7 +43,7 @@ function GroupsCard({group, manage}){
                 <h3>{group.city}, {group.state}</h3>
                 <p className='group-about'>{group.about}</p>
                 <div className='card-bottom'>
-                    {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) > 1 ? 's' : ''} · {group.private ? "Private" : "Public"}</h4>}
+                    {Object.values(group).length > 0 && <h4>{group.Events.length} event{Math.abs(group.Events.length) === 1 ? '' : 's'} · {group.private ? "Private" : "Public"}</h4>}
                     {manage &&
                         (group.organizerId !== user.id &&
                             <button className="organizer-btn-manage" style={{alignSelf: "center"}} onClick={(e) => leaveGroup(e)}>Leave Group</button>)
