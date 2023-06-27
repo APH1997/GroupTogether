@@ -97,7 +97,7 @@ function GroupDetails() {
             <div className="upper-details">
                 <div className="upper-left">
                     <span><NavLink to="/groups/all">Back to Groups</NavLink></span>
-                    <img src={group.GroupImages?.length ? group.previewImgUrl : ''}></img>
+                    <img src={group.GroupImages?.length ? group.previewImgUrl : "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultGroup.jpeg"}></img>
                 </div>
                 <div className="upper-right">
                     <div>

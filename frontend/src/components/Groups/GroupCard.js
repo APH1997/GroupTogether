@@ -36,7 +36,7 @@ function GroupsCard({group, manage}){
     return (
         <div key={group.id} className="card-container" onClick={navToGroupDetails} >
             <div className="cont-image">
-                <img src={`${group.previewImgUrl}`}></img>
+                <img src={`${group.previewImgUrl || "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultGroup.jpeg"}`}></img>
             </div>
             <div className="cont-info">
                 <h2>{group.name}</h2>

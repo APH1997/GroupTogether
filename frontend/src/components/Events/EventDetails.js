@@ -65,7 +65,7 @@ function EventDetails() {
                 </div>
                 <div className="content-container-left">
                     <div className="event-image-container">
-                        <img src={event.previewImgUrl}></img>
+                        <img src={event.previewImgUrl || "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultEvent.png"}></img>
                     </div>
                     <div className="description-header-and-text">
                         <h2>Details</h2>
@@ -85,7 +85,7 @@ function EventDetails() {
                     <div className="group-and-event-info">
                         <div onClick={() => history.push(`/groups/${event.Group.id}`)} className="group-info-container">
                             <div className="group-info-image">
-                                <img src={event.Group.imgUrl}></img>
+                                <img src={event.Group.imgUrl || "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultGroup.jpeg"}></img>
                             </div>
                             <div className="group-info">
                                 <h4 style={{ paddingRight: '10px' }}>{event.Group.name}</h4>
@@ -128,7 +128,7 @@ function EventDetails() {
                             {user && !event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={postAttendance} id="attend-event-btn">Attend</button>
                             }
-                            
+
                             {user && event.attendances[user.id] && user.id !== event.hostId &&
                                 <button onClick={deleteAttendance} id="unatttend-event-btn">Unattend</button>
                             }

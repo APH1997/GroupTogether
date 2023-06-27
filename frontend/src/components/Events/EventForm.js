@@ -67,6 +67,7 @@ function EventForm({ formType, event, group }) {
     useEffect(() => {
         const errObj = {};
         if (!name || !name.trim()) errObj.name = 'Name is required';
+        if (name && name.trim().length < 5) errObj.name = 'Name must be at least 5 characters'
         if (!type) errObj.type = 'Event Type is required';
         if (!price && price !== 0) errObj.price = 'Price is required';
         if (!description || !description.trim() || description.length < 30) errObj.description = 'Description must be at least 30 characters long'

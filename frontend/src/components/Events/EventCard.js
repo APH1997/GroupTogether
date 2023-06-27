@@ -59,7 +59,7 @@ function EventsCard({ event, group, manage }) {
                 <div style={{ display: "flex" }}>
 
                     <div className="cont-image">
-                        <img src={`${event?.previewImgUrl}`}></img>
+                        <img src={`${event?.previewImgUrl || "https://group-together-pics.s3.us-east-2.amazonaws.com/defaultEvent.png"}`}></img>
                     </div>
                     <div className="cont-info">
                         <p>{startDate} · {convertMilTime(event.startTime)}</p>

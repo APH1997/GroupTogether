@@ -60,7 +60,7 @@ function GroupForm({ formType, group }) {
             type,
             private: isPrivate,
             city,
-            state
+            state: state.toUpperCase()
         }
         setHasSubmitted(false);
 
