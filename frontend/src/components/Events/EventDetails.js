@@ -129,6 +129,7 @@ function EventDetails() {
                             !event.attendances[user.id] &&
                             user.id !== event.hostId &&
                             !!event.members[user.id] &&
+                            event.members[user.id].status !== 'pending' &&
                                 <button onClick={postAttendance} id="attend-event-btn">Attend</button>
                             }
                             {user && event.attendances[user.id] && user.id !== event.hostId &&
@@ -137,6 +138,10 @@ function EventDetails() {
                             {!event.members[user.id] &&
                                 <p className="errors" style={{marginLeft: "15px"}}>You must be a member of {event.Group.name} to attend this event</p>
                             }
+                            {event.members[user.id] && event.members[user.id].status === 'pending' &&
+                                <p className="errors" style={{marginLeft: "15px"}}>Your membership to {event.Group.name} is still pending</p>
+                            }
+
                         </div>
                     </div>
                 </div>
