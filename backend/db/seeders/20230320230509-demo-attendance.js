@@ -31,7 +31,7 @@ module.exports = {
       {
         userId: 2,
         eventId: 1,
-        status: 'pending',
+        status: 'waitlist',
       },
       {
         userId: 2,
@@ -41,7 +41,7 @@ module.exports = {
       {
         userId: 2,
         eventId: 3,
-        status: 'pending',
+        status: 'waitlist',
       },
 
       {
