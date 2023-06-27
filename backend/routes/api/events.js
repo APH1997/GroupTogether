@@ -93,7 +93,11 @@ router.get('/:eventId', async (req, res, next) => {
             [
                 {
                     model: Group, attributes: ['id', 'name', 'private', 'city', 'state'],
-                    include: [{ model: GroupImage }, { model: User, as: 'Organizer' }]
+                    include: [
+                        { model: GroupImage },
+                        { model: User, as: 'Organizer' },
+                        { model: Membership}
+                    ]
                 },
                 { model: EventImage, attributes: ['id', 'url', 'preview'] },
                 { model: Attendance, include: { model: User } }
@@ -109,8 +113,14 @@ router.get('/:eventId', async (req, res, next) => {
     const resEvent = event.toJSON();
     resEvent.numAttending = resEvent.Attendances.length;
     resEvent.attendances = {}
+
     for (let attendance of resEvent.Attendances) {
         resEvent.attendances[attendance.userId] = attendance
+    }
+
+    resEvent.members = {}
+    for (let membership of resEvent.Group.Memberships){
+        resEvent.members[membership.userId] = membership
     }
 
     delete resEvent.Attendances;
