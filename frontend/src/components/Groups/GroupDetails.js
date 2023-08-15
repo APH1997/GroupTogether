@@ -31,10 +31,10 @@ function GroupDetails() {
 
 
     const futureEvents = [];
-    const orderedFutureEvents = [];
+    let orderedFutureEvents = [];
 
     const pastEvents = [];
-    const orderedPastEvents = [];
+    let orderedPastEvents = [];
 
     //Order the events
     if (eventsArr?.length) {
@@ -43,38 +43,8 @@ function GroupDetails() {
                 futureEvents.push(event)
             } else pastEvents.push(event)
         }
-
-        while (futureEvents.length) {
-            let currMin = Infinity;
-            let currEvent;
-            let currMinIndex;
-            for (let i = 0; i < futureEvents.length; i++) {
-                const event = futureEvents[i];
-                if (new Date(event.startDate) < currMin) {
-                    currMin = new Date(event.startDate);
-                    currEvent = event;
-                    currMinIndex = i;
-                }
-            }
-            orderedFutureEvents.push(currEvent);
-            futureEvents.splice(currMinIndex, 1);
-        }
-
-        while (pastEvents.length) {
-            let currMax = -Infinity;
-            let currEvent;
-            let currMaxIndex;
-            for (let i = 0; i < pastEvents.length; i++){
-                const event = pastEvents[i];
-                if (new Date(event.startDate) > currMax){
-                    currMax = new Date(event.startDate);
-                    currEvent = event;
-                    currMaxIndex = i;
-                }
-            }
-            orderedPastEvents.push(currEvent);
-            pastEvents.splice(currMaxIndex, 1);
-        }
+        orderedFutureEvents = futureEvents.sort((a,b) => new Date(a.startDate) - new Date(b.startDate))
+        orderedPastEvents = pastEvents.sort((a,b) => new Date(b.startDate) - new Date(a.startDate))
     }
 
     function requestMembership(){
